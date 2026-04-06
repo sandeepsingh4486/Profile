@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sandeep Singh R — Project & Product Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy: #0a0f1e;
+      --navy2: #111827;
+      --card: #151d30;
+      --border: #1e2d45;
+      --gold: #f0a500;
+      --gold2: #ffc73a;
+      --teal: #00c9a7;
+      --text: #e2e8f0;
+      --muted: #8898aa;
+      --white: #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 5%;
+      background: rgba(10,15,30,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    nav.scrolled { padding: 0.7rem 5%; box-shadow: 0 4px 30px rgba(0,0,0,0.4); }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      background: var(--gold);
+      color: var(--navy) !important;
+      padding: 0.45rem 1.1rem;
+      border-radius: 6px;
+      font-weight: 700 !important;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--gold2) !important; transform: translateY(-1px); }
+    .nav-cta::after { display: none !important; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--white);
+      transition: all 0.3s;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 62px; left: 0; right: 0;
+      background: var(--navy2);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 5%;
+      z-index: 99;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .mobile-menu a { color: var(--text); text-decoration: none; font-size: 1rem; font-weight: 500; }
+    .mobile-menu.open { display: flex; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 7rem 5% 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg-glow {
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(240,165,0,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-bg-glow2 {
+      position: absolute;
+      bottom: -200px; left: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,201,167,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 4rem;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(240,165,0,0.1);
+      border: 1px solid rgba(240,165,0,0.3);
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 50px;
+      margin-bottom: 1.4rem;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero-badge::before { content: '●'; font-size: 0.5rem; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+    h1.hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      color: var(--white);
+      margin-bottom: 1rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    h1.hero-title .highlight { color: var(--gold); }
+    h1.hero-title .line2 { display: block; color: var(--muted); font-size: 0.6em; font-weight: 600; letter-spacing: 0px; margin-top: 0.3rem; }
+    .hero-desc {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 560px;
+      margin-bottom: 2rem;
+      line-height: 1.8;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 2.2rem;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .tag {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.8rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 50px;
+      font-weight: 500;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.85rem 1.8rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+    .btn-primary:hover { background: var(--gold2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240,165,0,0.3); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.85rem 1.8rem;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all 0.25s;
+    }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    /* Hero Photo Card */
+    .hero-photo-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      animation: fadeUp 0.6s 0.3s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-photo-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--teal));
+    }
+    .photo-wrap {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      margin: 0 auto 1.2rem;
+      border: 3px solid var(--gold);
+      padding: 3px;
+      background: linear-gradient(135deg, var(--gold), var(--teal));
+    }
+    .photo-wrap img {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--card);
+    }
+    .photo-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+    .photo-role { color: var(--gold); font-size: 0.82rem; font-weight: 600; margin-bottom: 1.2rem; }
+    .photo-badges { display: flex; flex-direction: column; gap: 0.6rem; }
+    .photo-badge {
+      display: flex; align-items: center; gap: 0.7rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 0.9rem;
+      font-size: 0.8rem;
+      color: var(--text);
+      text-align: left;
+    }
+    .photo-badge .icon { font-size: 1.1rem; flex-shrink: 0; }
+    .photo-badge strong { display: block; color: var(--white); font-size: 0.85rem; }
+    .available-dot {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(0,201,167,0.1);
+      border: 1px solid rgba(0,201,167,0.3);
+      color: var(--teal);
+      font-size: 0.75rem; font-weight: 600;
+      padding: 0.3rem 0.8rem;
+      border-radius: 50px;
+      margin-top: 1rem;
+    }
+    .available-dot::before { content: '●'; font-size: 0.45rem; animation: blink 1.5s infinite; }
+
+    /* ── STATS ── */
+    .stats-bar {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 5%;
+    }
+    .stats-inner {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .stat { padding: 1rem; }
+    .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1;
+      display: block;
+    }
+    .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 0.3rem; }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 5rem 5%; position: relative; z-index: 1; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.5px;
+      margin-bottom: 0.5rem;
+    }
+    .section-sub { color: var(--muted); max-width: 520px; margin-bottom: 3rem; font-size: 0.95rem; }
+    .divider { width: 50px; height: 3px; background: linear-gradient(90deg, var(--gold), var(--teal)); border-radius: 2px; margin-bottom: 1rem; }
+
+    /* ── ABOUT ── */
+    #about { background: var(--navy2); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .about-text p { color: var(--muted); line-height: 1.9; margin-bottom: 1rem; }
+    .about-text p strong { color: var(--text); }
+    .highlight-box {
+      background: rgba(240,165,0,0.07);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.2rem;
+      margin: 1.5rem 0;
+      color: var(--text);
+      font-size: 0.92rem;
+      font-style: italic;
+    }
+    .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .skill-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.1rem;
+      transition: border-color 0.3s, transform 0.3s;
+      cursor: default;
+    }
+    .skill-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .skill-card .sk-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .skill-card .sk-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; color: var(--white); margin-bottom: 0.3rem; }
+    .skill-card .sk-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.5rem; }
+    .sk-tag { font-size: 0.7rem; padding: 0.15rem 0.5rem; background: rgba(255,255,255,0.05); border-radius: 4px; color: var(--muted); }
+
+    /* ── EXPERIENCE TIMELINE ── */
+    #experience { background: var(--navy); }
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--gold), var(--teal), transparent);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+      padding-left: 1.5rem;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: all 0.5s ease;
+    }
+    .timeline-item.visible { opacity: 1; transform: translateX(0); }
+    .timeline-dot {
+      position: absolute;
+      left: -2.6rem;
+      top: 0.4rem;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--navy);
+      box-shadow: 0 0 0 3px rgba(240,165,0,0.2);
+    }
+    .timeline-dot.teal { background: var(--teal); box-shadow: 0 0 0 3px rgba(0,201,167,0.2); }
+    .tl-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: border-color 0.3s;
+    }
+    .tl-card:hover { border-color: rgba(240,165,0,0.4); }
+    .tl-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .tl-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--white); }
+    .tl-company { color: var(--gold); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; }
+    .tl-date { font-size: 0.75rem; color: var(--muted); background: rgba(255,255,255,0.05); padding: 0.2rem 0.7rem; border-radius: 50px; white-space: nowrap; }
+    .tl-desc { color: var(--muted); font-size: 0.88rem; line-height: 1.7; }
+    .tl-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.8rem; }
+    .chip { font-size: 0.72rem; padding: 0.2rem 0.6rem; background: rgba(0,201,167,0.08); border: 1px solid rgba(0,201,167,0.2); color: var(--teal); border-radius: 4px; }
+
+    /* ── ACHIEVEMENTS ── */
+    #achievements { background: var(--navy2); }
+    .achievements-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .ach-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.8rem 1.5rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+      color: inherit;
+    }
+    .ach-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--teal));
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+    .ach-card:hover { transform: translateY(-5px); border-color: rgba(240,165,0,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+    .ach-card:hover::before { transform: scaleX(1); }
+    .ach-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .ach-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--white); margin-bottom: 0.5rem; }
+    .ach-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+    .ach-link { font-size: 0.78rem; color: var(--gold); margin-top: 0.8rem; display: inline-flex; align-items: center; gap: 0.3rem; }
+
+    /* ── PUBLICATIONS ── */
+    #publications { background: var(--navy); }
+    .pub-list { display: flex; flex-direction: column; gap: 1rem; }
+    .pub-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.3rem 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      transition: border-color 0.3s;
+    }
+    .pub-item:hover { border-color: rgba(240,165,0,0.3); }
+    .pub-num { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; color: rgba(240,165,0,0.25); min-width: 2rem; line-height: 1; padding-top: 0.15rem; }
+    .pub-content { flex: 1; }
+    .pub-title { font-weight: 600; color: var(--white); font-size: 0.9rem; margin-bottom: 0.3rem; }
+    .pub-meta { font-size: 0.78rem; color: var(--muted); }
+    .pub-type { font-size: 0.7rem; padding: 0.15rem 0.6rem; border-radius: 4px; font-weight: 600; }
+    .pub-type.national { background: rgba(240,165,0,0.1); color: var(--gold); border: 1px solid rgba(240,165,0,0.2); }
+    .pub-type.intl { background: rgba(0,201,167,0.1); color: var(--teal); border: 1px solid rgba(0,201,167,0.2); }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--navy2); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .contact-info { display: flex; flex-direction: column; gap: 1.2rem; }
+    .contact-item {
+      display: flex; gap: 1rem; align-items: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.1rem 1.3rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.25s;
+    }
+    .contact-item:hover { border-color: var(--gold); transform: translateX(5px); }
+    .contact-item .ci-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .contact-item .ci-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+    .contact-item .ci-value { font-weight: 600; color: var(--white); font-size: 0.9rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--muted); letter-spacing: 0.5px; }
+    .form-group input,
+    .form-group textarea {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.25s;
+      resize: vertical;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--gold); }
+    .form-group textarea { min-height: 120px; }
+    .btn-submit {
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .btn-submit:hover { background: var(--gold2); transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      border-top: 1px solid var(--border);
+      padding: 2rem 5%;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+      position: relative;
+      z-index: 1;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ── SCROLL TO TOP ── */
+    .scroll-top {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      background: var(--gold);
+      color: var(--navy);
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 99;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    .scroll-top.visible { opacity: 1; transform: translateY(0); }
+    .scroll-top:hover { background: var(--gold2); transform: translateY(-3px); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-photo-card { max-width: 340px; margin: 0 auto; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; }
+      .achievements-grid { grid-template-columns: 1fr 1fr; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .skills-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+    @media (max-width: 600px) {
+      .achievements-grid { grid-template-columns: 1fr; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Sandeep<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="documents.html" class="nav-cta">📄 Resume</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#experience" onclick="closeMenu()">Experience</a>
+  <a href="#projects" onclick="closeMenu()">Projects</a>
+  <a href="#achievements" onclick="closeMenu()">Achievements</a>
+  <a href="#publications" onclick="closeMenu()">Publications</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+  <a href="documents.html">📄 Download Resume</a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero" id="home">
+  <div class="hero-bg-glow"></div>
+  <div class="hero-bg-glow2"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">Open to Opportunities — Bangalore / Pune</div>
+      <h1 class="hero-title">
+        Sandeep Singh R
+        <span class="line2">PMP® Certified Project & Product Manager</span>
+      </h1>
+      <p class="hero-desc">
+        10+ years delivering <strong>safety-critical embedded systems</strong> from concept to deployment —
+        cutting crane downtime by <strong>40%</strong>, achieving <strong>100% on-time delivery</strong> across 5+ projects,
+        and driving <strong>95% client satisfaction</strong>. Certified in <strong>PMP® · XLRI Product Management</strong> · DO-178B Compliance.
+      </p>
+      <div class="hero-tags">
+        <span class="tag">🏭 Embedded Systems</span>
+        <span class="tag">🚗 Automotive Electronics</span>
+        <span class="tag">📡 IoT</span>
+        <span class="tag">⚙️ Industrial Automation</span>
+        <span class="tag">📜 PMP® Certified</span>
+        <span class="tag">🔬 DO-178B Compliance</span>
+      </div>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-primary">💬 Get In Touch</a>
+        <a href="documents.html" class="btn-secondary">📄 Download Resume</a>
+        <a href="#about" class="btn-secondary">👤 View Portfolio</a>
+      </div>
+    </div>
+    <div class="hero-photo-card">
+      <div class="photo-wrap">
+        <img src="img/Sandeep.jpg" alt="Sandeep Singh R" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#f0a500,#00c9a7)'; this.parentElement.innerHTML='<div style=\'font-size:3rem;display:flex;align-items:center;justify-content:center;height:100%;border-radius:50%;\'>👤</div>'"/>
+      </div>
+      <div class="photo-name">Sandeep Singh R</div>
+      <div class="photo-role">Senior PM | Product Manager</div>
+      <div class="photo-badges">
+        <div class="photo-badge"><span class="icon">🏆</span><div><strong>PMP® + XLRI Certified</strong>Dual PM Certifications</div></div>
+        <div class="photo-badge"><span class="icon">📋</span><div><strong>Design Patent Filed</strong>Reg. No. 453281-001</div></div>
+        <div class="photo-badge"><span class="icon">🏅</span><div><strong>EFY Best Design Award</strong>Embedded Design Contest</div></div>
+        <div class="photo-badge"><span class="icon">📝</span><div><strong>7 Research Papers</strong>National & International</div></div>
+      </div>
+      <div class="available-dot">Available for new roles</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS BAR ── -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat">
+      <span class="stat-number" data-target="10">0</span>
+      <div class="stat-label">+ Years Experience</div>
+    </div>
+    <div class="stat">
+      <span class="stat-number" data-target="40">0</span>
+      <div class="stat-label">% Crane Downtime Reduced</div>
+    </div>
+    <div class="stat">
+      <span class="stat-number" data-target="95">0</span>
+      <div class="stat-label">% Client Satisfaction</div>
+    </div>
+    <div class="stat">
+      <span class="stat-number" data-target="7">0</span>
+      <div class="stat-label">Research Papers Published</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-tag">About Me</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Engineering Leader<br>turned Strategic PM</h2>
+    <p class="section-sub">Bridging deep technical expertise with business strategy to deliver mission-critical solutions.</p>
+    <div class="about-grid fade-in">
+      <div class="about-text">
+        <p>I'm a <strong>PMP® Certified Project & Product Manager</strong> with over 10 years of hands-on experience in embedded systems, IoT, and automotive electronics. I currently lead an 8-member cross-functional R&D team at <strong>Klug Avalon Mechatronics Pvt. Ltd.</strong>, delivering Safety-Critical <strong>Safe Load Indicator (SLI) systems</strong> for cranes.</p>
+        <p>My background spans the full product lifecycle — from firmware architecture and hardware design to stakeholder management, P&L ownership, and regulatory compliance including <strong>DO-178B and MISRA-C standards</strong> — a rare combination in the Indian PM landscape.</p>
+        <div class="highlight-box">
+          "I translate complex engineering challenges into structured business outcomes — on time, within budget, and compliant with the highest safety standards."
+        </div>
+        <p>Beyond the corporate world, I actively mentor engineering students, have conducted workshops at MSRIT, BMSIT, and PSR Engineering College, and volunteer with the <strong>PMI Pune Chapter</strong>.</p>
+      </div>
+      <div class="skills-grid fade-in">
+        <div class="skill-card">
+          <div class="sk-icon">📐</div>
+          <div class="sk-title">Project & Product Management</div>
+          <div class="sk-tags">
+            <span class="sk-tag">Agile/Scrum</span><span class="sk-tag">PDLC</span><span class="sk-tag">P&L</span><span class="sk-tag">Risk Mgmt</span><span class="sk-tag">Roadmapping</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="sk-icon">🔌</div>
+          <div class="sk-title">Embedded Systems & IoT</div>
+          <div class="sk-tags">
+            <span class="sk-tag">C/Embedded C</span><span class="sk-tag">STM32</span><span class="sk-tag">PIC</span><span class="sk-tag">Arduino</span><span class="sk-tag">ESP32</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="sk-icon">📡</div>
+          <div class="sk-title">Communication Protocols</div>
+          <div class="sk-tags">
+            <span class="sk-tag">I2C</span><span class="sk-tag">SPI</span><span class="sk-tag">RS232</span><span class="sk-tag">RS485</span><span class="sk-tag">CAN</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="sk-icon">✅</div>
+          <div class="sk-title">Compliance & Quality</div>
+          <div class="sk-tags">
+            <span class="sk-tag">DO-178B</span><span class="sk-tag">MISRA-C</span><span class="sk-tag">ISO</span><span class="sk-tag">JIRA</span><span class="sk-tag">GIT</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="sk-icon">🖥️</div>
+          <div class="sk-title">PCB & Development Tools</div>
+          <div class="sk-tags">
+            <span class="sk-tag">KiCad</span><span class="sk-tag">Altium</span><span class="sk-tag">MATLAB</span><span class="sk-tag">Keil</span><span class="sk-tag">MPLABx</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="sk-icon">🎯</div>
+          <div class="sk-title">Leadership & Strategy</div>
+          <div class="sk-tags">
+            <span class="sk-tag">Cross-functional Teams</span><span class="sk-tag">Vendor Negotiation</span><span class="sk-tag">Budgeting</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ── -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-tag">Career Journey</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Professional Experience</h2>
+    <p class="section-sub">10+ years across R&D, embedded design, and strategic project leadership.</p>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div>
+              <div class="tl-title">Project Manager — R&D</div>
+              <div class="tl-company">Klug Avalon Mechatronics Pvt. Ltd. (KAMPL)</div>
+            </div>
+            <span class="tl-date">Jun 2023 – Present</span>
+          </div>
+          <div class="tl-desc">
+            ↓ <strong>40% reduction</strong> in crane downtime by leading 8-member team in design, deployment & calibration of Safety-Critical Safe Load Indicator (SLI) systems.<br>
+            ↓ <strong>100% on-time delivery</strong> across 5+ major projects via Agile sprint planning and change-control discipline aligned to PMO standards.<br>
+            ↓ <strong>95% client satisfaction</strong> through structured review cadences, clear deliverable sign-offs, and stakeholder alignment.<br>
+            ↓ <strong>30% workflow efficiency improvement</strong> via cross-functional process optimization reducing inter-team handoff delays.
+          </div>
+          <div class="tl-chips">
+            <span class="chip">SLI Systems</span><span class="chip">DO-178B</span><span class="chip">P&L Ownership</span><span class="chip">Agile/Scrum</span><span class="chip">8-Member Team</span><span class="chip">Vendor Negotiation</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot teal"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div>
+              <div class="tl-title">Assistant Manager — R&D</div>
+              <div class="tl-company">Metal Power Analytics Pvt. Ltd. (MPA)</div>
+            </div>
+            <span class="tl-date">May 2022 – Jun 2023</span>
+          </div>
+          <div class="tl-desc">
+            ↓ <strong>20% faster development cycles</strong> by implementing Agile practices, sprint retrospectives, and embedded system optimisation.<br>
+            ↓ <strong>25% device performance boost</strong> through targeted firmware enhancements and efficient hardware resource utilization.<br>
+            ↓ <strong>15% vendor coordination improvement</strong> via structured RFQ processes and supplier SLAs.
+          </div>
+          <div class="tl-chips">
+            <span class="chip">R&D Management</span><span class="chip">Firmware</span><span class="chip">Agile</span><span class="chip">Vendor SLAs</span><span class="chip">Prototyping</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div>
+              <div class="tl-title">Senior Embedded Design Engineer</div>
+              <div class="tl-company">Shirivante Technologies Pvt. Ltd. (STPL)</div>
+            </div>
+            <span class="tl-date">Mar 2021 – May 2022</span>
+          </div>
+          <div class="tl-desc">
+            ↓ <strong>30% system stability improvement</strong> through systematic hardware-software integration and structured design reviews.<br>
+            ↓ <strong>40% defect reduction</strong> by introducing enhanced QA processes, formal design reviews, and structured validation frameworks.<br>
+            Contributed to product roadmap execution — translating customer requirements into embedded feature specifications.
+          </div>
+          <div class="tl-chips">
+            <span class="chip">Embedded C</span><span class="chip">STM32</span><span class="chip">I2C/SPI/RS485</span><span class="chip">QA & Validation</span><span class="chip">Design Reviews</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot teal" style="background:rgba(136,152,170,0.6);box-shadow:none;"></div>
+        <div class="tl-card" style="border-color:rgba(136,152,170,0.2);background:rgba(21,29,48,0.5);">
+          <div class="tl-header">
+            <div>
+              <div class="tl-title" style="color:var(--muted);">Career Break — Professional Development</div>
+              <div class="tl-company" style="color:var(--muted);">Freelance MATLAB & Embedded Systems Trainer</div>
+            </div>
+            <span class="tl-date">Nov 2019 – Mar 2021</span>
+          </div>
+          <div class="tl-desc" style="font-style:italic;">
+            Personal bereavement (loss of father) coinciding with the COVID-19 pandemic. During this period, continued active professional development — delivering online MATLAB & embedded systems training sessions and developing client-specific embedded prototypes as a freelance developer.
+          </div>
+          <div class="tl-chips">
+            <span class="chip" style="border-color:rgba(136,152,170,0.2);color:var(--muted);">Freelance Training</span><span class="chip" style="border-color:rgba(136,152,170,0.2);color:var(--muted);">MATLAB</span><span class="chip" style="border-color:rgba(136,152,170,0.2);color:var(--muted);">Embedded Prototyping</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div>
+              <div class="tl-title">Senior Software Developer — Microchip Consultant</div>
+              <div class="tl-company">Nexsemi Systems Pvt. Ltd. (Client: Microchip Pvt. Ltd.)</div>
+            </div>
+            <span class="tl-date">Oct 2018 – Nov 2019</span>
+          </div>
+          <div class="tl-desc">
+            <em>Validation Engineer (Mar 2019 – Sep 2019):</em> <strong>80% testing efficiency gain</strong> by automating manual test cases using Jython scripting; <strong>25% better bug detection</strong> coverage through structured test planning.<br>
+            <em>MATLAB Developer (Oct 2018 – Mar 2019):</em> <strong>35% visualization efficiency improvement</strong> developing advanced MATLAB GUI dashboards for engineering decision-making.<br>
+            <strong>20% product efficiency boost</strong> via embedded software updates; <strong>25% fewer deployment errors</strong> through CI/CD automation.
+          </div>
+          <div class="tl-chips">
+            <span class="chip">Jython Automation</span><span class="chip">MATLAB GUI</span><span class="chip">CI/CD</span><span class="chip">Firmware</span><span class="chip">Validation</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot teal"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div>
+              <div class="tl-title">Embedded Design Engineer</div>
+              <div class="tl-company">Monee & Company Pvt. Ltd.</div>
+            </div>
+            <span class="tl-date">Nov 2016 – Nov 2017</span>
+          </div>
+          <div class="tl-desc">
+            ↓ <strong>20% system stability improvement</strong> designing and testing embedded hardware solutions.<br>
+            ↓ <strong>15% faster prototyping</strong> through PCB layout optimization and firmware modularization.<br>
+            <em style="font-size:0.8rem;opacity:0.6;">Note: Company was subsequently shut down.</em>
+          </div>
+          <div class="tl-chips">
+            <span class="chip">PCB Design</span><span class="chip">Embedded C</span><span class="chip">Firmware</span><span class="chip">Hardware Debug</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div>
+              <div class="tl-title">Research Associate</div>
+              <div class="tl-company">PESIT — Naval Research Board (NRB) Project</div>
+            </div>
+            <span class="tl-date">Oct 2012 – Aug 2014</span>
+          </div>
+          <div class="tl-desc">
+            ↓ <strong>95% data accuracy enhancement</strong> through research on acoustic systems and algorithm development for underwater communication using Ultrasonic & MATLAB.<br>
+            Published 5 National Conference Papers and 2 International Journal articles; mentored undergraduate research teams.
+            <em style="display:block;margin-top:0.4rem;font-size:0.8rem;opacity:0.6;">Role concluded to pursue M.Tech (Signal Processing) full-time at SJCIT, VTU.</em>
+          </div>
+          <div class="tl-chips">
+            <span class="chip">MATLAB</span><span class="chip">Signal Processing</span><span class="chip">Naval Research</span><span class="chip">7 Publications</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot teal"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div>
+              <div class="tl-title">Design Engineer — Embedded</div>
+              <div class="tl-company">Apsis Solutions Pvt. Ltd.</div>
+            </div>
+            <span class="tl-date">Jun 2011 – Oct 2012</span>
+          </div>
+          <div class="tl-desc">
+            ↓ <strong>15% embedded performance improvement</strong>; reduced hardware-software integration issues by <strong>20%</strong> through systematic debugging and documentation.
+          </div>
+          <div class="tl-chips">
+            <span class="chip">Embedded Systems</span><span class="chip">Hardware Integration</span><span class="chip">Documentation</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── KEY PROJECTS ── -->
+<section id="projects" style="background:var(--navy2);">
+  <div class="section-inner">
+    <div class="section-tag">Key Projects</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Flagship Projects</h2>
+    <p class="section-sub">End-to-end ownership across safety-critical, aviation, and analytics domains.</p>
+    <div class="achievements-grid fade-in">
+
+      <div class="ach-card">
+        <div class="ach-icon">🏗️</div>
+        <div class="ach-title">Safe Load Indicator (SLI) System for Cranes</div>
+        <div class="ach-desc">
+          <strong style="color:var(--gold);">40% reduction</strong> in crane safety incidents. <strong style="color:var(--teal);">25% faster setup</strong> through enhanced calibration processes.<br><br>
+          End-to-end ownership: stakeholder requirements → hardware/firmware specification → deployment → client sign-off.
+        </div>
+        <div class="tl-chips" style="margin-top:0.8rem;">
+          <span class="chip">Safety-Critical</span><span class="chip">Calibration</span><span class="chip">Full Lifecycle</span>
+        </div>
+      </div>
+
+      <div class="ach-card">
+        <div class="ach-icon">🔬</div>
+        <div class="ach-title">Spectrometer Design & Development</div>
+        <div class="ach-desc">
+          <strong style="color:var(--gold);">30% data acquisition accuracy improvement</strong> via STM32 firmware development. <strong style="color:var(--teal);">20% reduction</strong> in hardware integration time through optimised testing methodologies.
+        </div>
+        <div class="tl-chips" style="margin-top:0.8rem;">
+          <span class="chip">STM32</span><span class="chip">Firmware</span><span class="chip">Data Acquisition</span>
+        </div>
+      </div>
+
+      <div class="ach-card">
+        <div class="ach-icon">✈️</div>
+        <div class="ach-title">Automatic Flight Control System (AFCS)</div>
+        <div class="ach-desc">
+          <strong style="color:var(--gold);">15% system responsiveness improvement</strong> via FreeRTOS integration. <strong style="color:var(--teal);">25% fewer system failures</strong> through rigorous hardware rig testing and validation.
+        </div>
+        <div class="tl-chips" style="margin-top:0.8rem;">
+          <span class="chip">FreeRTOS</span><span class="chip">AFCS</span><span class="chip">Hardware Rig Testing</span>
+        </div>
+      </div>
+
+      <div class="ach-card">
+        <div class="ach-icon">📊</div>
+        <div class="ach-title">MATLAB GUI Tooling (Microchip / Freelance)</div>
+        <div class="ach-desc">
+          Delivered advanced dashboard and simulation tools that accelerated engineering decision-making and training workflows. <strong style="color:var(--gold);">35% visualization efficiency gain</strong>.
+        </div>
+        <div class="tl-chips" style="margin-top:0.8rem;">
+          <span class="chip">MATLAB GUI</span><span class="chip">Simulation</span><span class="chip">Decision Tooling</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── ACHIEVEMENTS ── -->
+<section id="achievements">
+  <div class="section-inner">
+    <div class="section-tag">Recognition</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Achievements & Awards</h2>
+    <p class="section-sub">Patents, awards, and milestones that define the journey.</p>
+    <div class="achievements-grid fade-in">
+
+      <a class="ach-card" href="certificates/Achievements/Patent_Certificate.pdf" target="_blank">
+        <div class="ach-icon">📜</div>
+        <div class="ach-title">Design Patent Filed</div>
+        <div class="ach-desc">Automobile Emergency Alerting Autonomous Device — Reg. No. 453281-001, filed 27 March 2025.</div>
+        <div class="ach-link">View Certificate →</div>
+      </a>
+
+      <a class="ach-card" href="certificates/Achievements/EFY_Achievement.pdf" target="_blank">
+        <div class="ach-icon">🏆</div>
+        <div class="ach-title">EFY Best Design Award</div>
+        <div class="ach-desc">Winner of the Best Design award in the prestigious Electronics For You (EFY) Embedded Design Contest.</div>
+        <div class="ach-link">View Certificate →</div>
+      </a>
+
+      <a class="ach-card" href="papers.html">
+        <div class="ach-icon">📑</div>
+        <div class="ach-title">7 Research Papers Published</div>
+        <div class="ach-desc">5 National Conference Papers and 2 International Journal Papers across robotics, signal processing, and IoT.</div>
+        <div class="ach-link">View Publications →</div>
+      </a>
+
+      <a class="ach-card" href="certificates/Achievements/Texas Instrument.jpg" target="_blank">
+        <div class="ach-icon">🎓</div>
+        <div class="ach-title">Texas Innovation Challenge Mentor</div>
+        <div class="ach-desc">Mentored students for the Texas Instruments Innovation Challenge, guiding embedded systems projects.</div>
+        <div class="ach-link">View Certificate →</div>
+      </a>
+
+      <div class="ach-card">
+        <div class="ach-icon">🎬</div>
+        <div class="ach-title">Udemy MATLAB Instructor</div>
+        <div class="ach-desc">Published MATLAB basics course on Udemy; conducted multiple hands-on engineering student workshops at MSRIT, BMSIT, RRIT, and PSR Engineering College.</div>
+      </div>
+
+      <div class="ach-card">
+        <div class="ach-icon">🎖️</div>
+        <div class="ach-title">NCC 'B' Certificate Holder</div>
+        <div class="ach-desc">National Cadet Corps 'B' Certificate — demonstrating discipline, leadership and national service commitment. Passionate about adventure sports: rock climbing, rappelling, and trekking.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── PUBLICATIONS ── -->
+<section id="publications">
+  <div class="section-inner">
+    <div class="section-tag">Research</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Published Research Papers</h2>
+    <p class="section-sub">National conference papers and international journal publications.</p>
+    <div class="pub-list fade-in">
+
+      <div class="pub-item">
+        <div class="pub-num">01</div>
+        <div class="pub-content">
+          <div class="pub-title">Automated Robot for Flyer Distribution and Awareness Promoter</div>
+          <div class="pub-meta">NCWCT-2014, DRAIT, Bengaluru, 2014</div>
+        </div>
+        <span class="pub-type national">National</span>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-num">02</div>
+        <div class="pub-content">
+          <div class="pub-title">A Spider Type Crawling Robot for Pipeline Defect Detection</div>
+          <div class="pub-meta">NCWCT-2014, DRAIT, Bengaluru, 2014</div>
+        </div>
+        <span class="pub-type national">National</span>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-num">03</div>
+        <div class="pub-content">
+          <div class="pub-title">Steganography of Audio Data into Audio Using MATLAB & Transmission Over Zigbee</div>
+          <div class="pub-meta">NCCVS-14, KSSEM, Bengaluru, 2014</div>
+        </div>
+        <span class="pub-type national">National</span>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-num">04</div>
+        <div class="pub-content">
+          <div class="pub-title">Tracking and Checking Cargo Containers Pilferage Using Electronic Lock</div>
+          <div class="pub-meta">IJTRA, Volume 2, Issue 5, Sept–Oct 2014. ISSN: 2320-8163</div>
+        </div>
+        <span class="pub-type intl">International</span>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-num">05</div>
+        <div class="pub-content">
+          <div class="pub-title">Steganography of Audio Data into Audio Using MATLAB & Transmission Over Zigbee</div>
+          <div class="pub-meta">IJCRD, January 2015. eISSN: 2321-225X</div>
+        </div>
+        <span class="pub-type intl">International</span>
+      </div>
+
+    </div>
+    <div style="margin-top:1.5rem; text-align:center;">
+      <a href="papers.html" class="btn-secondary" style="display:inline-flex;">View All Publications →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-tag">Let's Connect</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Get In Touch</h2>
+    <p class="section-sub">Open to Senior Project Manager and Associate Product Manager roles. Let's talk.</p>
+    <div class="contact-grid fade-in">
+      <div class="contact-info">
+        <a href="/cdn-cgi/l/email-protection#5023313e34353520353360636510373d31393c7e333f3d" class="contact-item">
+          <span class="ci-icon">📧</span>
+          <div><div class="ci-label">Email</div><div class="ci-value"><span class="__cf_email__" data-cfemail="3241535c56575742575102010772555f535b5e1c515d5f">[email&#160;protected]</span></div></div>
+        </a>
+        <a href="tel:+917406050506" class="contact-item">
+          <span class="ci-icon">📱</span>
+          <div><div class="ci-label">Phone</div><div class="ci-value">+91 7406050506 / 7975062764</div></div>
+        </a>
+        <a href="https://www.linkedin.com/in/sandeep-singh7406050506" target="_blank" class="contact-item">
+          <span class="ci-icon">💼</span>
+          <div><div class="ci-label">LinkedIn</div><div class="ci-value">linkedin.com/in/sandeep-singh7406050506</div></div>
+        </a>
+        <a href="https://github.com/sandeep-singh4486" target="_blank" class="contact-item">
+          <span class="ci-icon">🐙</span>
+          <div><div class="ci-label">GitHub</div><div class="ci-value">github.com/sandeep-singh4486</div></div>
+        </a>
+        <a href="https://www.youtube.com/watch?v=xQRwqpBrr8c" target="_blank" class="contact-item">
+          <span class="ci-icon">▶️</span>
+          <div><div class="ci-label">Video Introduction</div><div class="ci-value">Watch My Introduction</div></div>
+        </a>
+      </div>
+      <div>
+        <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" name="name" placeholder="John Doe" required/>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="john@company.com" required/>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea name="message" placeholder="Tell me about the opportunity..." required></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Send Message →</button>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem;">⚡ Replace YOUR_FORM_ID at formspree.io to activate the form</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>© 2025 <a href="#">Sandeep Singh R</a> · PMP® Certified Project & Product Manager · Bangalore, India</p>
+  <p style="margin-top:0.4rem;">Built with passion · <a href="https://www.linkedin.com/in/sandeep-singh7406050506" target="_blank">LinkedIn</a> · <a href="https://github.com/sandeep-singh4486" target="_blank">GitHub</a></p>
+</footer>
+
+<a href="#home" class="scroll-top" id="scrollTop">↑</a>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Nav scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+    document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
+  });
+
+  // Hamburger menu
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  // Intersection Observer for animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in, .timeline-item').forEach(el => observer.observe(el));
+
+  // Counter animation
+  const counters = document.querySelectorAll('.stat-number');
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const target = +entry.target.dataset.target;
+        let count = 0;
+        const step = Math.ceil(target / 30);
+        const timer = setInterval(() => {
+          count += step;
+          if (count >= target) { count = target; clearInterval(timer); }
+          entry.target.textContent = count;
+        }, 60);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  

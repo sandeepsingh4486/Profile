@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Experience — Sandeep Singh R</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#0a0f1e;--navy2:#111827;--card:#151d30;--border:#1e2d45;--gold:#f0a500;--gold2:#ffc73a;--teal:#00c9a7;--text:#e2e8f0;--muted:#8898aa;--white:#ffffff;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 5%;background:rgba(10,15,30,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;color:var(--white);text-decoration:none;}
+    .nav-logo span{color:var(--gold);}
+    .nav-links{display:flex;gap:1.8rem;list-style:none;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color 0.2s;position:relative;}
+    .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--gold);transition:width 0.3s;}
+    .nav-links a:hover{color:var(--white);}
+    .nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+    .nav-links a.active{color:var(--gold);}
+    .nav-cta{background:var(--gold)!important;color:var(--navy)!important;padding:0.45rem 1.1rem;border-radius:6px;font-weight:700!important;}
+    .nav-cta::after{display:none!important;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+    .hamburger span{display:block;width:24px;height:2px;background:var(--white);}
+    .mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:var(--navy2);border-bottom:1px solid var(--border);padding:1.5rem 5%;z-index:99;flex-direction:column;gap:1.2rem;}
+    .mobile-menu a{color:var(--text);text-decoration:none;font-size:1rem;font-weight:500;}
+    .mobile-menu.open{display:flex;}
+    .page-hero{padding:7rem 5% 3rem;background:var(--navy2);border-bottom:1px solid var(--border);position:relative;z-index:1;}
+    .page-hero-inner{max-width:1200px;margin:0 auto;}
+    .breadcrumb{font-size:0.78rem;color:var(--muted);margin-bottom:1rem;}
+    .breadcrumb a{color:var(--gold);text-decoration:none;}
+    .breadcrumb span{margin:0 0.4rem;}
+    .page-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--white);letter-spacing:-1px;margin-bottom:0.5rem;}
+    .page-title span{color:var(--gold);}
+    .page-sub{color:var(--muted);font-size:1rem;max-width:500px;}
+    /* STATS */
+    .stats-bar{background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2rem 5%;position:relative;z-index:1;}
+    .stats-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:1200px;margin:0 auto;text-align:center;}
+    .stat-number{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:var(--gold);line-height:1;display:block;}
+    .stat-label{font-size:0.8rem;color:var(--muted);margin-top:0.3rem;}
+    section{padding:4rem 5%;position:relative;z-index:1;}
+    .section-inner{max-width:1200px;margin:0 auto;}
+    .section-tag{font-size:0.75rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;}
+    .section-title{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:var(--white);letter-spacing:-0.5px;margin-bottom:0.5rem;}
+    .divider{width:50px;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:2px;margin-bottom:1.5rem;}
+    /* TIMELINE */
+    .timeline{position:relative;padding-left:2rem;}
+    .timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--gold),var(--teal),transparent);}
+    .tl-item{position:relative;margin-bottom:2.5rem;padding-left:1.5rem;opacity:0;transform:translateX(-20px);transition:all 0.5s ease;}
+    .tl-item.visible{opacity:1;transform:translateX(0);}
+    .tl-dot{position:absolute;left:-2.6rem;top:0.5rem;width:14px;height:14px;border-radius:50%;background:var(--gold);border:2px solid var(--navy);box-shadow:0 0 0 3px rgba(240,165,0,0.2);}
+    .tl-dot.teal{background:var(--teal);box-shadow:0 0 0 3px rgba(0,201,167,0.2);}
+    .tl-dot.muted{background:rgba(136,152,170,0.5);box-shadow:none;}
+    .tl-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;transition:border-color 0.3s;}
+    .tl-card:hover{border-color:rgba(240,165,0,0.35);}
+    .tl-card.dim{background:rgba(21,29,48,0.5);border-color:rgba(255,255,255,0.06);}
+    .tl-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.6rem;}
+    .tl-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--white);}
+    .tl-title.dim{color:var(--muted);}
+    .tl-company{color:var(--gold);font-size:0.85rem;font-weight:600;margin-bottom:0.4rem;}
+    .tl-company.dim{color:var(--muted);}
+    .tl-date{font-size:0.75rem;color:var(--muted);background:rgba(255,255,255,0.05);padding:0.2rem 0.7rem;border-radius:50px;white-space:nowrap;}
+    .tl-bullets{list-style:none;margin-top:0.5rem;}
+    .tl-bullets li{color:var(--muted);font-size:0.88rem;line-height:1.7;padding-left:1.2rem;position:relative;margin-bottom:0.3rem;}
+    .tl-bullets li::before{content:'↓';position:absolute;left:0;color:var(--gold);font-size:0.8rem;}
+    .tl-bullets li strong{color:var(--gold);}
+    .tl-bullets li.sub{padding-left:2rem;}
+    .tl-bullets li.sub::before{content:'•';color:var(--teal);}
+    .tl-note{font-size:0.78rem;color:rgba(136,152,170,0.6);font-style:italic;margin-top:0.5rem;}
+    .chips{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.9rem;}
+    .chip{font-size:0.72rem;padding:0.2rem 0.6rem;background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.2);color:var(--teal);border-radius:4px;}
+    .chip.dim{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1);color:var(--muted);}
+    /* PROJECTS */
+    #projects{background:var(--navy2);}
+    .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;}
+    .proj-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.8rem;transition:all 0.3s;position:relative;overflow:hidden;}
+    .proj-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));transform:scaleX(0);transition:transform 0.3s;}
+    .proj-card:hover{transform:translateY(-4px);border-color:rgba(240,165,0,0.3);box-shadow:0 16px 40px rgba(0,0,0,0.3);}
+    .proj-card:hover::before{transform:scaleX(1);}
+    .proj-icon{font-size:2rem;margin-bottom:0.8rem;}
+    .proj-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;color:var(--white);margin-bottom:0.6rem;}
+    .proj-bullets{list-style:none;}
+    .proj-bullets li{font-size:0.84rem;color:var(--muted);padding-left:1.2rem;position:relative;margin-bottom:0.3rem;}
+    .proj-bullets li::before{content:'✦';position:absolute;left:0;color:var(--teal);font-size:0.65rem;top:0.25rem;}
+    .proj-bullets li strong{color:var(--gold);}
+    .fade-in{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .fade-in.visible{opacity:1;transform:translateY(0);}
+    footer{background:var(--navy);border-top:1px solid var(--border);padding:2rem 5%;text-align:center;color:var(--muted);font-size:0.82rem;position:relative;z-index:1;}
+    footer a{color:var(--gold);text-decoration:none;}
+    .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--gold);color:var(--navy);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;z-index:99;opacity:0;transform:translateY(10px);transition:all 0.3s;text-decoration:none;}
+    .scroll-top.visible{opacity:1;transform:translateY(0);}
+    @media(max-width:900px){.stats-inner{grid-template-columns:repeat(2,1fr);}.proj-grid{grid-template-columns:1fr;}.nav-links{display:none;}.hamburger{display:flex;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Sandeep<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="experience.html" class="active">Experience</a></li>
+    <li><a href="certificates.html">Education</a></li>
+    <li><a href="papers.html">Publications</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="documents.html" class="nav-cta">📄 Resume</a></li>
+  </ul>
+  <div class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mm">
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="experience.html">Experience</a>
+  <a href="certificates.html">Education</a><a href="papers.html">Publications</a>
+  <a href="contact.html">Contact</a><a href="documents.html">📄 Resume</a>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span>Experience</div>
+    <h1 class="page-title">Professional <span>Experience</span></h1>
+    <p class="page-sub">10+ years spanning R&D leadership, embedded design, and strategic project delivery across safety-critical domains.</p>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div><span class="stat-number" data-target="10">0</span><div class="stat-label">+ Years Experience</div></div>
+    <div><span class="stat-number" data-target="40">0</span><div class="stat-label">% Crane Downtime Reduced</div></div>
+    <div><span class="stat-number" data-target="95">0</span><div class="stat-label">% Client Satisfaction</div></div>
+    <div><span class="stat-number" data-target="5">0</span><div class="stat-label">+ Major Projects Delivered</div></div>
+  </div>
+</div>
+
+<section id="timeline">
+  <div class="section-inner">
+    <div class="section-tag">Career Journey</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Work History</h2>
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header"><div><div class="tl-title">Project Manager — R&D</div><div class="tl-company">Klug Avalon Mechatronics Pvt. Ltd. (KAMPL)</div></div><span class="tl-date">Jun 2023 – Present</span></div>
+          <ul class="tl-bullets">
+            <li>Reduced crane downtime by <strong>40%</strong> — led 8-member team designing, deploying & calibrating Safety-Critical SLI systems with full scope, risk register & milestone ownership</li>
+            <li>Achieved <strong>100% on-time delivery</strong> across 5+ major projects via Agile sprint planning, resource allocation, and PMO-aligned change-control discipline</li>
+            <li>Drove client satisfaction to <strong>95%</strong> through structured review cadences and clear deliverable sign-offs</li>
+            <li>Improved engineering workflow efficiency by <strong>30%</strong> via cross-functional process optimization, reducing handoff delays and rework cycles</li>
+            <li>Maintained P&L oversight — negotiated vendor contracts and optimised component sourcing to reduce procurement costs</li>
+          </ul>
+          <div class="chips"><span class="chip">SLI Systems</span><span class="chip">DO-178B</span><span class="chip">P&L</span><span class="chip">Agile/Scrum</span><span class="chip">8-Member Team</span><span class="chip">Vendor Negotiation</span><span class="chip">JIRA</span></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot teal"></div>
+        <div class="tl-card">
+          <div class="tl-header"><div><div class="tl-title">Assistant Manager — R&D</div><div class="tl-company">Metal Power Analytics Pvt. Ltd. (MPA)</div></div><span class="tl-date">May 2022 – Jun 2023</span></div>
+          <ul class="tl-bullets">
+            <li>Cut development cycles by <strong>20%</strong> by implementing Agile practices, sprint retrospectives, and embedded system optimisation techniques</li>
+            <li>Boosted device performance by <strong>25%</strong> through targeted firmware enhancements and hardware resource utilisation</li>
+            <li>Maintained <strong>95% client satisfaction</strong> — bridging product and engineering teams on requirements, scope, and delivery alignment</li>
+            <li>Improved vendor coordination efficiency by <strong>15%</strong> through structured RFQ processes and supplier SLAs</li>
+          </ul>
+          <div class="chips"><span class="chip">R&D Management</span><span class="chip">Firmware</span><span class="chip">Agile</span><span class="chip">Vendor SLAs</span><span class="chip">Prototyping</span><span class="chip">QA</span></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header"><div><div class="tl-title">Senior Embedded Design Engineer</div><div class="tl-company">Shirivante Technologies Pvt. Ltd. (STPL)</div></div><span class="tl-date">Mar 2021 – May 2022</span></div>
+          <ul class="tl-bullets">
+            <li>Improved system stability by <strong>30%</strong> through systematic hardware-software module integration and structured design reviews</li>
+            <li>Reduced product defects by <strong>40%</strong> by introducing enhanced QA processes and structured validation frameworks</li>
+            <li>Contributed to product roadmap execution — translating customer requirements into embedded feature specs and delivery milestones</li>
+          </ul>
+          <div class="chips"><span class="chip">Embedded C</span><span class="chip">STM32</span><span class="chip">I2C/SPI/RS485</span><span class="chip">QA & Validation</span><span class="chip">Design Reviews</span><span class="chip">Product Roadmap</span></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot muted"></div>
+        <div class="tl-card dim">
+          <div class="tl-header"><div><div class="tl-title dim">Career Break — Professional Development</div><div class="tl-company dim">Freelance MATLAB & Embedded Systems Trainer/Developer</div></div><span class="tl-date">Nov 2019 – Mar 2021</span></div>
+          <ul class="tl-bullets">
+            <li class="sub" style="color:var(--muted);padding-left:1rem;">Personal bereavement (loss of father) coinciding with the COVID-19 pandemic</li>
+            <li class="sub" style="color:var(--muted);padding-left:1rem;">Continued active professional development — delivered online MATLAB & embedded systems training sessions</li>
+            <li class="sub" style="color:var(--muted);padding-left:1rem;">Developed client-specific MATLAB scripts and embedded prototypes as a freelance developer</li>
+          </ul>
+          <div class="chips"><span class="chip dim">Freelance Training</span><span class="chip dim">MATLAB</span><span class="chip dim">Embedded Prototyping</span><span class="chip dim">Online Teaching</span></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot teal"></div>
+        <div class="tl-card">
+          <div class="tl-header"><div><div class="tl-title">Senior Software Developer — Microchip Consultant</div><div class="tl-company">Nexsemi Systems Pvt. Ltd. (Client: Microchip Pvt. Ltd.)</div></div><span class="tl-date">Oct 2018 – Nov 2019</span></div>
+          <p style="font-size:0.82rem;color:var(--muted);margin-bottom:0.6rem;font-style:italic;">Validation Engineer (Mar 2019 – Sep 2019)</p>
+          <ul class="tl-bullets">
+            <li>Improved testing efficiency by <strong>80%</strong> — automated manual test cases using Jython scripting, building reusable validation frameworks</li>
+            <li>Enhanced bug detection coverage by <strong>25%</strong>; reduced regression testing effort by <strong>15%</strong> through structured test planning</li>
+          </ul>
+          <p style="font-size:0.82rem;color:var(--muted);margin:0.7rem 0 0.4rem;font-style:italic;">MATLAB Developer (Oct 2018 – Mar 2019)</p>
+          <ul class="tl-bullets">
+            <li>Increased visualization efficiency by <strong>35%</strong> — developed advanced MATLAB GUI dashboards for engineering decision-making</li>
+            <li>Prototyped embedded algorithms enabling faster simulation and accelerated release cycles</li>
+            <li>Boosted product efficiency by <strong>20%</strong>; reduced deployment errors by <strong>25%</strong> through CI/CD automation</li>
+          </ul>
+          <div class="chips"><span class="chip">Jython Automation</span><span class="chip">MATLAB GUI</span><span class="chip">CI/CD</span><span class="chip">Firmware</span><span class="chip">Validation</span><span class="chip">Microchip</span></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header"><div><div class="tl-title">Embedded Design Engineer</div><div class="tl-company">Monee & Company Pvt. Ltd.</div></div><span class="tl-date">Nov 2016 – Nov 2017</span></div>
+          <ul class="tl-bullets">
+            <li>Improved system stability by <strong>20%</strong> designing and testing embedded hardware solutions</li>
+            <li>Reduced prototyping timelines by <strong>15%</strong> through PCB layout optimisation and firmware modularisation</li>
+          </ul>
+          <div class="tl-note">Company was subsequently shut down.</div>
+          <div class="chips"><span class="chip">PCB Design</span><span class="chip">Embedded C</span><span class="chip">Firmware</span><span class="chip">Hardware Debug</span></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot teal"></div>
+        <div class="tl-card">
+          <div class="tl-header"><div><div class="tl-title">Research Associate</div><div class="tl-company">PESIT — Naval Research Board (NRB) Project</div></div><span class="tl-date">Oct 2012 – Aug 2014</span></div>
+          <ul class="tl-bullets">
+            <li>Enhanced data accuracy by <strong>95%</strong> through research on acoustic systems and algorithm development for underwater communication</li>
+            <li>Published <strong>5 National Conference Papers</strong> and <strong>2 International Journal</strong> articles; mentored undergraduate research teams</li>
+          </ul>
+          <div class="tl-note">Role concluded to pursue M.Tech (Signal Processing) full-time at SJCIT, VTU.</div>
+          <div class="chips"><span class="chip">MATLAB</span><span class="chip">Signal Processing</span><span class="chip">Naval Research Board</span><span class="chip">7 Publications</span><span class="chip">Mentorship</span></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header"><div><div class="tl-title">Design Engineer — Embedded</div><div class="tl-company">Apsis Solutions Pvt. Ltd.</div></div><span class="tl-date">Jun 2011 – Oct 2012</span></div>
+          <ul class="tl-bullets">
+            <li>Improved embedded performance by <strong>15%</strong> and reduced hardware-software integration issues by <strong>20%</strong> through systematic debugging and documentation</li>
+          </ul>
+          <div class="chips"><span class="chip">Embedded Systems</span><span class="chip">Hardware Integration</span><span class="chip">Documentation</span><span class="chip">Debugging</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-tag">Key Projects</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Flagship Projects</h2>
+    <div class="proj-grid fade-in">
+      <div class="proj-card">
+        <div class="proj-icon">🏗️</div>
+        <div class="proj-title">Safe Load Indicator (SLI) System for Cranes</div>
+        <ul class="proj-bullets">
+          <li>Reduced crane safety incidents by <strong>40%</strong></li>
+          <li>Calibration process improvements cut setup time by <strong>25%</strong></li>
+          <li>End-to-end ownership: requirements → hardware/firmware spec → deployment → client sign-off</li>
+        </ul>
+        <div class="chips"><span class="chip">Safety-Critical</span><span class="chip">Full Lifecycle</span><span class="chip">Calibration</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-icon">🔬</div>
+        <div class="proj-title">Spectrometer Design & Development</div>
+        <ul class="proj-bullets">
+          <li>STM32 firmware improved data acquisition accuracy by <strong>30%</strong></li>
+          <li>Optimised testing methodologies reducing hardware integration time by <strong>20%</strong></li>
+        </ul>
+        <div class="chips"><span class="chip">STM32</span><span class="chip">Firmware</span><span class="chip">Data Acquisition</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-icon">✈️</div>
+        <div class="proj-title">Automatic Flight Control System (AFCS)</div>
+        <ul class="proj-bullets">
+          <li>FreeRTOS integration improved system responsiveness by <strong>15%</strong></li>
+          <li>Hardware rig testing reduced system failures by <strong>25%</strong></li>
+        </ul>
+        <div class="chips"><span class="chip">FreeRTOS</span><span class="chip">AFCS</span><span class="chip">Hardware Rig Testing</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-icon">📊</div>
+        <div class="proj-title">MATLAB GUI Tooling (Microchip / Freelance)</div>
+        <ul class="proj-bullets">
+          <li><strong>35% visualization efficiency gain</strong> — advanced dashboards for engineering decision-making</li>
+          <li>Simulation tools that accelerated training workflows and release cycles</li>
+        </ul>
+        <div class="chips"><span class="chip">MATLAB GUI</span><span class="chip">Simulation</span><span class="chip">Decision Tooling</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 <a href="index.html">Sandeep Singh R</a> · PMP® Certified Project & Product Manager · Bengaluru, India</p>
+</footer>
+<a href="#" class="scroll-top" id="scrollTop">↑</a>
+<script>
+  window.addEventListener('scroll',()=>{document.getElementById('scrollTop').classList.toggle('visible',scrollY>400);});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.1});
+  document.querySelectorAll('.fade-in,.tl-item').forEach((el,i)=>{el.style.transitionDelay=el.classList.contains('tl-item')?`${i*0.08}s`:'0s';obs.observe(el);});
+  const counters=document.querySelectorAll('.stat-number');
+  const co=new IntersectionObserver(e=>e.forEach(entry=>{if(entry.isIntersecting){const t=+entry.target.dataset.target;let c=0;const s=Math.ceil(t/30);const tm=setInterval(()=>{c+=s;if(c>=t){c=t;clearInterval(tm);}entry.target.textContent=c;},60);co.unobserve(entry.target);}}),{threshold:0.5});
+  counters.forEach(c=>co.observe(c));
+</script>
+</body>
+</html>

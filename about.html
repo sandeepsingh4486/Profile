@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Me — Sandeep Singh R</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#0a0f1e;--navy2:#111827;--card:#151d30;--border:#1e2d45;--gold:#f0a500;--gold2:#ffc73a;--teal:#00c9a7;--text:#e2e8f0;--muted:#8898aa;--white:#ffffff;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 5%;background:rgba(10,15,30,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;color:var(--white);text-decoration:none;}
+    .nav-logo span{color:var(--gold);}
+    .nav-links{display:flex;gap:1.8rem;list-style:none;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color 0.2s;position:relative;}
+    .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--gold);transition:width 0.3s;}
+    .nav-links a:hover{color:var(--white);}
+    .nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+    .nav-links a.active{color:var(--gold);}
+    .nav-cta{background:var(--gold)!important;color:var(--navy)!important;padding:0.45rem 1.1rem;border-radius:6px;font-weight:700!important;}
+    .nav-cta::after{display:none!important;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+    .hamburger span{display:block;width:24px;height:2px;background:var(--white);}
+    .mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:var(--navy2);border-bottom:1px solid var(--border);padding:1.5rem 5%;z-index:99;flex-direction:column;gap:1.2rem;}
+    .mobile-menu a{color:var(--text);text-decoration:none;font-size:1rem;font-weight:500;}
+    .mobile-menu.open{display:flex;}
+    /* PAGE HERO */
+    .page-hero{padding:7rem 5% 3rem;background:var(--navy2);border-bottom:1px solid var(--border);position:relative;z-index:1;}
+    .page-hero-inner{max-width:1200px;margin:0 auto;}
+    .breadcrumb{font-size:0.78rem;color:var(--muted);margin-bottom:1rem;}
+    .breadcrumb a{color:var(--gold);text-decoration:none;}
+    .breadcrumb span{margin:0 0.4rem;}
+    .page-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--white);letter-spacing:-1px;margin-bottom:0.5rem;}
+    .page-title span{color:var(--gold);}
+    .page-sub{color:var(--muted);font-size:1rem;max-width:500px;}
+    /* SECTIONS */
+    section{padding:4rem 5%;position:relative;z-index:1;}
+    .section-inner{max-width:1200px;margin:0 auto;}
+    .section-tag{font-size:0.75rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;}
+    .section-title{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:var(--white);letter-spacing:-0.5px;margin-bottom:0.5rem;}
+    .divider{width:50px;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:2px;margin-bottom:1.5rem;}
+    /* PROFILE CARD */
+    .profile-grid{display:grid;grid-template-columns:320px 1fr;gap:3rem;align-items:start;}
+    .profile-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative;overflow:hidden;}
+    .profile-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));}
+    .photo-wrap{width:150px;height:150px;border-radius:50%;margin:0 auto 1.2rem;padding:3px;background:linear-gradient(135deg,var(--gold),var(--teal));}
+    .photo-wrap img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:3px solid var(--card);}
+    .pc-name{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--white);text-align:center;margin-bottom:0.2rem;}
+    .pc-role{color:var(--gold);font-size:0.82rem;font-weight:600;text-align:center;margin-bottom:1.5rem;}
+    .pc-info{display:flex;flex-direction:column;gap:0.7rem;}
+    .pc-info-item{display:flex;align-items:center;gap:0.7rem;font-size:0.84rem;color:var(--text);}
+    .pc-info-item .icon{font-size:1rem;flex-shrink:0;width:1.2rem;text-align:center;}
+    .pc-info-item a{color:var(--gold);text-decoration:none;}
+    .available-dot{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.3);color:var(--teal);font-size:0.75rem;font-weight:600;padding:0.3rem 0.8rem;border-radius:50px;margin-top:1.2rem;width:100%;justify-content:center;}
+    .available-dot::before{content:'●';font-size:0.45rem;animation:blink 1.5s infinite;}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+    .profile-content{}
+    .profile-content p{color:var(--muted);line-height:1.9;margin-bottom:1rem;}
+    .profile-content p strong{color:var(--text);}
+    .highlight-box{background:rgba(240,165,0,0.07);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1.5rem 0;color:var(--text);font-size:0.92rem;font-style:italic;}
+    /* CERTS BADGES */
+    .cert-badges{display:flex;flex-wrap:wrap;gap:0.8rem;margin:1.5rem 0;}
+    .cert-badge{display:flex;align-items:center;gap:0.6rem;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0.7rem 1rem;font-size:0.82rem;color:var(--text);}
+    .cert-badge .icon{font-size:1.2rem;}
+    .cert-badge strong{display:block;color:var(--white);font-size:0.85rem;}
+    /* SKILLS */
+    #skills{background:var(--navy2);}
+    .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+    .skill-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem;transition:border-color 0.3s,transform 0.3s;}
+    .skill-card:hover{border-color:var(--gold);transform:translateY(-3px);}
+    .sk-icon{font-size:1.5rem;margin-bottom:0.5rem;}
+    .sk-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;color:var(--white);margin-bottom:0.6rem;}
+    .sk-tags{display:flex;flex-wrap:wrap;gap:0.3rem;}
+    .sk-tag{font-size:0.7rem;padding:0.15rem 0.5rem;background:rgba(255,255,255,0.05);border-radius:4px;color:var(--muted);}
+    /* INTERESTS */
+    #interests{background:var(--navy);}
+    .interests-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;}
+    .interest-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem;text-align:center;transition:all 0.3s;}
+    .interest-card:hover{border-color:rgba(0,201,167,0.4);transform:translateY(-3px);}
+    .interest-icon{font-size:2rem;margin-bottom:0.6rem;}
+    .interest-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:var(--white);margin-bottom:0.3rem;}
+    .interest-desc{font-size:0.78rem;color:var(--muted);}
+    /* VIDEO */
+    #video{background:var(--navy2);}
+    .video-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+    .video-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color 0.3s;}
+    .video-card:hover{border-color:rgba(240,165,0,0.3);}
+    .video-thumb{position:relative;padding-top:56.25%;background:var(--navy);}
+    .video-thumb iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+    .video-info{padding:1.2rem;}
+    .video-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;color:var(--white);margin-bottom:0.4rem;}
+    .video-desc{font-size:0.82rem;color:var(--muted);}
+    /* FADE */
+    .fade-in{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .fade-in.visible{opacity:1;transform:translateY(0);}
+    footer{background:var(--navy);border-top:1px solid var(--border);padding:2rem 5%;text-align:center;color:var(--muted);font-size:0.82rem;position:relative;z-index:1;}
+    footer a{color:var(--gold);text-decoration:none;}
+    .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--gold);color:var(--navy);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;z-index:99;opacity:0;transform:translateY(10px);transition:all 0.3s;text-decoration:none;}
+    .scroll-top.visible{opacity:1;transform:translateY(0);}
+    @media(max-width:900px){
+      .profile-grid{grid-template-columns:1fr;}
+      .profile-card{max-width:340px;margin:0 auto;}
+      .skills-grid{grid-template-columns:repeat(2,1fr);}
+      .interests-grid{grid-template-columns:repeat(2,1fr);}
+      .video-grid{grid-template-columns:1fr;}
+      .nav-links{display:none;}
+      .hamburger{display:flex;}
+    }
+    @media(max-width:600px){.skills-grid{grid-template-columns:1fr;}.interests-grid{grid-template-columns:repeat(2,1fr);}}
+  </style>
+</head>
+<body>
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">Sandeep<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="experience.html">Experience</a></li>
+    <li><a href="certificates.html">Education</a></li>
+    <li><a href="papers.html">Publications</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="documents.html" class="nav-cta">📄 Resume</a></li>
+  </ul>
+  <div class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="experience.html">Experience</a>
+  <a href="certificates.html">Education</a>
+  <a href="papers.html">Publications</a>
+  <a href="contact.html">Contact</a>
+  <a href="documents.html">📄 Download Resume</a>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span>About Me</div>
+    <h1 class="page-title">About <span>Me</span></h1>
+    <p class="page-sub">Engineering leader turned strategic PM — 10+ years bridging deep technical expertise with business outcomes.</p>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<section id="profile">
+  <div class="section-inner">
+    <div class="profile-grid fade-in">
+      <div class="profile-card">
+        <div class="photo-wrap">
+          <img src="img/Sandeep.jpg" alt="Sandeep Singh R" onerror="this.parentElement.style.background='linear-gradient(135deg,#f0a500,#00c9a7)';this.style.display='none'"/>
+        </div>
+        <div class="pc-name">Sandeep Singh R</div>
+        <div class="pc-role">PMP® | Project & Product Manager</div>
+        <div class="pc-info">
+          <div class="pc-info-item"><span class="icon">📍</span> Bengaluru, Karnataka</div>
+          <div class="pc-info-item"><span class="icon">📱</span> +91 7406050506</div>
+          <div class="pc-info-item"><span class="icon">📧</span> <a href="mailto:sandeepec035@gmail.com">sandeepec035@gmail.com</a></div>
+          <div class="pc-info-item"><span class="icon">💼</span> <a href="https://www.linkedin.com/in/sandeep-singh7406050506" target="_blank">LinkedIn Profile</a></div>
+          <div class="pc-info-item"><span class="icon">🌐</span> <a href="https://sandeep-singh4486.github.io/Profile/index.html" target="_blank">Portfolio Website</a></div>
+          <div class="pc-info-item"><span class="icon">🐙</span> <a href="https://github.com/sandeep-singh4486" target="_blank">GitHub</a></div>
+        </div>
+        <div class="available-dot">Open to new opportunities</div>
+      </div>
+      <div class="profile-content">
+        <div class="section-tag">Who I Am</div>
+        <div class="divider"></div>
+        <h2 class="section-title">Engineering Leader<br>turned Strategic PM</h2>
+        <p>I'm a <strong>PMP® Certified Project Manager</strong> and <strong>XLRI-Certified Product Manager</strong> with 10+ years of cross-functional experience spanning Embedded Systems, IoT, Semiconductor, and Automation domains. I currently lead an 8-member cross-functional engineering team at <strong>Klug Avalon Mechatronics Pvt. Ltd.</strong>, delivering Safety-Critical <strong>Safe Load Indicator (SLI) systems</strong> for cranes — achieving 40% crane downtime reduction and 100% on-time delivery across 5+ major projects.</p>
+        <p>My background spans the full product lifecycle — from firmware architecture and PCB hardware design to stakeholder management, P&L ownership, and regulatory compliance including <strong>DO-178B and MISRA-C standards</strong>. This rare combination of hands-on technical depth and structured PM discipline makes me a strong fit for both Senior PM and Associate Product Manager roles.</p>
+        <div class="highlight-box">"I translate complex engineering challenges into structured business outcomes — on time, within budget, and compliant with the highest safety standards."</div>
+        <p>Beyond the corporate world, I actively mentor engineering students, have conducted IoT and MATLAB workshops at MSRIT, BMSIT, RRIT, and PSR Engineering College, and volunteer with the <strong>PMI Pune Chapter</strong>. I'm also a <strong>Udemy instructor</strong> for MATLAB basics and hold an <strong>NCC 'B' Certificate</strong>. In my personal time, I enjoy rock climbing, rappelling, and trekking.</p>
+        <div class="cert-badges">
+          <div class="cert-badge"><span class="icon">🏅</span><div><strong>PMP® Certified</strong>Project Management Professional — PMI</div></div>
+          <div class="cert-badge"><span class="icon">🎓</span><div><strong>XLRI Certified</strong>Product Management — XLRI</div></div>
+          <div class="cert-badge"><span class="icon">📜</span><div><strong>Design Patent</strong>Reg. No. 453281-001 | Mar 2025</div></div>
+          <div class="cert-badge"><span class="icon">🏆</span><div><strong>EFY Best Design Award</strong>Embedded Design Contest</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-tag">Competencies</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Skills & Expertise</h2>
+    <div class="skills-grid fade-in">
+      <div class="skill-card"><div class="sk-icon">📐</div><div class="sk-title">Project Management</div><div class="sk-tags"><span class="sk-tag">PMP®</span><span class="sk-tag">Agile/Scrum</span><span class="sk-tag">PDLC</span><span class="sk-tag">Risk Register</span><span class="sk-tag">Change Control</span><span class="sk-tag">P&L</span><span class="sk-tag">Budgeting</span><span class="sk-tag">Vendor Negotiation</span></div></div>
+      <div class="skill-card"><div class="sk-icon">🗺️</div><div class="sk-title">Product Management</div><div class="sk-tags"><span class="sk-tag">Roadmapping</span><span class="sk-tag">PRD/MRD</span><span class="sk-tag">User Stories</span><span class="sk-tag">OKRs/KPIs</span><span class="sk-tag">GTM</span><span class="sk-tag">VoC</span><span class="sk-tag">Feature Prioritization</span></div></div>
+      <div class="skill-card"><div class="sk-icon">🔌</div><div class="sk-title">Embedded Systems & IoT</div><div class="sk-tags"><span class="sk-tag">Embedded C/C</span><span class="sk-tag">FreeRTOS</span><span class="sk-tag">STM32</span><span class="sk-tag">PIC</span><span class="sk-tag">8051</span><span class="sk-tag">Arduino</span><span class="sk-tag">ESP32</span><span class="sk-tag">Firmware Dev</span></div></div>
+      <div class="skill-card"><div class="sk-icon">📡</div><div class="sk-title">Communication Protocols</div><div class="sk-tags"><span class="sk-tag">I2C</span><span class="sk-tag">SPI</span><span class="sk-tag">RS232</span><span class="sk-tag">RS485</span><span class="sk-tag">CAN</span><span class="sk-tag">UART</span></div></div>
+      <div class="skill-card"><div class="sk-icon">✅</div><div class="sk-title">Process & Quality</div><div class="sk-tags"><span class="sk-tag">DO-178B</span><span class="sk-tag">MISRA-C</span><span class="sk-tag">ISO</span><span class="sk-tag">QA & Validation</span><span class="sk-tag">Design Reviews</span><span class="sk-tag">CI/CD</span></div></div>
+      <div class="skill-card"><div class="sk-icon">🖥️</div><div class="sk-title">Tools & Platforms</div><div class="sk-tags"><span class="sk-tag">JIRA</span><span class="sk-tag">Git/Bitbucket</span><span class="sk-tag">KiCad</span><span class="sk-tag">Altium</span><span class="sk-tag">MATLAB</span><span class="sk-tag">Keil</span><span class="sk-tag">MPLABx</span><span class="sk-tag">Python</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERESTS -->
+<section id="interests">
+  <div class="section-inner">
+    <div class="section-tag">Passions</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Interests & Hobbies</h2>
+    <div class="interests-grid fade-in">
+      <div class="interest-card"><div class="interest-icon">🔧</div><div class="interest-title">DIY Electronics</div><div class="interest-desc">ESP32-based systems, IoT prototyping, salvaged component hacks</div></div>
+      <div class="interest-card"><div class="interest-icon">🧗</div><div class="interest-title">Adventure Sports</div><div class="interest-desc">Rock climbing, rappelling, and trekking across Karnataka</div></div>
+      <div class="interest-card"><div class="interest-icon">📚</div><div class="interest-title">Research & Writing</div><div class="interest-desc">7 published papers in national conferences and international journals</div></div>
+      <div class="interest-card"><div class="interest-icon">🎓</div><div class="interest-title">Mentoring & Teaching</div><div class="interest-desc">Udemy instructor, workshop leader at 4+ engineering colleges</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO INTRO -->
+<section id="video">
+  <div class="section-inner">
+    <div class="section-tag">Watch & Connect</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Video Introduction & Projects</h2>
+    <div class="video-grid fade-in">
+      <div class="video-card">
+        <div class="video-thumb"><iframe src="https://www.youtube.com/embed/xQRwqpBrr8c" allowfullscreen loading="lazy" title="Sandeep Singh R Introduction"></iframe></div>
+        <div class="video-info"><div class="video-title">▶ Personal Introduction</div><div class="video-desc">Get to know my background, experience, and professional journey in my own words.</div></div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb"><iframe src="https://www.youtube.com/embed/videoseries?list=PL6VEvFisJoLtIjf-r23IyGDfrMj_WT1z6" allowfullscreen loading="lazy" title="Project Demos Playlist"></iframe></div>
+        <div class="video-info"><div class="video-title">▶ Project Demonstrations Playlist</div><div class="video-desc">Complete playlist showcasing my IoT, Embedded Systems, and Robotics projects end-to-end.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 <a href="index.html">Sandeep Singh R</a> · PMP® Certified Project & Product Manager · Bengaluru, India</p>
+</footer>
+<a href="#" class="scroll-top" id="scrollTop">↑</a>
+<script>
+  window.addEventListener('scroll',()=>{document.getElementById('scrollTop').classList.toggle('visible',scrollY>400);});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

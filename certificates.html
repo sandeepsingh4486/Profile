@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Education & Certifications — Sandeep Singh R</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#0a0f1e;--navy2:#111827;--card:#151d30;--border:#1e2d45;--gold:#f0a500;--gold2:#ffc73a;--teal:#00c9a7;--text:#e2e8f0;--muted:#8898aa;--white:#ffffff;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 5%;background:rgba(10,15,30,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;color:var(--white);text-decoration:none;}
+    .nav-logo span{color:var(--gold);}
+    .nav-links{display:flex;gap:1.8rem;list-style:none;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color 0.2s;position:relative;}
+    .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--gold);transition:width 0.3s;}
+    .nav-links a:hover{color:var(--white);}
+    .nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+    .nav-links a.active{color:var(--gold);}
+    .nav-cta{background:var(--gold)!important;color:var(--navy)!important;padding:0.45rem 1.1rem;border-radius:6px;font-weight:700!important;}
+    .nav-cta::after{display:none!important;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+    .hamburger span{display:block;width:24px;height:2px;background:var(--white);}
+    .mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:var(--navy2);border-bottom:1px solid var(--border);padding:1.5rem 5%;z-index:99;flex-direction:column;gap:1.2rem;}
+    .mobile-menu a{color:var(--text);text-decoration:none;}
+    .mobile-menu.open{display:flex;}
+    .page-hero{padding:7rem 5% 3rem;background:var(--navy2);border-bottom:1px solid var(--border);position:relative;z-index:1;}
+    .page-hero-inner{max-width:1200px;margin:0 auto;}
+    .breadcrumb{font-size:0.78rem;color:var(--muted);margin-bottom:1rem;}
+    .breadcrumb a{color:var(--gold);text-decoration:none;}
+    .breadcrumb span{margin:0 0.4rem;}
+    .page-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--white);letter-spacing:-1px;margin-bottom:0.5rem;}
+    .page-title span{color:var(--gold);}
+    .page-sub{color:var(--muted);font-size:1rem;max-width:500px;}
+    section{padding:4rem 5%;position:relative;z-index:1;}
+    .section-inner{max-width:1200px;margin:0 auto;}
+    .section-tag{font-size:0.75rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;}
+    .section-title{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:var(--white);letter-spacing:-0.5px;margin-bottom:0.5rem;}
+    .divider{width:50px;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:2px;margin-bottom:1.5rem;}
+    /* EDUCATION CARDS */
+    .edu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;}
+    .edu-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.8rem;transition:all 0.3s;position:relative;overflow:hidden;}
+    .edu-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));transform:scaleX(0);transition:transform 0.3s;}
+    .edu-card:hover{transform:translateY(-4px);border-color:rgba(240,165,0,0.3);}
+    .edu-card:hover::before{transform:scaleX(1);}
+    .edu-icon{font-size:2rem;margin-bottom:0.8rem;}
+    .edu-degree{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--white);margin-bottom:0.3rem;}
+    .edu-school{color:var(--gold);font-size:0.85rem;font-weight:600;margin-bottom:0.3rem;}
+    .edu-year{font-size:0.78rem;color:var(--muted);}
+    .edu-note{font-size:0.8rem;color:var(--muted);margin-top:0.5rem;font-style:italic;}
+    .edu-link{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.78rem;color:var(--teal);text-decoration:none;margin-top:0.8rem;transition:color 0.2s;}
+    .edu-link:hover{color:var(--gold);}
+    /* CERT CARDS */
+    #certifications{background:var(--navy2);}
+    .cert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;}
+    .cert-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.4rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color 0.3s;}
+    .cert-card:hover{border-color:rgba(240,165,0,0.35);}
+    .cert-card.featured{border-color:rgba(240,165,0,0.4);background:rgba(240,165,0,0.04);}
+    .cert-icon{font-size:1.8rem;flex-shrink:0;}
+    .cert-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;color:var(--white);margin-bottom:0.3rem;}
+    .cert-issuer{font-size:0.82rem;color:var(--gold);}
+    .cert-desc{font-size:0.8rem;color:var(--muted);margin-top:0.3rem;}
+    .cert-badge-tag{display:inline-block;font-size:0.68rem;padding:0.15rem 0.5rem;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.25);color:var(--gold);border-radius:4px;margin-top:0.5rem;font-weight:600;}
+    .cert-link{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.78rem;color:var(--teal);text-decoration:none;margin-top:0.6rem;}
+    /* WORKSHOPS */
+    #workshops{background:var(--navy);}
+    .workshop-list{display:flex;flex-direction:column;gap:1rem;}
+    .workshop-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.5rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color 0.3s;}
+    .workshop-item:hover{border-color:rgba(0,201,167,0.3);}
+    .ws-num{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:rgba(240,165,0,0.25);min-width:2rem;line-height:1;}
+    .ws-content{flex:1;}
+    .ws-title{font-weight:600;color:var(--white);font-size:0.9rem;margin-bottom:0.2rem;}
+    .ws-meta{font-size:0.78rem;color:var(--muted);}
+    .ws-link{font-size:0.75rem;color:var(--teal);text-decoration:none;margin-top:0.4rem;display:inline-flex;align-items:center;gap:0.3rem;}
+    /* ACHIEVEMENTS */
+    #achievements{background:var(--navy2);}
+    .ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+    .ach-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;transition:all 0.3s;text-decoration:none;color:inherit;display:block;}
+    .ach-card:hover{transform:translateY(-4px);border-color:rgba(240,165,0,0.3);}
+    .ach-icon{font-size:1.8rem;margin-bottom:0.7rem;}
+    .ach-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--white);margin-bottom:0.4rem;}
+    .ach-desc{font-size:0.8rem;color:var(--muted);line-height:1.6;}
+    .ach-link{font-size:0.75rem;color:var(--gold);margin-top:0.6rem;display:inline-flex;align-items:center;gap:0.3rem;}
+    .fade-in{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .fade-in.visible{opacity:1;transform:translateY(0);}
+    footer{background:var(--navy);border-top:1px solid var(--border);padding:2rem 5%;text-align:center;color:var(--muted);font-size:0.82rem;position:relative;z-index:1;}
+    footer a{color:var(--gold);text-decoration:none;}
+    .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--gold);color:var(--navy);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;z-index:99;opacity:0;transform:translateY(10px);transition:all 0.3s;text-decoration:none;}
+    .scroll-top.visible{opacity:1;transform:translateY(0);}
+    @media(max-width:900px){.edu-grid{grid-template-columns:1fr;}.cert-grid{grid-template-columns:1fr;}.ach-grid{grid-template-columns:repeat(2,1fr);}.nav-links{display:none;}.hamburger{display:flex;}}
+    @media(max-width:600px){.ach-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Sandeep<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="experience.html">Experience</a></li>
+    <li><a href="certificates.html" class="active">Education</a></li>
+    <li><a href="papers.html">Publications</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="documents.html" class="nav-cta">📄 Resume</a></li>
+  </ul>
+  <div class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mm">
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="experience.html">Experience</a>
+  <a href="certificates.html">Education</a><a href="papers.html">Publications</a>
+  <a href="contact.html">Contact</a><a href="documents.html">📄 Resume</a>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span>Education & Certifications</div>
+    <h1 class="page-title">Education & <span>Certifications</span></h1>
+    <p class="page-sub">Academic background, professional certifications, workshops attended, and key achievements.</p>
+  </div>
+</div>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-inner">
+    <div class="section-tag">Academic Background</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Educational Qualifications</h2>
+    <div class="edu-grid fade-in">
+      <div class="edu-card">
+        <div class="edu-icon">🎓</div>
+        <div class="edu-degree">M.Tech — Signal Processing</div>
+        <div class="edu-school">SJCIT, Bengaluru | Issued by VTU</div>
+        <div class="edu-year">2016</div>
+        <div class="edu-note">Course completion. Role at PESIT concluded to pursue this full-time.</div>
+        <a href="certificates/Academic/Educational/Certificate.pdf" target="_blank" class="edu-link">📄 View Certificate →</a>
+      </div>
+      <div class="edu-card">
+        <div class="edu-icon">⚡</div>
+        <div class="edu-degree">B.E — Electronics & Communication Engineering</div>
+        <div class="edu-school">SSEC, Bengaluru | Issued by VTU</div>
+        <div class="edu-year">2011</div>
+        <a href="certificates/Academic/Educational/Engineering.pdf" target="_blank" class="edu-link">📄 View Certificate →</a>
+      </div>
+      <div class="edu-card">
+        <div class="edu-icon">📖</div>
+        <div class="edu-degree">Pre-University Course (PUC)</div>
+        <div class="edu-school">PES, Bengaluru | Issued by Karnataka PU Board</div>
+        <div class="edu-year">2003</div>
+        <a href="certificates/Academic/Educational/PRE-UNIVERSITY.pdf" target="_blank" class="edu-link">📄 View Certificate →</a>
+      </div>
+      <div class="edu-card">
+        <div class="edu-icon">🏫</div>
+        <div class="edu-degree">SSLC — Secondary School Leaving Certificate</div>
+        <div class="edu-school">HCC, Bengaluru | Issued by KSEEB</div>
+        <div class="edu-year">2001</div>
+        <a href="certificates/Academic/Educational/SSLC.pdf" target="_blank" class="edu-link">📄 View Certificate →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFESSIONAL CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-inner">
+    <div class="section-tag">Professional Credentials</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Certifications</h2>
+    <div class="cert-grid fade-in">
+      <div class="cert-card featured">
+        <div class="cert-icon">🏅</div>
+        <div>
+          <div class="cert-name">PMP® — Project Management Professional</div>
+          <div class="cert-issuer">Project Management Institute (PMI)</div>
+          <div class="cert-desc">Industry gold-standard certification validating expertise in project lifecycle management, risk, stakeholder, and Agile execution.</div>
+          <div class="cert-badge-tag">⭐ Top Credential</div>
+          <br/><a href="certificates/Academic/Educational/ProfessionalCertification/PMI.pdf" target="_blank" class="cert-link">📄 View Certificate →</a>
+        </div>
+      </div>
+      <div class="cert-card featured">
+        <div class="cert-icon">🎓</div>
+        <div>
+          <div class="cert-name">Product Management Certification</div>
+          <div class="cert-issuer">XLRI — Xavier School of Management</div>
+          <div class="cert-desc">Covers product roadmapping, PRD/MRD, user stories, OKRs, GTM strategy, and customer discovery frameworks.</div>
+          <div class="cert-badge-tag">⭐ Top Credential</div>
+          <br/><a href="certificates/Academic/Educational/ProfessionalCertification/XLRI.pdf" target="_blank" class="cert-link">📄 View Certificate →</a>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🔌</div>
+        <div>
+          <div class="cert-name">Embedded Systems & Peripherals</div>
+          <div class="cert-issuer">Microchip India Pvt. Ltd.</div>
+          <div class="cert-desc">Hands-on certification in embedded systems design, microcontroller peripherals, and firmware development on Microchip platforms.</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">💻</div>
+        <div>
+          <div class="cert-name">Online Certifications — PM & Embedded Systems</div>
+          <div class="cert-issuer">Coursera</div>
+          <div class="cert-desc">Multiple online certifications covering Project Management methodologies and advanced Embedded Systems concepts.</div>
+          <a href="cert123.html" class="cert-link">View All Online Certificates →</a>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🎬</div>
+        <div>
+          <div class="cert-name">MATLAB Basics — Instructor Course</div>
+          <div class="cert-issuer">Udemy</div>
+          <div class="cert-desc">Published and delivered MATLAB basics course; conducted multiple hands-on workshops at engineering colleges across Karnataka.</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🏛️</div>
+        <div>
+          <div class="cert-name">M.Tech Internship Certificate</div>
+          <div class="cert-issuer">Anubhavi Automation | 2015</div>
+          <div class="cert-desc">Industrial internship in automation systems during M.Tech studies.</div>
+          <a href="certificates/Academic/Educational/Anubhavi_Internship.pdf" target="_blank" class="cert-link">📄 View Certificate →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKSHOPS -->
+<section id="workshops">
+  <div class="section-inner">
+    <div class="section-tag">Continuous Learning</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Workshops & Seminars Attended</h2>
+    <div class="workshop-list fade-in">
+      <div class="workshop-item">
+        <div class="ws-num">01</div>
+        <div class="ws-content">
+          <div class="ws-title">Workshop on PIC18 and Peripherals</div>
+          <div class="ws-meta">Technosphere partnered with Microchip — 2012</div>
+          <a href="certificates/Academic/workshops/PIC18_Workshop_Technosphere.pdf" target="_blank" class="ws-link">📄 View Certificate →</a>
+        </div>
+      </div>
+      <div class="workshop-item">
+        <div class="ws-num">02</div>
+        <div class="ws-content">
+          <div class="ws-title">Recent Developments in Signal and Image Processing with Applications</div>
+          <div class="ws-meta">MSRIT, Bengaluru — 2016</div>
+          <a href="certificates/Academic/workshops/Recent_Developments_Signal_Image_Processing.pdf" target="_blank" class="ws-link">📄 View Certificate →</a>
+        </div>
+      </div>
+      <div class="workshop-item">
+        <div class="ws-num">03</div>
+        <div class="ws-content">
+          <div class="ws-title">Video and Image Processing using MATLAB</div>
+          <div class="ws-meta">RRCE, Bengaluru — 2014</div>
+          <a href="certificates/Academic/workshops/Video_Image_Processing_MATLAB.pdf" target="_blank" class="ws-link">📄 View Certificate →</a>
+        </div>
+      </div>
+      <div class="workshop-item">
+        <div class="ws-num">04</div>
+        <div class="ws-content">
+          <div class="ws-title">MATLAB and Simulink for Engineering Education — Seminar</div>
+          <div class="ws-meta">MathWorks — 2013</div>
+          <a href="certificates/Academic/Seminar_Matlab.pdf" target="_blank" class="ws-link">📄 View Certificate →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-inner">
+    <div class="section-tag">Recognition</div>
+    <div class="divider"></div>
+    <h2 class="section-title">Achievements & Awards</h2>
+    <div class="ach-grid fade-in">
+      <a class="ach-card" href="certificates/Achievements/Patent_Certificate.pdf" target="_blank">
+        <div class="ach-icon">📜</div>
+        <div class="ach-title">Design Patent Filed</div>
+        <div class="ach-desc">Automobile Emergency Alerting Autonomous Device — Reg. No. 453281-001 | Mar 2025</div>
+        <div class="ach-link">View Certificate →</div>
+      </a>
+      <a class="ach-card" href="certificates/Achievements/EFY_Achievement.pdf" target="_blank">
+        <div class="ach-icon">🏆</div>
+        <div class="ach-title">EFY Best Design Award</div>
+        <div class="ach-desc">Winner — Best Design, Embedded Design Contest by Electronics For You (EFY)</div>
+        <div class="ach-link">View Certificate →</div>
+      </a>
+      <a class="ach-card" href="certificates/Achievements/Texas Instrument.jpg" target="_blank">
+        <div class="ach-icon">🎓</div>
+        <div class="ach-title">Texas Innovation Challenge Mentor</div>
+        <div class="ach-desc">Mentored students for Texas Instruments Innovation Challenge</div>
+        <div class="ach-link">View Certificate →</div>
+      </a>
+      <a class="ach-card" href="certificates/Achievements/Appreciation.pdf" target="_blank">
+        <div class="ach-icon">🏫</div>
+        <div class="ach-title">IoT Open Course — BMSIT</div>
+        <div class="ach-desc">Hosted 5-day open course on Fundamentals of IoT and Circuit Simulation at BMSIT</div>
+        <div class="ach-link">View Certificate →</div>
+      </a>
+      <div class="ach-card">
+        <div class="ach-icon">🎖️</div>
+        <div class="ach-title">NCC 'B' Certificate</div>
+        <div class="ach-desc">National Cadet Corps 'B' Certificate — leadership, discipline and national service</div>
+      </div>
+      <div class="ach-card">
+        <div class="ach-icon">📑</div>
+        <div class="ach-title">7 Research Publications</div>
+        <div class="ach-desc">5 National Conference Papers & 2 International Journal articles published</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 <a href="index.html">Sandeep Singh R</a> · PMP® Certified Project & Product Manager · Bengaluru, India</p>
+</footer>
+<a href="#" class="scroll-top" id="scrollTop">↑</a>
+<script>
+  window.addEventListener('scroll',()=>{document.getElementById('scrollTop').classList.toggle('visible',scrollY>400);});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
