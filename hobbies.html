@@ -3,13 +3,79 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hobbies & Interests — Sandeep Singh R</title>
+  <title>Hobbies & Personal Life — Sandeep Singh R</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="css/shared.css"/>
-  <link rel="stylesheet" href="css/hobbies.css"/>
+  <style>:root{--navy:#0a0f1e;--navy2:#111827;--card:#151d30;--border:#1e2d45;--gold:#f0a500;--gold2:#ffc73a;--teal:#00c9a7;--text:#e2e8f0;--muted:#8898aa;--white:#ffffff;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;} html{scroll-behavior:smooth;}
+body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 5%;background:rgba(10,15,30,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);transition:padding 0.3s;}
+nav.scrolled{padding:0.7rem 5%;}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;color:var(--white);text-decoration:none;} .nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:1.8rem;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color 0.2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--gold);transition:width 0.3s;}
+.nav-links a:hover{color:var(--white);} .nav-links a:hover::after,.nav-links a.active::after{width:100%;} .nav-links a.active{color:var(--gold);}
+.nav-cta{background:var(--gold)!important;color:var(--navy)!important;padding:0.45rem 1.1rem;border-radius:6px;font-weight:700!important;} .nav-cta::after{display:none!important;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;} .hamburger span{display:block;width:24px;height:2px;background:var(--white);}
+.mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:var(--navy2);border-bottom:1px solid var(--border);padding:1.5rem 5%;z-index:99;flex-direction:column;gap:1.2rem;}
+.mobile-menu a{color:var(--text);text-decoration:none;font-size:1rem;font-weight:500;} .mobile-menu.open{display:flex;}
+.page-hero{padding:7rem 5% 3rem;background:var(--navy2);border-bottom:1px solid var(--border);position:relative;z-index:1;}
+.page-hero-inner{max-width:1200px;margin:0 auto;}
+.breadcrumb{font-size:0.78rem;color:var(--muted);margin-bottom:1rem;} .breadcrumb a{color:var(--gold);text-decoration:none;} .breadcrumb span{margin:0 0.4rem;}
+.page-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--white);letter-spacing:-1px;margin-bottom:0.5rem;} .page-title span{color:var(--gold);}
+.page-sub{color:var(--muted);font-size:1rem;max-width:540px;}
+section{padding:4rem 5%;position:relative;z-index:1;} .section-inner{max-width:1200px;margin:0 auto;}
+.section-tag{font-size:0.75rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:var(--white);letter-spacing:-0.5px;margin-bottom:0.5rem;}
+.section-sub{color:var(--muted);font-size:0.95rem;margin-bottom:2rem;}
+.divider{width:50px;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:2px;margin-bottom:1.5rem;}
+.btn-primary{display:inline-flex;align-items:center;gap:0.5rem;background:var(--gold);color:var(--navy);font-weight:700;font-size:0.95rem;padding:0.85rem 1.8rem;border-radius:8px;text-decoration:none;transition:all 0.25s;}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(240,165,0,0.3);}
+.btn-secondary{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;color:var(--text);font-weight:600;font-size:0.95rem;padding:0.85rem 1.8rem;border-radius:8px;text-decoration:none;border:1px solid var(--border);transition:all 0.25s;}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;} .fade-in.visible{opacity:1;transform:translateY(0);}
+footer{background:var(--navy);border-top:1px solid var(--border);padding:2rem 5%;text-align:center;color:var(--muted);font-size:0.82rem;position:relative;z-index:1;} footer a{color:var(--gold);text-decoration:none;} footer p+p{margin-top:0.4rem;}
+.scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--gold);color:var(--navy);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;z-index:99;opacity:0;transform:translateY(10px);transition:all 0.3s;text-decoration:none;} .scroll-top.visible{opacity:1;transform:translateY(0);}
+@media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}}
+.hob-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;}
+.hob-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.4rem;text-align:center;transition:all 0.3s;position:relative;overflow:hidden;}
+.hob-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));transform:scaleX(0);transition:transform 0.3s;}
+.hob-card:hover{transform:translateY(-5px);border-color:rgba(240,165,0,0.3);} .hob-card:hover::before{transform:scaleX(1);}
+.hob-icon{font-size:2.4rem;margin-bottom:0.8rem;display:block;}
+.hob-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;color:var(--white);margin-bottom:0.4rem;}
+.hob-desc{font-size:0.8rem;color:var(--muted);line-height:1.6;}
+.adv-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
+.adv-text h3{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;color:var(--white);margin-bottom:1rem;}
+.adv-text p{color:var(--muted);font-size:0.95rem;line-height:1.8;margin-bottom:1rem;}
+.adv-list{list-style:none;display:flex;flex-direction:column;gap:0.8rem;}
+.adv-list li{display:flex;align-items:center;gap:0.8rem;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;color:var(--text);transition:border-color 0.25s;}
+.adv-list li:hover{border-color:var(--teal);}
+.li-ico{font-size:1.2rem;flex-shrink:0;}
+.adv-list strong{display:block;font-size:0.9rem;color:var(--white);}
+.adv-list span{font-size:0.78rem;color:var(--muted);}
+.adv-visual{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;text-align:center;}
+.av-icon{font-size:5rem;margin-bottom:1rem;display:block;}
+.av-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:var(--white);margin-bottom:0.5rem;}
+.av-desc{font-size:0.88rem;color:var(--muted);line-height:1.7;}
+.av-tags{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-top:1rem;}
+.av-tag{font-size:0.75rem;padding:0.3rem 0.8rem;background:rgba(240,165,0,0.08);border:1px solid rgba(240,165,0,0.2);color:var(--gold);border-radius:50px;}
+.diy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+.diy-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;transition:all 0.3s;}
+.diy-card:hover{border-color:rgba(0,201,167,0.4);transform:translateY(-3px);}
+.diy-icon{font-size:1.8rem;margin-bottom:0.7rem;}
+.diy-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.92rem;color:var(--white);margin-bottom:0.4rem;}
+.diy-desc{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+.ncc-block{background:var(--card);border:1px solid rgba(240,165,0,0.2);border-radius:16px;padding:2rem;display:flex;gap:2rem;align-items:center;}
+.ncc-icon{font-size:4rem;flex-shrink:0;}
+.ncc-text h3{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--white);margin-bottom:0.5rem;}
+.ncc-text p{color:var(--muted);font-size:0.9rem;line-height:1.7;}
+.ncc-badge{display:inline-block;margin-top:0.8rem;font-size:0.75rem;padding:0.3rem 0.8rem;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.25);color:var(--gold);border-radius:4px;font-weight:700;}
+@media(max-width:900px){.hob-grid{grid-template-columns:repeat(2,1fr);}.adv-grid{grid-template-columns:1fr;}.diy-grid{grid-template-columns:repeat(2,1fr);}.ncc-block{flex-direction:column;text-align:center;}}
+@media(max-width:600px){.diy-grid{grid-template-columns:1fr;}}</style>
 </head>
 <body>
-
 <nav id="navbar">
   <a href="index.html" class="nav-logo">Sandeep<span>.</span></a>
   <ul class="nav-links">
@@ -18,213 +84,96 @@
     <li><a href="experience.html">Experience</a></li>
     <li><a href="certificates.html">Education</a></li>
     <li><a href="papers.html">Publications</a></li>
+    <li><a href="blogs.html">Blogs</a></li>
     <li><a href="contact.html">Contact</a></li>
     <li><a href="documents.html" class="nav-cta">📄 Resume</a></li>
   </ul>
-  <div class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')">
-    <span></span><span></span><span></span>
-  </div>
+  <div class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></div>
 </nav>
 <div class="mobile-menu" id="mm">
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
-  <a href="experience.html">Experience</a>
-  <a href="certificates.html">Education</a>
-  <a href="papers.html">Publications</a>
-  <a href="contact.html">Contact</a>
-  <a href="documents.html">📄 Resume</a>
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="experience.html">Experience</a>
+  <a href="certificates.html">Education</a><a href="papers.html">Publications</a>
+  <a href="blogs.html">Blogs</a><a href="contact.html">Contact</a><a href="documents.html">📄 Resume</a>
 </div>
+<div class="page-hero"><div class="page-hero-inner">
+  <div class="breadcrumb"><a href="index.html">Home</a><span>›</span>Hobbies</div>
+  <h1 class="page-title">Hobbies &amp; <span>Personal Life</span></h1>
+  <p class="page-sub">Beyond project deadlines and firmware — the adventures and passions that keep me energised.</p>
+</div></div>
 
-<!-- PAGE HERO -->
-<div class="page-hero">
-  <div class="page-hero-inner">
-    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span>Hobbies</div>
-    <h1 class="page-title">Hobbies & <span>Personal Life</span></h1>
-    <p class="page-sub">Beyond project deadlines and firmware — the adventures, passions, and pursuits that keep me energised.</p>
+<section style="background:var(--navy)"><div class="section-inner">
+  <div class="section-tag">At a Glance</div><div class="divider"></div>
+  <h2 class="section-title">What I Love Doing</h2>
+  <div class="hob-grid fade-in">
+    <div class="hob-card"><span class="hob-icon">🧗</span><div class="hob-title">Rock Climbing</div><div class="hob-desc">Natural rock faces and indoor climbing walls — strength, strategy, and focus.</div></div>
+    <div class="hob-card"><span class="hob-icon">🪂</span><div class="hob-title">Rappelling</div><div class="hob-desc">Descending cliffs and waterfalls on rope — adrenaline with technical precision.</div></div>
+    <div class="hob-card"><span class="hob-icon">🥾</span><div class="hob-title">Trekking</div><div class="hob-desc">Exploring trails across Karnataka and the Western Ghats.</div></div>
+    <div class="hob-card"><span class="hob-icon">🔧</span><div class="hob-title">DIY Electronics</div><div class="hob-desc">Building ESP32 IoT projects and salvaged hardware experiments.</div></div>
+    <div class="hob-card"><span class="hob-icon">📸</span><div class="hob-title">Photography</div><div class="hob-desc">Landscapes, tech setups, and trekking trail moments.</div></div>
+    <div class="hob-card"><span class="hob-icon">✈️</span><div class="hob-title">Travelling</div><div class="hob-desc">Exploring new cities, engineering marvels, and cultural landscapes.</div></div>
+    <div class="hob-card"><span class="hob-icon">🏛️</span><div class="hob-title">Expos &amp; Exhibitions</div><div class="hob-desc">Electronics expos, tech summits, and maker fairs.</div></div>
+    <div class="hob-card"><span class="hob-icon">📖</span><div class="hob-title">Reading Journals</div><div class="hob-desc">IEEE publications, embedded systems journals, and PM content.</div></div>
   </div>
-</div>
+</div></section>
 
-<!-- HIGHLIGHTS -->
-<section class="bg-navy">
-  <div class="section-inner">
-    <div class="section-tag">At a Glance</div>
-    <div class="divider"></div>
-    <h2 class="section-title">What I Love Doing</h2>
-    <div class="hobbies-hero-grid fade-in">
-      <div class="hobby-highlight">
-        <span class="hh-icon">🧗</span>
-        <div class="hh-title">Rock Climbing</div>
-        <div class="hh-desc">Tackling natural rock faces and indoor climbing walls — the ultimate test of strength, strategy, and focus.</div>
-      </div>
-      <div class="hobby-highlight">
-        <span class="hh-icon">🪂</span>
-        <div class="hh-title">Rappelling</div>
-        <div class="hh-desc">Descending cliffs and waterfalls on rope — pure adrenaline combined with technical precision.</div>
-      </div>
-      <div class="hobby-highlight">
-        <span class="hh-icon">🥾</span>
-        <div class="hh-title">Trekking</div>
-        <div class="hh-desc">Exploring trails across Karnataka and the Western Ghats — connecting with nature and pushing physical limits.</div>
-      </div>
-      <div class="hobby-highlight">
-        <span class="hh-icon">🔧</span>
-        <div class="hh-title">DIY Electronics</div>
-        <div class="hh-desc">Building ESP32-based projects, IoT prototypes, and salvaged hardware experiments at home.</div>
-      </div>
-      <div class="hobby-highlight">
-        <span class="hh-icon">📸</span>
-        <div class="hh-title">Photography</div>
-        <div class="hh-desc">Capturing landscapes, tech setups, and trekking trails — finding the perfect frame in every moment.</div>
-      </div>
-      <div class="hobby-highlight">
-        <span class="hh-icon">✈️</span>
-        <div class="hh-title">Travelling</div>
-        <div class="hh-desc">Exploring new cities, engineering marvels, and cultural landscapes across India and beyond.</div>
-      </div>
-      <div class="hobby-highlight">
-        <span class="hh-icon">🏛️</span>
-        <div class="hh-title">Expos & Exhibitions</div>
-        <div class="hh-desc">Attending electronics expos, tech summits, and maker fairs to stay ahead of industry trends.</div>
-      </div>
-      <div class="hobby-highlight">
-        <span class="hh-icon">📖</span>
-        <div class="hh-title">Reading Journals</div>
-        <div class="hh-desc">Following IEEE publications, embedded systems journals, and PM thought leadership content.</div>
-      </div>
+<section style="background:var(--navy2)"><div class="section-inner">
+  <div class="section-tag">Adventure Sports</div><div class="divider"></div>
+  <h2 class="section-title">Life on the Edge</h2>
+  <div class="adv-grid fade-in">
+    <div class="adv-text">
+      <h3>Where the Real Challenges Begin</h3>
+      <p>My passion for adventure sports mirrors how I approach engineering and project management — careful planning, calculated risk, and staying calm under pressure.</p>
+      <p>Whether navigating a complex firmware integration or a steep granite face, the principles are the same: assess the risk, plan your route, execute with precision, and adapt when things go wrong.</p>
+      <ul class="adv-list">
+        <li><span class="li-ico">🧗</span><div><strong>Rock Climbing</strong><span>Natural rock faces &amp; indoor walls across Karnataka</span></div></li>
+        <li><span class="li-ico">🪂</span><div><strong>Rappelling</strong><span>Waterfall and cliff descents</span></div></li>
+        <li><span class="li-ico">🥾</span><div><strong>Trekking</strong><span>Western Ghats trails and Karnataka hill stations</span></div></li>
+        <li><span class="li-ico">🎖️</span><div><strong>NCC 'B' Certificate</strong><span>National Cadet Corps — discipline &amp; leadership</span></div></li>
+      </ul>
+    </div>
+    <div class="adv-visual">
+      <span class="av-icon">🏔️</span>
+      <div class="av-title">Adventure Mindset</div>
+      <div class="av-desc">The same mental framework I use on a vertical rock face is what makes me effective as a PM in safety-critical environments.</div>
+      <div class="av-tags"><span class="av-tag">Risk Assessment</span><span class="av-tag">Strategic Planning</span><span class="av-tag">Calm Under Pressure</span><span class="av-tag">Adaptability</span></div>
     </div>
   </div>
-</section>
+</div></section>
 
-<!-- ADVENTURE SPORTS -->
-<section class="bg-navy2">
-  <div class="section-inner">
-    <div class="section-tag">Adventure Sports</div>
-    <div class="divider"></div>
-    <h2 class="section-title">Life on the Edge</h2>
-    <div class="adventure-grid fade-in">
-      <div class="adventure-text">
-        <h3>Where the Real Challenges Begin</h3>
-        <p>My passion for adventure sports mirrors how I approach engineering and project management — with careful planning, calculated risk assessment, and the ability to stay calm under pressure. Rock climbing, rappelling, and trekking aren't just hobbies; they're a mindset.</p>
-        <p>Whether I'm navigating a complex firmware integration or a steep granite face, the principles are the same: assess the risk, plan your route, execute with precision, and adapt when things don't go as expected.</p>
-        <ul class="adventure-list">
-          <li>
-            <span class="li-icon">🧗</span>
-            <div>
-              <strong>Rock Climbing</strong>
-              <span>Natural rock faces & indoor walls across Karnataka</span>
-            </div>
-          </li>
-          <li>
-            <span class="li-icon">🪂</span>
-            <div>
-              <strong>Rappelling</strong>
-              <span>Waterfall rappelling and cliff descents</span>
-            </div>
-          </li>
-          <li>
-            <span class="li-icon">🥾</span>
-            <div>
-              <strong>Trekking</strong>
-              <span>Western Ghats trails and Karnataka hill stations</span>
-            </div>
-          </li>
-          <li>
-            <span class="li-icon">🎖️</span>
-            <div>
-              <strong>NCC 'B' Certificate</strong>
-              <span>National Cadet Corps — discipline & leadership foundation</span>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class="adventure-visual">
-        <span class="av-big-icon">🏔️</span>
-        <div class="av-title">Adventure Mindset</div>
-        <div class="av-desc">The same mental framework I use on a vertical rock face — risk assessment, methodical execution, calm under pressure — is what makes me effective as a project manager in safety-critical environments.</div>
-        <div class="av-tags">
-          <span class="av-tag">Risk Assessment</span>
-          <span class="av-tag">Strategic Planning</span>
-          <span class="av-tag">Team Leadership</span>
-          <span class="av-tag">Adaptability</span>
-          <span class="av-tag">Calm Under Pressure</span>
-        </div>
-      </div>
+<section style="background:var(--navy)"><div class="section-inner">
+  <div class="section-tag">DIY &amp; Tech</div><div class="divider"></div>
+  <h2 class="section-title">The Maker Side of Me</h2>
+  <div class="diy-grid fade-in">
+    <div class="diy-card"><div class="diy-icon">📡</div><div class="diy-title">ESP32-Based IoT Systems</div><div class="diy-desc">Custom smart home devices, sensor networks, and connected automation systems — including UPI QR payment integration.</div></div>
+    <div class="diy-card"><div class="diy-icon">🖥️</div><div class="diy-title">Salvaged Hardware Hacks</div><div class="diy-desc">Interfacing Redmi Note 4 display and camera modules (MIPI DSI/CSI) with ESP32, Arduino, and Raspberry Pi.</div></div>
+    <div class="diy-card"><div class="diy-icon">🏠</div><div class="diy-title">DIY Home Projects</div><div class="diy-desc">Custom PCBs for smart switches to decorative white cement fountains with embedded LED systems.</div></div>
+    <div class="diy-card"><div class="diy-icon">🤖</div><div class="diy-title">Robotics &amp; Automation</div><div class="diy-desc">Robot prototypes, servo-controlled mechanisms, and automation sequences.</div></div>
+    <div class="diy-card"><div class="diy-icon">📊</div><div class="diy-title">MATLAB Scripting</div><div class="diy-desc">Signal analysis, data visualisation, and GUI dashboards for engineering simulations.</div></div>
+    <div class="diy-card"><div class="diy-icon">💻</div><div class="diy-title">Coding &amp; Programming</div><div class="diy-desc">Python scripting, Arduino sketches, and web development — including this portfolio!</div></div>
+  </div>
+</div></section>
+
+<section style="background:var(--navy2)"><div class="section-inner fade-in">
+  <div class="ncc-block">
+    <div class="ncc-icon">🎖️</div>
+    <div class="ncc-text">
+      <h3>NCC 'B' Certificate Holder</h3>
+      <p>NCC training was formative — instilling discipline, team leadership, physical resilience, and national commitment. The structured training directly shaped my ability to lead teams and maintain composure under pressure.</p>
+      <span class="ncc-badge">🏅 NCC 'B' Certificate — National Cadet Corps of India</span>
     </div>
   </div>
-</section>
-
-<!-- DIY / TECH -->
-<section class="bg-navy">
-  <div class="section-inner">
-    <div class="section-tag">DIY & Tech Projects</div>
-    <div class="divider"></div>
-    <h2 class="section-title">The Maker Side of Me</h2>
-    <p class="section-sub">When I'm not managing projects professionally, I'm building them personally.</p>
-    <div class="diy-grid fade-in">
-      <div class="diy-card">
-        <div class="diy-icon">📡</div>
-        <div class="diy-title">ESP32-Based IoT Systems</div>
-        <div class="diy-desc">Building custom ESP32 smart home devices, sensor networks, and connected automation systems from scratch — including UPI QR payment integration.</div>
-      </div>
-      <div class="diy-card">
-        <div class="diy-icon">🖥️</div>
-        <div class="diy-title">Salvaged Hardware Hacks</div>
-        <div class="diy-desc">Interfacing salvaged Redmi Note 4 display and camera modules (MIPI DSI/CSI) with ESP32, Arduino, and Raspberry Pi Zero 2W — the ultimate hardware challenge.</div>
-      </div>
-      <div class="diy-card">
-        <div class="diy-icon">🏠</div>
-        <div class="diy-title">DIY Home Projects</div>
-        <div class="diy-desc">Electronics for the home — from custom PCBs for smart switches to decorative electronics like white cement fountains with embedded LED systems.</div>
-      </div>
-      <div class="diy-card">
-        <div class="diy-icon">🤖</div>
-        <div class="diy-title">Robotics & Automation</div>
-        <div class="diy-desc">Experimenting with robot prototypes, servo-controlled mechanisms, and automation sequences — a natural extension of my embedded engineering background.</div>
-      </div>
-      <div class="diy-card">
-        <div class="diy-icon">📊</div>
-        <div class="diy-title">MATLAB Scripting</div>
-        <div class="diy-desc">Developing personal MATLAB scripts and GUI dashboards for signal analysis, data visualization, and engineering simulations as a freelance and personal pursuit.</div>
-      </div>
-      <div class="diy-card">
-        <div class="diy-icon">💻</div>
-        <div class="diy-title">Coding & Programming</div>
-        <div class="diy-desc">Python scripting, Arduino sketches, and web development projects. Building tools that solve real everyday problems — including this very portfolio!</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- NCC -->
-<section class="bg-navy2">
-  <div class="section-inner fade-in">
-    <div class="section-tag">Service & Discipline</div>
-    <div class="divider"></div>
-    <h2 class="section-title">National Cadet Corps</h2>
-    <div class="ncc-block">
-      <div class="ncc-icon">🎖️</div>
-      <div class="ncc-text">
-        <h3>NCC 'B' Certificate Holder</h3>
-        <p>My NCC training was formative — instilling discipline, team leadership, physical resilience, and a strong sense of national commitment. The structured training, drill routines, and leadership exercises during NCC directly shaped my ability to lead teams, maintain composure under pressure, and execute plans with precision. These qualities translate directly into my work as a project manager leading cross-functional engineering teams.</p>
-        <div class="ncc-badge">🏅 NCC 'B' Certificate — National Cadet Corps of India</div>
-      </div>
-    </div>
-  </div>
-</section>
-
+</div></section>
 <footer>
-  <p>© 2025 <a href="index.html">Sandeep Singh R</a> · PMP® Certified Project & Product Manager · Bengaluru, India</p>
+  <p>© 2025 <a href="index.html">Sandeep Singh R</a> · PMP® · Bengaluru, India</p>
 </footer>
-<a href="#" class="scroll-top" id="scrollTop">↑</a>
+<a href="#" class="scroll-top" id="st">↑</a>
 <script>
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', scrollY > 50);
-    document.getElementById('scrollTop').classList.toggle('visible', scrollY > 400);
+  window.addEventListener('scroll',()=>{
+    document.getElementById('navbar').classList.toggle('scrolled',scrollY>50);
+    document.getElementById('st').classList.toggle('visible',scrollY>400);
   });
-  const obs = new IntersectionObserver(e => e.forEach(x => {
-    if (x.isIntersecting) { x.target.classList.add('visible'); obs.unobserve(x.target); }
-  }), { threshold: 0.1 });
-  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.1});
+  document.querySelectorAll('.fade-in,.lt-item').forEach(el=>obs.observe(el));
 </script>
 </body>
 </html>

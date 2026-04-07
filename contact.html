@@ -129,9 +129,9 @@
         <h2 class="ci-title">Let's Talk</h2>
         <p class="ci-desc">Whether you're a recruiter with a role, a fellow engineer, or someone interested in collaborating — I'd love to hear from you. Fill the form or reach me directly through any channel below.</p>
         <div class="contact-info">
-          <a href="mailto:sandeepec035@gmail.com" class="ci-item">
+          <a href="/cdn-cgi/l/email-protection#0576646b616060756066353630456268646c692b666a68" class="ci-item">
             <span class="ci-icon">📧</span>
-            <div><div class="ci-label">Email</div><div class="ci-value">sandeepec035@gmail.com</div></div>
+            <div><div class="ci-label">Email</div><div class="ci-value"><span class="__cf_email__" data-cfemail="ccbfada2a8a9a9bca9affcfff98caba1ada5a0e2afa3a1">[email&#160;protected]</span></div></div>
           </a>
           <a href="tel:+917406050506" class="ci-item">
             <span class="ci-icon">📱</span>
@@ -170,7 +170,7 @@
       <div class="form-card">
         <div class="form-title">Send a Message</div>
         <div class="form-sub">I typically respond within 24 hours.</div>
-        <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <form id="contactForm" action="https://formspree.io/f/mqapaewv" method="POST">
           <div class="form-row">
             <div class="form-group">
               <label>Your Name *</label>
@@ -203,7 +203,7 @@
           </div>
           <button type="submit" class="btn-submit" id="submitBtn">✉️ Send Message</button>
           <div class="success-msg" id="successMsg">✅ Message sent successfully! I'll get back to you within 24 hours.</div>
-          <p class="form-note">⚡ To activate this form: <a href="https://formspree.io" target="_blank">create a free Formspree account</a> and replace <code>YOUR_FORM_ID</code> in the form action URL.</p>
+          <p class="form-note">📧 Submissions go directly to <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1764767973727267727427242257707a767e7b3974787a">[email&#160;protected]</a></p>
         </form>
       </div>
     </div>
@@ -217,10 +217,10 @@
     <h2 style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;color:var(--white);margin-bottom:0.5rem;">Quick Connect</h2>
     <p style="color:var(--muted);font-size:0.9rem;margin-bottom:2rem;">Find me across platforms</p>
     <div class="quick-grid fade-in">
-      <a href="mailto:sandeepec035@gmail.com" class="quick-card">
+      <a href="/cdn-cgi/l/email-protection#d2a1b3bcb6b7b7a2b7b1e2e1e792b5bfb3bbbefcb1bdbf" class="quick-card">
         <div class="quick-icon">📧</div>
         <div class="quick-title">Email</div>
-        <div class="quick-handle">sandeepec035@gmail.com</div>
+        <div class="quick-handle"><span class="__cf_email__" data-cfemail="e596848b818080958086d5d6d0a58288848c89cb868a88">[email&#160;protected]</span></div>
       </a>
       <a href="https://www.linkedin.com/in/sandeep-singh7406050506" target="_blank" class="quick-card">
         <div class="quick-icon">💼</div>
@@ -250,20 +250,33 @@
   window.addEventListener('scroll',()=>{document.getElementById('scrollTop').classList.toggle('visible',scrollY>400);});
   const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.1});
   document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
-  // Form submit feedback
-  const form=document.getElementById('contactForm');
-  if(form){
-    form.addEventListener('submit',function(e){
-      const btn=document.getElementById('submitBtn');
-      btn.textContent='Sending...';
-      btn.disabled=true;
-      setTimeout(()=>{
-        document.getElementById('successMsg').style.display='block';
-        btn.textContent='✉️ Send Message';
-        btn.disabled=false;
-      },1500);
-    });
-  }
+
+  const form = document.getElementById('contactForm');
+  const btn  = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    btn.textContent = '⏳ Sending...';
+    btn.disabled = true;
+
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        form.innerHTML = '<div style="text-align:center;padding:2rem 0;"><div style="font-size:2.5rem;margin-bottom:1rem;">✅</div><div style="font-family:Syne,sans-serif;font-weight:700;font-size:1.1rem;color:#ffffff;margin-bottom:0.5rem;">Message Sent!</div><p style="color:#8898aa;font-size:0.88rem;">Thanks for reaching out. I\'ll reply to you at <strong style="color:#e2e8f0;">' + document.querySelector('[name=email]').value + '</strong> within 24 hours.</p></div>';
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (err) {
+      btn.textContent = '✉️ Send Message';
+      btn.disabled = false;
+      alert('Something went wrong. Please email me directly at sandeepec035@gmail.com');
+    }
+  });
 </script>
-</body>
-</html>
