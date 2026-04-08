@@ -116,7 +116,7 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:2rem 5%
       <div class="mini-badges">
         <div class="mini-badge">📍 Bengaluru, Karnataka</div>
         <div class="mini-badge">📱 +91 7406050506</div>
-        <div class="mini-badge">📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6211030c06070712070152515722050f030b0e4c010d0f">[email&#160;protected]</a></div>
+        <div class="mini-badge">📧 sandeepec035@gmail.com</div>
         <div class="mini-badge">🏭 10+ Years Experience</div>
       </div>
     </div>
@@ -163,9 +163,13 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:2rem 5%
   <p>© 2025 <a href="index.html">Sandeep Singh R</a> · PMP® · Bengaluru, India</p>
 </footer>
 <a href="#" class="scroll-top" id="st">↑</a>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   window.addEventListener('scroll',()=>{
     document.getElementById('navbar').classList.toggle('scrolled',scrollY>50);
     document.getElementById('st').classList.toggle('visible',scrollY>400);
   });
-  const obs=new Intersecti
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.1});
+  document.querySelectorAll('.fade-in,.lt-item').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
