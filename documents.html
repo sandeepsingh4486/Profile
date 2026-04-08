@@ -88,25 +88,29 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:2rem 5%
 .ql-card:hover{border-color:var(--gold);transform:translateY(-3px);}
 .ql-icon{font-size:1.6rem;margin-bottom:0.5rem;}.ql-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;color:var(--white);}
 
-.popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);justify-content:center;align-items:center;z-index:1000;backdrop-filter:blur(4px);}
+.popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);justify-content:center;align-items:center;z-index:1000;backdrop-filter:blur(4px);overflow-y:auto;}
 .popup.active{display:flex;}
-.popup-content{background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:16px;width:90%;max-width:500px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.5);}
-.popup-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer;}
+.popup-content{background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:16px;width:90%;max-width:700px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.5);margin:auto;}
+.popup-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer;z-index:1001;}
 .popup-close:hover{color:var(--gold);}
 .popup h3{font-family:'Syne',sans-serif;color:var(--white);margin-bottom:1.5rem;font-size:1.3rem;}
-.popup-input{width:100%;padding:0.8rem;margin:0.8rem 0;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;}
+.popup-input{width:100%;padding:0.8rem;margin:0.8rem 0;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;box-sizing:border-box;}
 .popup-input::placeholder{color:var(--muted);}
 .popup-input:focus{outline:none;border-color:var(--gold);background:rgba(255,255,255,0.08);}
 .popup-button{width:100%;padding:0.8rem;margin-top:1rem;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-weight:700;cursor:pointer;transition:all 0.3s;}
 .popup-button:hover{background:var(--gold2);}
 
-iframe{width:100%;height:500px;border:none;border-radius:8px;margin-top:1rem;}
+.pdf-viewer{width:100%;height:600px;border:1px solid var(--border);border-radius:8px;margin-top:1rem;background:rgba(0,0,0,0.2);}
+.pdf-toolbar{display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;}
+.pdf-toolbar button{background:var(--gold);color:var(--navy);border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer;font-weight:600;transition:all 0.3s;}
+.pdf-toolbar button:hover{background:var(--gold2);}
+.success-message{background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.3);color:var(--teal);padding:1rem;border-radius:8px;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}
 
 @media(max-width:1000px){
   .hero-grid{grid-template-columns:1fr;}.dl-grid{grid-template-columns:repeat(2,1fr);}.ql-grid{grid-template-columns:repeat(2,1fr);}
 }
 @media(max-width:600px){
-  .dl-grid{grid-template-columns:1fr;}.ql-grid{grid-template-columns:repeat(2,1fr);}
+  .dl-grid{grid-template-columns:1fr;}.ql-grid{grid-template-columns:repeat(2,1fr);}.pdf-viewer{height:400px;}.popup-content{width:95%;padding:1.5rem;}
 }
   </style>
 </head>
@@ -122,7 +126,7 @@ iframe{width:100%;height:500px;border:none;border-radius:8px;margin-top:1rem;}
     <li><a href="papers.html">Publications</a></li>
     <li><a href="blogs.html">Blogs</a></li>
     <li><a href="contact.html">Contact</a></li>
-    <li><a href="documents.html" class="nav-cta">📄 Resume</a></li>
+    <li><a href="Documents.html" class="nav-cta">📄 Resume</a></li>
   </ul>
   <div class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></div>
 </nav>
@@ -130,7 +134,7 @@ iframe{width:100%;height:500px;border:none;border-radius:8px;margin-top:1rem;}
 <div class="mobile-menu" id="mm">
   <a href="index.html">Home</a><a href="about.html">About</a><a href="experience.html">Experience</a>
   <a href="certificates.html">Education</a><a href="papers.html">Publications</a>
-  <a href="blogs.html">Blogs</a><a href="contact.html">Contact</a><a href="documents.html">📄 Resume</a>
+  <a href="blogs.html">Blogs</a><a href="contact.html">Contact</a><a href="Documents.html">📄 Resume</a>
 </div>
 
 <div class="page-hero">
@@ -175,7 +179,7 @@ iframe{width:100%;height:500px;border:none;border-radius:8px;margin-top:1rem;}
     <div class="section-tag">Documents</div>
     <div class="divider"></div>
     <h2 class="section-title">Available Downloads</h2>
-    <p class="section-sub">Professional documents for recruiters and connections.</p>
+    <p class="section-sub">Professional Documents for recruiters and connections.</p>
     <div class="dl-grid fade-in">
       <a href="certificates/Sandeep_Singh_Resume_PM.pdf" download class="dl-card">
         <div class="dl-icon">📄</div>
@@ -189,25 +193,25 @@ iframe{width:100%;height:500px;border:none;border-radius:8px;margin-top:1rem;}
         <div class="dl-desc">Recommendations, endorsements, and full career timeline.</div>
         <button class="dl-btn">🔗 View</button>
       </a>
-      <div class="dl-card" onclick="requestAccess('Design-Patent', 'view')">
+      <div class="dl-card" onclick="requestAccess('Design-Patent-453281', 'certificates/Design_Patent_453281.pdf')">
         <div class="dl-icon">📜</div>
         <div class="dl-title">Design Patent Certificate</div>
         <div class="dl-desc">Automobile Emergency Alerting Device — Reg. No. 453281-001.</div>
         <button class="dl-btn">🔐 Access</button>
       </div>
-      <div class="dl-card" onclick="requestAccess('PMP-Certificate', 'view')">
+      <div class="dl-card" onclick="requestAccess('PMP-Certificate', 'certificates/PMP_Certificate.pdf')">
         <div class="dl-icon">🏅</div>
         <div class="dl-title">PMP® Certificate</div>
         <div class="dl-desc">Project Management Professional certification — global standard.</div>
         <button class="dl-btn">🔐 Access</button>
       </div>
-      <div class="dl-card" onclick="requestAccess('XLRI-Certificate', 'view')">
+      <div class="dl-card" onclick="requestAccess('XLRI-Certificate', 'certificates/XLRI_PM_Certificate.pdf')">
         <div class="dl-icon">🎓</div>
         <div class="dl-title">XLRI PM Certificate</div>
         <div class="dl-desc">Product Management Certification from XLRI Xavier School.</div>
         <button class="dl-btn">🔐 Access</button>
       </div>
-      <div class="dl-card" onclick="requestAccess('EFY-Award', 'view')">
+      <div class="dl-card" onclick="requestAccess('EFY-Award', 'certificates/EFY_Best_Design_Award.pdf')">
         <div class="dl-icon">🏆</div>
         <div class="dl-title">EFY Best Design Award</div>
         <div class="dl-desc">Winner of Best Design in EFY Embedded Design Contest.</div>
@@ -219,7 +223,7 @@ iframe{width:100%;height:500px;border:none;border-radius:8px;margin-top:1rem;}
         <div class="dl-desc">7 published papers — 5 National + 2 International journals.</div>
         <button class="dl-btn">📖 View</button>
       </a>
-      <div class="dl-card" onclick="requestAccess('All-Certifications', 'view')">
+      <div class="dl-card" onclick="requestAccess('All-Certifications', 'certificates/All_Certifications.pdf')">
         <div class="dl-icon">🎓</div>
         <div class="dl-title">All Certifications</div>
         <div class="dl-desc">Atlassian, Coursera, Microchip, and Udemy certificates.</div>
@@ -243,25 +247,25 @@ iframe{width:100%;height:500px;border:none;border-radius:8px;margin-top:1rem;}
     <h2 class="section-title">Personal ID Documents</h2>
     <p class="section-sub">Password-protected for security. Request access below.</p>
     <div class="dl-grid fade-in">
-      <div class="dl-card" onclick="requestAccess('PAN-Card', 'view')">
+      <div class="dl-card" onclick="requestAccess('PAN-Card', 'Documents/PAN_Card.pdf')">
         <div class="dl-icon">🆔</div>
         <div class="dl-title">PAN Card</div>
         <div class="dl-desc">Issued by Income Tax Department, Government of India.</div>
         <button class="dl-btn">🔒 Request</button>
       </div>
-      <div class="dl-card" onclick="requestAccess('Aadhaar-Card', 'view')">
+      <div class="dl-card" onclick="requestAccess('Aadhaar-Card', 'Documents/Aadhaar_Card.pdf')">
         <div class="dl-icon">📋</div>
         <div class="dl-title">Aadhaar Card</div>
         <div class="dl-desc">Issued by UIDAI, Government of India.</div>
         <button class="dl-btn">🔒 Request</button>
       </div>
-      <div class="dl-card" onclick="requestAccess('Passport', 'view')">
+      <div class="dl-card" onclick="requestAccess('Passport', 'Documents/Passport.pdf')">
         <div class="dl-icon">✈️</div>
         <div class="dl-title">Passport</div>
         <div class="dl-desc">Issued by Ministry of External Affairs, Government of India.</div>
         <button class="dl-btn">🔒 Request</button>
       </div>
-      <div class="dl-card" onclick="requestAccess('EPFO-Details', 'view')">
+      <div class="dl-card" onclick="requestAccess('EPFO-Details', 'Documents/EPFO_Details.pdf')">
         <div class="dl-icon">💼</div>
         <div class="dl-title">EPFO Details</div>
         <div class="dl-desc">Issued by EPFO, Ministry of Labour &amp; Employment.</div>
@@ -278,7 +282,7 @@ iframe{width:100%;height:500px;border:none;border-radius:8px;margin-top:1rem;}
       <div class="sn-icon">🔒</div>
       <div>
         <div class="sn-title">Privacy Notice — Personal ID Documents</div>
-        <div class="sn-text">PAN, Aadhaar, Passport, and EPFO details are password-protected. A unique password will be sent to your email after verification. These documents are only for formal onboarding processes. <a href="contact.html" style="color:var(--teal)">Contact me</a> for any special requests.</div>
+        <div class="sn-text">PAN, Aadhaar, Passport, and EPFO details are password-protected. A unique password will be sent to your email after verification. These Documents are only for formal onboarding processes. <a href="contact.html" style="color:var(--teal)">Contact me</a> for any special requests.</div>
       </div>
     </div>
   </div>
@@ -313,34 +317,68 @@ iframe{width:100%;height:500px;border:none;border-radius:8px;margin-top:1rem;}
       <input type="text" class="popup-input" id="fullName" placeholder="Full Name" required>
       <input type="email" class="popup-input" id="emailInput" placeholder="Email Address" required>
       <input type="hidden" id="documentType">
+      <input type="hidden" id="documentPath">
       <button type="submit" class="popup-button">Send Access Request</button>
     </form>
   </div>
 </div>
 
-<!-- Password Verification Popup -->
+<!-- Password Verification & Preview Popup -->
 <div class="popup" id="passwordPopup">
   <div class="popup-content">
     <button class="popup-close" onclick="closePopup()">✕</button>
-    <h3>Enter Password</h3>
-    <p style="color:var(--muted);margin-bottom:1rem;font-size:0.9rem;">A password has been sent to your email address.</p>
-    <div id="passwordContent">
+    
+    <!-- Password Verification Section -->
+    <div id="passwordSection">
+      <h3>Enter Password</h3>
+      <p style="color:var(--muted);margin-bottom:1rem;font-size:0.9rem;">A password has been sent to your email address.</p>
       <input type="password" class="popup-input" id="passwordInput" placeholder="Enter your password">
       <button class="popup-button" onclick="verifyPassword()">Verify & Access</button>
     </div>
-    <div id="previewContent" style="display:none;"></div>
+
+    <!-- Preview Section (shown after verification) -->
+    <div id="previewSection" style="display:none;">
+      <div class="success-message">
+        ✓ Access Granted!
+      </div>
+      <h3 style="margin-top:0;">Document Preview</h3>
+      <div class="pdf-toolbar">
+        <button onclick="downloadDocument()">⬇️ Download</button>
+        <button onclick="openNewTab()">🔗 Open in New Tab</button>
+        <button onclick="closePopup()">Close</button>
+      </div>
+      <object id="pdfViewer" class="pdf-viewer" data="" type="application/pdf">
+        <p style="color:var(--muted);padding:2rem;text-align:center;">PDF preview not available in this browser. <button class="pdf-toolbar" onclick="downloadDocument()" style="padding:0.5rem 1rem;">Download instead</button></p>
+      </object>
+    </div>
   </div>
 </div>
 
 <script>
-const FORMSPREE_ID = "mqapaewv"; // Replace with your Formspree ID
+const FORMSPREE_ID = "mqapaewv"; // REPLACE WITH YOUR FORMSPREE ID
 let currentFile = "";
+let currentFilePath = "";
 let passwordMap = {};
 const usedNumbers = new Set();
 
-function requestAccess(docType, action) {
+// File paths mapping - UPDATE THESE WITH YOUR ACTUAL FILE PATHS
+const filePaths = {
+  'PAN-Card': 'Documents/PAN_Card.pdf',
+  'Aadhaar-Card': 'Documents/Aadhaar_Card.pdf',
+  'Passport': 'Documents/Passport.pdf',
+  'EPFO-Details': 'Documents/EPFO_Details.pdf',
+  'Design-Patent-453281': 'certificates/Design_Patent_453281.pdf',
+  'PMP-Certificate': 'certificates/PMP_Certificate.pdf',
+  'XLRI-Certificate': 'certificates/XLRI_PM_Certificate.pdf',
+  'EFY-Award': 'certificates/EFY_Best_Design_Award.pdf',
+  'All-Certifications': 'certificates/All_Certifications.pdf'
+};
+
+function requestAccess(docType, docPath) {
   currentFile = docType;
+  currentFilePath = docPath;
   document.getElementById('documentType').value = docType;
+  document.getElementById('documentPath').value = docPath;
   document.getElementById('accessPopup').classList.add('active');
 }
 
@@ -349,8 +387,8 @@ function closePopup() {
   document.getElementById('passwordPopup').classList.remove('active');
   document.getElementById('accessForm').reset();
   document.getElementById('passwordInput').value = '';
-  document.getElementById('passwordContent').style.display = 'block';
-  document.getElementById('previewContent').style.display = 'none';
+  document.getElementById('passwordSection').style.display = 'block';
+  document.getElementById('previewSection').style.display = 'none';
 }
 
 function generateUniquePassword(name, email) {
@@ -389,7 +427,7 @@ async function handleSubmit(event) {
         email: email,
         document: docType,
         password: password,
-        message: `Access request for ${docType}`
+        message: `Access request for ${docType}. Password: ${password}`
       })
     });
     
@@ -410,19 +448,34 @@ function verifyPassword() {
   const entered = document.getElementById('passwordInput').value.trim();
   const correct = passwordMap[currentFile];
   
-  if (entered === correct) {
-    document.getElementById('passwordContent').style.display = 'none';
-    document.getElementById('previewContent').style.display = 'block';
-    document.getElementById('previewContent').innerHTML = `
-      <div style="text-align:center;padding:2rem;">
-        <p style="color:var(--teal);font-weight:700;margin-bottom:1rem;">✓ Access Granted!</p>
-        <p style="color:var(--muted);margin-bottom:1.5rem;">Your document link would appear here.</p>
-        <button onclick="closePopup()" class="popup-button" style="background:var(--teal);color:var(--navy);">Close</button>
-      </div>
-    `;
-  } else {
-    alert('Incorrect password. Please check your email for the correct password.');
+  if (!entered) {
+    alert('Please enter the password');
+    return;
   }
+  
+  if (entered === correct) {
+    document.getElementById('passwordSection').style.display = 'none';
+    document.getElementById('previewSection').style.display = 'block';
+    
+    // Load PDF in viewer
+    const pdfViewer = document.getElementById('pdfViewer');
+    pdfViewer.data = currentFilePath;
+  } else {
+    alert('❌ Incorrect password. Please check your email for the correct password.');
+  }
+}
+
+function downloadDocument() {
+  const link = document.createElement('a');
+  link.href = currentFilePath;
+  link.download = currentFile + '.pdf';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function openNewTab() {
+  window.open(currentFilePath, '_blank');
 }
 
 // Navbar scroll effect
