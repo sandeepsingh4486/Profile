@@ -1,445 +1,492 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>UART Communication</title>
-    <link rel="stylesheet" href="../css/style.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Communication Protocols — Sandeep Singh R</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#0a0f1e;--navy2:#111827;--card:#151d30;--border:#1e2d45;--gold:#f0a500;--gold2:#ffc73a;--teal:#00c9a7;--text:#e2e8f0;--muted:#8898aa;--white:#ffffff;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+    #rp{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));z-index:200;width:0;transition:width 0.1s linear;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 5%;background:rgba(10,15,30,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--white);text-decoration:none;}
+    .nav-logo span{color:var(--gold);}
+    .nav-links{display:flex;gap:1.6rem;list-style:none;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:0.86rem;font-weight:500;transition:color 0.2s;position:relative;}
+    .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--gold);transition:width 0.3s;}
+    .nav-links a:hover{color:var(--white);} .nav-links a:hover::after,.nav-links a.active::after{width:100%;} .nav-links a.active{color:var(--gold);}
+    .nav-cta{background:var(--gold)!important;color:var(--navy)!important;padding:0.4rem 1rem;border-radius:6px;font-weight:700!important;} .nav-cta::after{display:none!important;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;} .hamburger span{display:block;width:22px;height:2px;background:var(--white);}
+    .mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;background:var(--navy2);border-bottom:1px solid var(--border);padding:1.5rem 5%;z-index:99;flex-direction:column;gap:1.2rem;}
+    .mobile-menu a{color:var(--text);text-decoration:none;font-size:1rem;} .mobile-menu.open{display:flex;}
+    .article-wrap{display:grid;grid-template-columns:240px 1fr;gap:2.5rem;max-width:1200px;margin:0 auto;padding:5.5rem 5% 4rem;align-items:start;position:relative;z-index:1;}
+    .toc-sidebar{position:sticky;top:80px;}
+    .toc-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;margin-bottom:1rem;}
+    .toc-label{font-family:'Syne',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.9rem;}
+    .toc-list{list-style:none;display:flex;flex-direction:column;gap:0.3rem;}
+    .toc-list a{font-size:0.78rem;color:var(--muted);text-decoration:none;padding:0.25rem 0.6rem;border-radius:6px;border-left:2px solid transparent;transition:all 0.2s;display:block;line-height:1.4;}
+    .toc-list a:hover,.toc-list a.active{color:var(--gold);border-left-color:var(--gold);background:rgba(240,165,0,0.06);}
+    .meta-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.1rem;}
+    .meta-row{display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;color:var(--muted);padding:0.35rem 0;border-bottom:1px solid var(--border);} .meta-row:last-child{border-bottom:none;} .meta-row strong{color:var(--text);}
+    .article-cat{display:inline-flex;align-items:center;font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:50px;margin-bottom:0.9rem;background:rgba(0,201,167,0.1);color:var(--teal);border:1px solid rgba(0,201,167,0.25);}
+    h1.article-title{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,3.5vw,2.4rem);font-weight:800;color:var(--white);letter-spacing:-1px;line-height:1.15;margin-bottom:0.9rem;}
+    .article-excerpt{font-size:1rem;color:var(--muted);line-height:1.8;max-width:680px;margin-bottom:1.2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
+    .a-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.5rem;}
+    .atag{font-size:0.7rem;padding:0.18rem 0.6rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);border-radius:4px;}
+    .article-body h2{font-family:'Syne',sans-serif;font-size:1.45rem;font-weight:800;color:var(--white);margin:2.4rem 0 0.9rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);scroll-margin-top:85px;}
+    .article-body h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--gold);margin:1.8rem 0 0.6rem;scroll-margin-top:85px;}
+    .article-body h4{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;color:var(--teal);margin:1.4rem 0 0.4rem;}
+    .article-body p{color:var(--muted);line-height:1.9;margin-bottom:1rem;font-size:0.95rem;} .article-body p strong{color:var(--text);}
+    .article-body ul,.article-body ol{padding-left:1.5rem;margin-bottom:1.1rem;}
+    .article-body li{color:var(--muted);font-size:0.93rem;line-height:1.8;margin-bottom:0.35rem;} .article-body li strong{color:var(--text);}
+    .article-body pre{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:1.2rem 1.4rem;overflow-x:auto;margin:1.2rem 0;}
+    .article-body code{font-family:'Fira Code','Courier New',monospace;font-size:0.85rem;color:#e6edf3;line-height:1.7;}
+    .article-body p code,.article-body li code{background:rgba(255,255,255,0.07);border:1px solid var(--border);border-radius:4px;padding:0.1rem 0.38rem;font-size:0.82rem;color:var(--teal);font-family:'Fira Code',monospace;}
+    .info-box{background:rgba(0,201,167,0.06);border-left:3px solid var(--teal);border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin:1.4rem 0;}
+    .info-box p{color:var(--text);margin:0;font-size:0.91rem;}
+    .warn-box{background:rgba(240,165,0,0.06);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin:1.4rem 0;}
+    .warn-box p{color:var(--text);margin:0;font-size:0.91rem;}
+    /* PROTOCOL COMPARISON TABLE */
+    .proto-table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.84rem;overflow-x:auto;display:block;}
+    .proto-table th{background:rgba(240,165,0,0.1);color:var(--gold);font-family:'Syne',sans-serif;font-weight:700;padding:0.65rem 0.9rem;text-align:left;border:1px solid var(--border);white-space:nowrap;}
+    .proto-table td{color:var(--muted);padding:0.55rem 0.9rem;border:1px solid var(--border);vertical-align:top;} .proto-table td strong{color:var(--text);}
+    .proto-table tr:hover td{background:rgba(255,255,255,0.02);}
+    /* PROTOCOL SECTION HEADER */
+    .proto-header{display:flex;align-items:center;gap:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;margin:2.5rem 0 1rem;}
+    .proto-header::before{font-size:2rem;}
+    .proto-header.uart::before{content:'🔗';}
+    .proto-header.i2c::before{content:'🔄';}
+    .proto-header.spi::before{content:'⚡';}
+    .proto-header.lin::before{content:'🚗';}
+    .proto-header.rs485::before{content:'🏭';}
+    .proto-hname{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--white);}
+    .proto-hsub{font-size:0.8rem;color:var(--muted);margin-top:0.1rem;}
+    hr.sep{height:1px;background:linear-gradient(90deg,var(--gold),var(--teal),transparent);margin:2.5rem 0;border:none;}
+    .author-bio{background:var(--card);border:1px solid rgba(240,165,0,0.2);border-radius:16px;padding:1.4rem;display:flex;gap:1.1rem;align-items:center;margin-top:2.5rem;}
+    .author-photo{width:65px;height:65px;border-radius:50%;border:2px solid var(--gold);flex-shrink:0;background:linear-gradient(135deg,var(--gold),var(--teal));}
+    .author-name{font-family:'Syne',sans-serif;font-weight:700;color:var(--white);font-size:0.92rem;margin-bottom:0.15rem;}
+    .author-role{color:var(--gold);font-size:0.75rem;font-weight:600;margin-bottom:0.35rem;}
+    .author-desc{color:var(--muted);font-size:0.8rem;line-height:1.6;}
+    .more-blogs{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.2rem;}
+    .more-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-decoration:none;color:inherit;transition:all 0.25s;display:block;}
+    .more-card:hover{border-color:rgba(240,165,0,0.3);transform:translateY(-3px);}
+    .more-icon{font-size:1.3rem;margin-bottom:0.4rem;} .more-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;color:var(--white);}
+    footer{background:var(--navy);border-top:1px solid var(--border);padding:1.8rem 5%;text-align:center;color:var(--muted);font-size:0.8rem;position:relative;z-index:1;}
+    footer a{color:var(--gold);text-decoration:none;} footer p+p{margin-top:0.3rem;}
+    .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--gold);color:var(--navy);width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;z-index:99;opacity:0;transform:translateY(10px);transition:all 0.3s;text-decoration:none;}
+    .scroll-top.visible{opacity:1;transform:translateY(0);}
+    @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.article-wrap{grid-template-columns:1fr;padding-top:5rem;}.toc-sidebar{display:none;}}
+    @media(max-width:600px){.more-blogs{grid-template-columns:1fr;}}
+  
+    /* ── SCROLL ANIMATIONS ── */
+    @keyframes slideInLeft{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes slideInRight{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes slideInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes popIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+    @keyframes glowPulse{0%,100%{box-shadow:0 0 0 0 rgba(240,165,0,0)}50%{box-shadow:0 0 20px 4px rgba(240,165,0,0.15)}}
+    @keyframes borderDraw{from{width:0}to{width:50px}}
+    @keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+    /* heading animations */
+    .anim-h2{opacity:0;transform:translateX(-24px);transition:opacity 0.55s ease,transform 0.55s ease;}
+    .anim-h2.in{opacity:1;transform:translateX(0);}
+    .anim-h3{opacity:0;transform:translateX(-16px);transition:opacity 0.45s ease,transform 0.45s ease;}
+    .anim-h3.in{opacity:1;transform:translateX(0);}
+
+    /* paragraph fade */
+    .anim-p{opacity:0;transform:translateY(16px);transition:opacity 0.5s ease,transform 0.5s ease;}
+    .anim-p.in{opacity:1;transform:translateY(0);}
+
+    /* box pop */
+    .anim-box{opacity:0;transform:scale(0.95);transition:opacity 0.45s ease,transform 0.45s ease;}
+    .anim-box.in{opacity:1;transform:scale(1);}
+
+    /* card stagger */
+    .anim-card{opacity:0;transform:translateY(24px);transition:opacity 0.5s ease,transform 0.5s ease;}
+    .anim-card.in{opacity:1;transform:translateY(0);}
+
+    /* list item stagger */
+    .anim-li{opacity:0;transform:translateX(-12px);transition:opacity 0.4s ease,transform 0.4s ease;}
+    .anim-li.in{opacity:1;transform:translateX(0);}
+
+    /* code block slide */
+    .anim-code{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease;}
+    .anim-code.in{opacity:1;transform:translateY(0);}
+
+    /* glow on hover for h2 */
+    .article-body h2:hover{color:var(--gold2);transition:color 0.3s;}
+    .article-body h3:hover{color:var(--gold2);transition:color 0.3s;}
+
+    /* info/warn box left-border grow on appear */
+    .info-box.in,.warn-box.in{animation:glowPulse 1.2s ease 0.3s;}
+
+    /* proto-header slide */
+    .proto-header{opacity:0;transform:translateX(-20px);transition:opacity 0.5s ease,transform 0.5s ease;}
+    .proto-header.in{opacity:1;transform:translateX(0);}
+
+    /* IoT layers stagger */
+    .iot-layer{opacity:0;transform:translateX(-20px);transition:opacity 0.45s ease,transform 0.45s ease;}
+    .iot-layer.in{opacity:1;transform:translateX(0);}
+
+    /* app cards pop */
+    .app-card{opacity:0;transform:scale(0.88);transition:opacity 0.4s ease,transform 0.4s ease;}
+    .app-card.in{opacity:1;transform:scale(1);}
+
+    /* video cards slide up */
+    .video-card{opacity:0;transform:translateY(28px);transition:opacity 0.5s ease,transform 0.5s ease;}
+    .video-card.in{opacity:1;transform:translateY(0);}
+
+    /* more-blogs cards */
+    .more-card{opacity:0;transform:translateY(16px);transition:opacity 0.4s ease,transform 0.4s ease,border-color 0.25s,box-shadow 0.25s;}
+    .more-card.in{opacity:1;transform:translateY(0);}
+
+    /* table rows */
+    .proto-table tr{opacity:0;transform:translateY(8px);transition:opacity 0.35s ease,transform 0.35s ease;}
+    .proto-table tr.in{opacity:1;transform:translateY(0);}
+
+    /* toc active highlight pulse */
+    .toc-list a.active{animation:glowPulse 2s infinite;}
+
+  </style>
 </head>
 <body>
-    <header>
-        <h1>UART Communication</h1>
-    </header>
-    <main>
-         <h1>Understanding UART Communication Protocol</h1>
-    </header>
-    <article>
-        <h2>What is UART?</h2>
-        <p>
-            Universal Asynchronous Receiver-Transmitter (UART) is a widely used communication protocol in embedded systems, microcontrollers, and computers. It facilitates serial communication by transmitting and receiving data in a series of bits, asynchronously, over a single wire pair.
-        </p>
+<div id="rp"></div>
+<nav id="navbar">
+  <a href="../index.html" class="nav-logo">Sandeep<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../about.html">About</a></li>
+    <li><a href="../experience.html">Experience</a></li>
+    <li><a href="../blogs.html" class="active">Blogs</a></li>
+    <li><a href="../contact.html">Contact</a></li>
+    <li><a href="../documents.html">Documents</a></li>
+  </ul>
+  <div class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mm">
+  <a href="../index.html">Home</a><a href="../about.html">About</a>
+  <a href="../blogs.html">Blogs</a><a href="../contact.html">Contact</a>
+  <a href="../documents.html">Documents</a>
+</div>
 
-        <h2>UART Communication Standards</h2>
-        <p>
-            UART communication operates based on a series of standards that determine the speed, data format, and control signals. Here are the key elements of UART standards:
-        </p>
-        <ul>
-            <li><strong>Baud Rate:</strong> The rate at which data is transmitted, usually measured in bits per second (bps). Common baud rates include 9600, 115200, etc.</li>
-            <li><strong>Data Bits:</strong> The number of data bits in each packet, typically 5, 6, 7, or 8 bits.</li>
-            <li><strong>Stop Bits:</strong> Used to signal the end of a data packet. Options include 1, 1.5, or 2 stop bits.</li>
-            <li><strong>Parity Bit:</strong> A parity bit can be used for error detection. It can be even, odd, or none (no parity).</li>
-            <li><strong>Flow Control:</strong> UART can use flow control mechanisms like XON/XOFF (software) or RTS/CTS (hardware) to manage data flow.</li>
-        </ul>
+<div class="article-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-card">
+      <div class="toc-label">Contents</div>
+      <ul class="toc-list">
+        <li><a href="#overview">Protocol Overview</a></li>
+        <li><a href="#uart">UART</a></li>
+        <li><a href="#i2c">I2C</a></li>
+        <li><a href="#spi">SPI</a></li>
+        <li><a href="#lin">LIN</a></li>
+        <li><a href="#rs485">RS485 & MODBUS</a></li>
+        <li><a href="#comparison">Comparison Table</a></li>
+        <li><a href="#conclusion">When to Use What</a></li>
+      </ul>
+    </div>
+    <div class="meta-card">
+      <div class="meta-row"><span>📂</span><strong>Category:</strong> Protocols</div>
+      <div class="meta-row"><span>⏱</span><strong>Read time:</strong> 12 min</div>
+      <div class="meta-row"><span>✍️</span><strong>Author:</strong> Sandeep Singh R</div>
+      <div class="meta-row"><span>🏷</span><strong>Level:</strong> Intermediate</div>
+    </div>
+  </aside>
 
-        <h2>UART Packet Structure</h2>
-        <p>
-            A typical UART data frame consists of the following elements:
-        </p>
-        <ul>
-            <li><strong>Start Bit:</strong> A single bit that marks the beginning of a data transmission. It's always low (0).</li>
-            <li><strong>Data Bits:</strong> A set of bits that represent the actual data. Usually, this is 8 bits, but 5, 6, or 7 bits can be used.</li>
-            <li><strong>Parity Bit:</strong> An optional bit for error checking. It can be even, odd, or absent.</li>
-            <li><strong>Stop Bit:</strong> A bit or multiple bits that signal the end of the data packet. Typically, 1 or 2 stop bits are used.</li>
-        </ul>
-        <p>
-            Here's an example of a UART data frame with 8 data bits, no parity, and 1 stop bit:
-        </p>
-        <pre><code>Start Bit | Data Bits | Parity | Stop Bit</code></pre>
+  <main>
+    <span class="article-cat">📡 Communication Protocols</span>
+    <h1 class="article-title">Communication Protocols in Industry — UART, I2C, SPI, LIN, RS485 & MODBUS Explained</h1>
+    <p class="article-excerpt">A practical deep dive into the most commonly used communication protocols in embedded and industrial systems — when to use each, their trade-offs, pin configurations, and real code examples. Based on real-world experience using these protocols in automotive, industrial automation, and IoT projects.</p>
+    <div class="a-tags">
+      <span class="atag">UART</span><span class="atag">I2C</span><span class="atag">SPI</span>
+      <span class="atag">RS485</span><span class="atag">MODBUS</span><span class="atag">LIN</span><span class="atag">CAN Bus</span>
+    </div>
 
-        <h2>UART Pins Description</h2>
-        <p>
-            A UART interface typically uses two main communication pins: the Transmit (TX) and Receive (RX) lines. In addition, some systems may include additional pins for flow control.
-        </p>
-        <h3>Key UART Pins:</h3>
-        <ul>
-            <li><strong>TX (Transmit):</strong> This pin transmits data from the microcontroller or communication device to the receiver. It sends data serially, one bit at a time.</li>
-            <li><strong>RX (Receive):</strong> The receiver pin listens for incoming data from the transmitting device. It reads serial data bit by bit.</li>
-            <li><strong>RTS (Request to Send):</strong> This is used for hardware flow control. When active, it signals the receiving device to prepare to receive data.</li>
-            <li><strong>CTS (Clear to Send):</strong> Also used for flow control. The receiver indicates whether it is ready to receive data. If inactive, the sender will wait.</li>
-        </ul>
+    <div class="article-body">
 
-        <h2>Applications of UART</h2>
-        <p>
-            UART is used in a wide variety of applications, including:
-        </p>
-        <ul>
-            <li><strong>Microcontroller Communication:</strong> Microcontrollers often use UART for communication with peripherals like sensors, displays, and other devices.</li>
-            <li><strong>Serial Debugging:</strong> UART is commonly used for debugging purposes by connecting a device to a computer for logging output or controlling the device.</li>
-            <li><strong>Data Transfer:</strong> UART is widely used for data transfer between embedded systems, modems, or other serial communication devices.</li>
-        </ul>
-<div class="example">
-            <p><strong>Example: Sending Data Over UART with Arduino</strong></p>
-            <code>
-                void setup() { <br>
-                &nbsp;&nbsp;Serial.begin(9600); <br>
-                } <br>
-                void loop() { <br>
-                &nbsp;&nbsp;Serial.println("Hello, UART!"); <br>
-                &nbsp;&nbsp;delay(1000); <br>
-                }
-            </code>
+      <h2 id="overview">Protocol Overview</h2>
+      <p>In my 10+ years of embedded systems work — from crane SLI systems to automotive AFCS — I've used all of these protocols in production hardware. The choice of protocol can make or break your design: wrong choice means rework, noise issues, or system instability. This article is the guide I wish I had when starting out.</p>
+
+      <div class="info-box"><p>💡 <strong>Key insight:</strong> There is no "best" protocol. The right choice depends on distance, speed, number of devices, wiring constraints, and noise environment. Understanding all of them gives you the flexibility to design the right system.</p></div>
+
+      <!-- UART -->
+      <div class="proto-header uart">
+        <div><div class="proto-hname">UART — Universal Asynchronous Receiver-Transmitter</div><div class="proto-hsub">Simple, ubiquitous, the default for debug output</div></div>
+      </div>
+      <h2 id="uart">UART</h2>
+      <p><strong>UART</strong> is the simplest serial protocol — asynchronous, point-to-point, and used everywhere from GPS modules to PC debug consoles. It uses just two wires: TX and RX.</p>
+      <h3>Key Parameters</h3>
+      <ul>
+        <li><strong>Baud Rate:</strong> Common rates — 9600, 115200, 1Mbps. Both devices must match exactly.</li>
+        <li><strong>Frame:</strong> 1 start bit + 8 data bits + optional parity + 1–2 stop bits</li>
+        <li><strong>Flow Control:</strong> Hardware (RTS/CTS) or software (XON/XOFF)</li>
+      </ul>
+      <h3>Arduino Example</h3>
+      <pre><code>void setup() {
+  Serial.begin(115200);   // Set baud rate
+}
+void loop() {
+  Serial.println("Hello from Sandeep!");
+  delay(1000);
+}</code></pre>
+      <h3>When to Use UART</h3>
+      <ul>
+        <li>Debug output during development (most common use)</li>
+        <li>GPS, GSM, Bluetooth modules (HC-05, SIM800)</li>
+        <li>PC ↔ Microcontroller communication</li>
+        <li>When you only need two devices talking to each other</li>
+      </ul>
+
+      <hr class="sep"/>
+
+      <!-- I2C -->
+      <div class="proto-header i2c">
+        <div><div class="proto-hname">I2C — Inter-Integrated Circuit</div><div class="proto-hsub">Multi-device on 2 wires — ideal for sensors and displays</div></div>
+      </div>
+      <h2 id="i2c">I2C</h2>
+      <p><strong>I2C</strong> is a synchronous, multi-master, multi-slave protocol using just two wires — SDA (data) and SCL (clock). Every device has a unique 7-bit address, allowing up to 127 devices on one bus.</p>
+      <h3>Key Parameters</h3>
+      <ul>
+        <li><strong>Speed:</strong> Standard 100kbps / Fast 400kbps / Fast+ 1Mbps / HS 3.4Mbps</li>
+        <li><strong>Addressing:</strong> 7-bit (127 devices) or 10-bit (1023 devices)</li>
+        <li><strong>Pull-ups required:</strong> SDA and SCL need pull-up resistors (typically 4.7kΩ)</li>
+      </ul>
+      <h3>Reading a Temperature Sensor (LM75) on Arduino</h3>
+      <pre><code>#include &lt;Wire.h&gt;
+
+void setup() {
+  Wire.begin();           // Join I2C bus as master
+  Serial.begin(115200);
+}
+void loop() {
+  Wire.requestFrom(0x48, 2);   // LM75 default address
+  if (Wire.available() >= 2) {
+    int msb = Wire.read();
+    int lsb = Wire.read();
+    float temp = ((msb << 8) | lsb) >> 5;
+    Serial.print("Temp: ");
+    Serial.println(temp * 0.125);
+  }
+  delay(1000);
+}</code></pre>
+      <div class="warn-box"><p>⚠️ <strong>Gotcha:</strong> Missing or incorrect pull-up resistors is the #1 cause of I2C communication failure. If your bus hangs, check your pull-ups first.</p></div>
+
+      <hr class="sep"/>
+
+      <!-- SPI -->
+      <div class="proto-header spi">
+        <div><div class="proto-hname">SPI — Serial Peripheral Interface</div><div class="proto-hsub">Fast, full-duplex — for high-speed peripherals</div></div>
+      </div>
+      <h2 id="spi">SPI</h2>
+      <p><strong>SPI</strong> is a synchronous, full-duplex protocol with 4 wires: MOSI, MISO, SCK, and CS (Chip Select). Fastest of the common protocols — routinely used at 10–80MHz for flash memory, displays, and ADCs.</p>
+      <h3>Key Parameters</h3>
+      <ul>
+        <li><strong>CPOL & CPHA:</strong> 4 modes define clock polarity and phase. Match the peripheral's datasheet.</li>
+        <li><strong>CS per device:</strong> Each slave needs its own Chip Select line.</li>
+        <li><strong>No addressing:</strong> CS line selects the active device instead.</li>
+      </ul>
+      <h3>When to Use SPI</h3>
+      <ul>
+        <li>Flash/EEPROM memory, SD cards</li>
+        <li>TFT/OLED displays</li>
+        <li>High-speed ADC/DAC</li>
+        <li>When speed matters more than pin count</li>
+      </ul>
+
+      <hr class="sep"/>
+
+      <!-- LIN -->
+      <div class="proto-header lin">
+        <div><div class="proto-hname">LIN — Local Interconnect Network</div><div class="proto-hsub">Single-wire, low-cost automotive protocol</div></div>
+      </div>
+      <h2 id="lin">LIN</h2>
+      <p><strong>LIN</strong> is a low-cost, single-wire serial protocol primarily used in automotive applications for lower-priority subsystems — seat adjustments, window motors, lighting, HVAC. It runs at 20kbps maximum.</p>
+      <h3>Frame Structure</h3>
+      <pre><code>Sync Break | Sync Byte (0x55) | Identifier | Data (1-8 bytes) | Checksum</code></pre>
+      <h3>LIN vs CAN</h3>
+      <ul>
+        <li><strong>LIN:</strong> Single master, 1 wire, up to 20kbps, &lt;16 nodes — cheap, simple</li>
+        <li><strong>CAN:</strong> Multi-master, 2 wires, up to 1Mbps, multi-node — complex, reliable, safety-critical</li>
+      </ul>
+
+      <hr class="sep"/>
+
+      <!-- RS485 -->
+      <div class="proto-header rs485">
+        <div><div class="proto-hname">RS485 + MODBUS</div><div class="proto-hsub">Industrial workhorse — long distance, noise-immune</div></div>
+      </div>
+      <h2 id="rs485">RS485 & MODBUS</h2>
+      <p><strong>RS485</strong> uses differential signalling on two wires (A and B) — making it immune to common-mode noise and capable of cable runs up to <strong>1200 metres</strong> at up to 10Mbps. I used RS485 extensively in the SLI crane project for sensor-to-controller communication over long cable runs in noisy industrial environments.</p>
+      <p><strong>MODBUS RTU</strong> runs on top of RS485 as the application protocol — it's the universal language of industrial automation.</p>
+      <h3>MODBUS Frame</h3>
+      <pre><code>Slave Address | Function Code | Data | CRC16</code></pre>
+      <h3>Arduino MODBUS Example</h3>
+      <pre><code>#include &lt;ModbusRtu.h&gt;
+
+Modbus master(0, Serial, 0);  // 0 = master, Serial port, RE/DE pin
+
+void setup() {
+  Serial.begin(9600);
+  master.begin(9600);
+}
+void loop() {
+  master.poll();  // Process MODBUS requests
+}</code></pre>
+      <h3>When to Use RS485 + MODBUS</h3>
+      <ul>
+        <li>Industrial automation (PLCs, sensors, actuators)</li>
+        <li>Long cable runs (&gt;15m) in noisy environments</li>
+        <li>Multi-drop networks (up to 32 devices on one bus)</li>
+        <li>Energy meters, building automation, HVAC</li>
+      </ul>
+
+      <hr class="sep"/>
+
+      <!-- COMPARISON TABLE -->
+      <h2 id="comparison">Protocol Comparison Table</h2>
+      <table class="proto-table">
+        <tr><th>Protocol</th><th>Wires</th><th>Speed</th><th>Distance</th><th>Devices</th><th>Best For</th></tr>
+        <tr><td><strong>UART</strong></td><td>2 (TX, RX)</td><td>Up to 1Mbps</td><td>&lt;15m</td><td>2 only</td><td>Debug, GPS, BT modules</td></tr>
+        <tr><td><strong>I2C</strong></td><td>2 (SDA, SCL)</td><td>100k–3.4Mbps</td><td>&lt;1m</td><td>127</td><td>Sensors, displays, EEPROM</td></tr>
+        <tr><td><strong>SPI</strong></td><td>4 (MOSI, MISO, SCK, CS)</td><td>Up to 80Mbps</td><td>&lt;1m</td><td>Multiple (1 CS each)</td><td>Flash, TFT, ADC/DAC</td></tr>
+        <tr><td><strong>LIN</strong></td><td>1</td><td>20kbps</td><td>&lt;40m</td><td>16</td><td>Automotive body control</td></tr>
+        <tr><td><strong>RS485</strong></td><td>2 (A, B)</td><td>Up to 10Mbps</td><td>1200m</td><td>32</td><td>Industrial automation</td></tr>
+        <tr><td><strong>CAN Bus</strong></td><td>2 (CANH, CANL)</td><td>Up to 1Mbps</td><td>500m</td><td>Multi</td><td>Automotive, safety-critical</td></tr>
+      </table>
+
+      <h2 id="conclusion">When to Use What — Decision Guide</h2>
+      <ul>
+        <li>📍 <strong>Short distance, 1 device:</strong> UART</li>
+        <li>📍 <strong>Multiple sensors on same board:</strong> I2C</li>
+        <li>📍 <strong>Need speed (display, memory):</strong> SPI</li>
+        <li>📍 <strong>Automotive body control, low cost:</strong> LIN</li>
+        <li>📍 <strong>Industrial, long cables, noisy environment:</strong> RS485 + MODBUS</li>
+        <li>📍 <strong>Safety-critical automotive, real-time:</strong> CAN Bus</li>
+      </ul>
+
+      <div class="info-box"><p>💡 <strong>Pro tip from the field:</strong> In my SLI crane system, we used RS485 for the long cable run from sensor nodes to the central controller, and I2C internally on each PCB for sensor arrays. The right tool for the right job.</p></div>
+
+      <hr class="sep"/>
+
+      <div class="author-bio">
+        <div class="author-photo"></div>
+        <div>
+          <div class="author-name">Sandeep Singh R</div>
+          <div class="author-role">PMP® | XLRI-Certified PM | 10+ Years Embedded Systems</div>
+          <div class="author-desc">Used all these protocols in production — from I2C sensors in spectrometers to RS485 in industrial crane systems to CAN in automotive AFCS projects.</div>
         </div>
-        
-        <h2>Conclusion</h2>
-        <p>
-            UART is a simple, reliable, and efficient protocol for serial communication. It is especially popular in embedded systems and low-level communication applications due to its ease of implementation and low resource requirements. Understanding the UART communication protocol, its standards, packet structure, and pin configuration is essential for designing and troubleshooting embedded systems.
-        </p>
-    </article>
-         <header>
-        <h1>I2C Communication Protocol</h1>
-    </header>
-    <article>
-        <h2>What is I2C?</h2>
-        <p>
-            The <strong>I2C (Inter-Integrated Circuit)</strong> protocol is a popular communication protocol used in embedded systems, sensors, and microcontroller peripherals. It is a synchronous, multi-master, multi-slave protocol that allows multiple devices to communicate over just two wires: Serial Data (SDA) and Serial Clock (SCL). I2C is particularly useful for systems that need to communicate with a variety of devices, such as sensors, memory chips, and displays, all while using minimal wiring.
-        </p>
-        
-        <h2>Basic I2C Wiring Diagram</h2>
-        <p>Below is an example of a typical I2C wiring setup:</p>
-        <img src="images/i2c_wiring_diagram.png" alt="I2C Wiring Diagram">
-        
-        <h2>I2C Communication Standards</h2>
-        <p>
-            The I2C protocol follows a set of standards that determine how data is exchanged between devices. These standards define key parameters such as data rates, addressing, and the structure of the communication:
-        </p>
-        <ul>
-            <li><strong>Data Rate:</strong> I2C supports different speeds, including:
-                <ul>
-                    <li><strong>Standard Mode:</strong> 100 kbps (kilobits per second)</li>
-                    <li><strong>Fast Mode:</strong> 400 kbps</li>
-                    <li><strong>High-Speed Mode:</strong> 3.4 Mbps (megabits per second)</li>
-                </ul>
-            </li>
-            <li><strong>Addressing:</strong> Each device on the I2C bus must have a unique address. I2C uses 7-bit or 10-bit addressing schemes. Typically, 7-bit addressing allows for up to 127 devices on the bus.</li>
-            <li><strong>Clock Stretching:</strong> Slave devices can hold the clock low to indicate they need more time to process data. This is called clock stretching and is a feature supported by I2C.</li>
-            <li><strong>Master-Slave Communication:</strong> I2C follows a master-slave architecture, where the master initiates communication. Each slave device has a unique address, allowing multiple devices to share the same bus.</li>
-        </ul>
-        
-        <h2>Multi-Master and Multi-Slave Configuration</h2>
-        <p>
-            I2C allows multiple masters to coexist on the same bus. Each master can take control of the bus when it is free, avoiding conflicts using arbitration mechanisms. Similarly, multiple slaves can communicate with the master using their unique addresses.
-        </p>
-        
-        <h2>Common Issues and Troubleshooting</h2>
-        <ul>
-            <li><strong>Address Conflicts:</strong> If multiple devices have the same address, communication may fail. Check the datasheets to change addresses where possible.</li>
-            <li><strong>Pull-Up Resistor Issues:</strong> I2C requires pull-up resistors on SDA and SCL lines. If these are missing or have incorrect values, communication may not work properly.</li>
-            <li><strong>Noise and Interference:</strong> Long wires or poor grounding can introduce noise, leading to data corruption. Keep connections short and shielded if necessary.</li>
-            <li><strong>Clock Stretching Problems:</strong> Some masters do not handle clock stretching correctly, causing issues with slower slave devices.</li>
-        </ul>
-        
-        <h2>Applications of I2C</h2>
-        <ul>
-            <li>Interfacing sensors (e.g., temperature, humidity sensors)</li>
-            <li>Communication with EEPROMs and RTC modules</li>
-            <li>Connecting LCD and OLED displays</li>
-            <li>Used in smartphones and embedded systems</li>
-        </ul>
-        
-        <h2>Real-Time Examples</h2>
-        <div class="example">
-            <p><strong>Example 1: Interfacing a Temperature Sensor (LM75) with Arduino</strong></p>
-            <code>
-                #include &lt;Wire.h&gt; <br>
-                void setup() { <br>
-                &nbsp;&nbsp;Wire.begin(); <br>
-                &nbsp;&nbsp;Serial.begin(9600); <br>
-                } <br>
-                void loop() { <br>
-                &nbsp;&nbsp;Wire.requestFrom(0x48, 2); <br>
-                &nbsp;&nbsp;while(Wire.available()) { <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;Serial.print(Wire.read()); <br>
-                &nbsp;&nbsp;} <br>
-                &nbsp;&nbsp;delay(1000); <br>
-                }
-            </code>
+      </div>
+
+      <div style="margin-top:2.5rem;">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin-bottom:1rem;">More Articles</div>
+        <div class="more-blogs">
+          <a href="embedded_basics.html" class="more-card"><div class="more-icon">🔌</div><div class="more-title">Embedded Systems Basics</div></a>
+          <a href="IOT.html" class="more-card"><div class="more-icon">🌐</div><div class="more-title">IoT Architecture & Applications</div></a>
+          <a href="matlab_coding.html" class="more-card"><div class="more-icon">📊</div><div class="more-title">MATLAB for Engineers — Video Course</div></a>
         </div>
-        <p>This code reads temperature data from an LM75 sensor using the I2C protocol.</p>
-        
-        <h2>Conclusion</h2>
-        <p>
-            I2C is a versatile and widely used communication protocol that simplifies the connection of multiple devices using minimal wiring. It supports various speeds, multiple masters, and multiple slaves, making it ideal for embedded systems. Understanding its working principles, addressing, and troubleshooting techniques ensures efficient implementation in real-world applications.
-        </p>
-    </article>
-        <header>
-        <h1>Understanding SPI Communication Protocol</h1>
-    </header>
-    <article>
-        <h2>What is SPI?</h2>
-        <p>
-            The Serial Peripheral Interface (SPI) is a synchronous serial communication protocol used for short-distance communication. It is widely used for interfacing microcontrollers with peripherals like sensors, displays, and memory devices. SPI allows high-speed data transfer between devices with minimal overhead.
-        </p>
+      </div>
+    </div>
+  </main>
+</div>
 
-        <h2>SPI Communication Standards</h2>
-        <p>
-            SPI operates using a set of standards that define how devices communicate. Here are the key aspects of the SPI standard:
-        </p>
-        <ul>
-            <li><strong>Clock Polarity (CPOL):</strong> Determines the idle state of the clock signal (low or high). This can be configured to either 0 or 1.</li>
-            <li><strong>Clock Phase (CPHA):</strong> Defines when data is sampled on the clock's rising or falling edge. CPHA can be 0 or 1, affecting the timing of the data read/write operations.</li>
-            <li><strong>Data Rate:</strong> The speed at which data is transmitted in bits per second (bps). Common rates range from 100 kHz to several MHz.</li>
-            <li><strong>Data Length:</strong> Typically 8 bits per data frame, though SPI can support up to 16 bits or more in some configurations.</li>
-            <li><strong>Mode:</strong> There are four SPI modes, which are combinations of CPOL and CPHA (Mode 0, Mode 1, Mode 2, Mode 3). Each mode represents a different combination of clock polarity and phase.</li>
-        </ul>
+<footer>
+  <p>© 2025 <a href="../index.html">Sandeep Singh R</a> · PMP® Certified Project & Product Manager · Bengaluru, India</p>
+  <p><a href="../blogs.html">← Back to all blogs</a></p>
+</footer>
+<a href="#" class="scroll-top" id="st">↑</a>
+<script>
+  const rp=document.getElementById('rp'),st=document.getElementById('st');
+  window.addEventListener('scroll',()=>{
+    const s=document.documentElement;
+    rp.style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%';
+    st.classList.toggle('visible',scrollY>400);
+    document.getElementById('navbar').classList.toggle('scrolled',scrollY>50);
+  });
 
-        <h2>SPI Packet Structure</h2>
-        <p>
-            An SPI data frame consists of several bits transferred between the master and slave devices. Each frame is usually 8 bits (1 byte), although larger frames are possible.
-        </p>
-        <ul>
-            <li><strong>Start of Transmission:</strong> The communication begins with the Master pulling the Chip Select (CS) low, indicating the start of data transmission.</li>
-            <li><strong>Data Bits:</strong> The data is sent one bit at a time on the SPI bus. Typically, it’s 8 bits per frame but can be extended to 16 bits in certain applications.</li>
-            <li><strong>Clock Pulses:</strong> For each bit of data, a clock pulse (SCK) is sent, and the data is either shifted in or out of the shift register on the rising or falling edge of the clock (depending on CPHA).</li>
-            <li><strong>Chip Select (CS):</strong> This signal is used to select the device to communicate with. The master pulls the CS low to initiate communication with the selected slave device.</li>
-            <li><strong>End of Transmission:</strong> The transmission ends when the master pulls the CS high, signaling the end of communication for that particular device.</li>
-        </ul>
+  /* ── ANIMATION ENGINE ── */
+  (function(){
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(!e.isIntersecting) return;
+        const el = e.target;
+        el.classList.add('in');
+        io.unobserve(el);
+      });
+    }, {threshold: 0.12, rootMargin: '0px 0px -40px 0px'});
 
-        <h2>SPI Pin Description</h2>
-        <p>
-            SPI communication uses four primary pins for data transfer, plus optional pins for additional control. Here’s a description of the key SPI pins:
-        </p>
-        <h3>Key SPI Pins:</h3>
-        <ul>
-            <li><strong>SCK (Serial Clock):</strong> This is the clock signal generated by the master device. It synchronizes data transmission between the master and slave devices. The clock signal determines the timing of data bits being sent on the MOSI and MISO lines.</li>
-            <li><strong>MOSI (Master Out Slave In):</strong> The data line for transmitting data from the master to the slave. The master sends the data out through this line.</li>
-            <li><strong>MISO (Master In Slave Out):</strong> The data line for transmitting data from the slave to the master. The slave sends data back to the master through this line.</li>
-            <li><strong>CS (Chip Select):</strong> This pin selects which slave device the master is communicating with. The master pulls the CS pin low to initiate communication with a slave device and high when the communication is complete.</li>
-        </ul>
-        <p>
-            These four pins are the minimum required for SPI communication. However, depending on the application, additional control pins like <strong>IRQ (Interrupt Request)</strong> or <strong>RESET</strong> might be used for more advanced features or error handling.
-        </p>
+    // h2 & h3
+    document.querySelectorAll('.article-body h2').forEach(h => { h.classList.add('anim-h2'); io.observe(h); });
+    document.querySelectorAll('.article-body h3').forEach(h => { h.classList.add('anim-h3'); io.observe(h); });
+    document.querySelectorAll('.article-body h4').forEach(h => { h.classList.add('anim-h3'); io.observe(h); });
 
-        <h2>Applications of SPI</h2>
-        <p>
-            SPI is used in many applications due to its high-speed capabilities and simplicity. Here are some common use cases:
-        </p>
-        <ul>
-            <li><strong>Interfacing with Sensors:</strong> SPI is commonly used to interface with temperature sensors, pressure sensors, and other analog-to-digital converters (ADC) or digital-to-analog converters (DAC).</li>
-            <li><strong>Flash Memory:</strong> SPI is used to communicate with EEPROMs, SD cards, and other flash memory devices for storage purposes.</li>
-            <li><strong>Display Interfaces:</strong> SPI is used to control LED displays, OLED screens, and TFT displays in embedded systems.</li>
-            <li><strong>Communication between Microcontrollers:</strong> SPI allows fast communication between different microcontrollers or processors in a system.</li>
-        </ul>
- <div class="example">
-            <p><strong>Example: Sending a LIN Message</strong></p>
-            <code>
-                void setup() { <br>
-                &nbsp;&nbsp;Serial.begin(19200); <br>
-                } <br>
-                void loop() { <br>
-                &nbsp;&nbsp;Serial.write(0x55); // Sync Byte <br>
-                &nbsp;&nbsp;delay(1000); <br>
-                }
-            </code>
- </div>
-        <h2>Conclusion</h2>
-        <p>
-            SPI is a powerful and efficient communication protocol that is widely used in embedded systems for high-speed data transfer. Its synchronous nature allows devices to communicate quickly and reliably, making it ideal for applications requiring fast data exchange. By understanding the SPI communication protocol, its standards, packet structure, and pin configuration, engineers can build more reliable and optimized embedded systems.
-        </p>
-    </article>
-         <header>
-        <h1>Understanding LIN Communication Protocol</h1>
-    </header>
-    <article>
-        <h2>What is LIN?</h2>
-        <p>
-            The **LIN (Local Interconnect Network)** protocol is a communication protocol primarily used in automotive and industrial systems to connect various electronic control units (ECUs) over a single network. It is a low-cost, single-wire bus system that enables communication between devices like sensors, actuators, and controllers. LIN is often used for controlling smaller, less complex systems within vehicles, such as lighting, seat adjustments, and window mechanisms.
-        </p>
+    // paragraphs (staggered)
+    document.querySelectorAll('.article-body p').forEach((p,i) => {
+      p.classList.add('anim-p');
+      p.style.transitionDelay = (i % 4) * 0.06 + 's';
+      io.observe(p);
+    });
 
-        <h2>LIN Communication Standards</h2>
-        <p>
-            LIN operates in a master-slave architecture, where a single master node controls communication and the other nodes (slaves) respond to the master's requests. It is based on the following key standards:
-        </p>
-        <ul>
-            <li><strong>Data Rate:</strong> The standard data rate for LIN is 20 kbps (kilobits per second). This relatively low-speed communication is sufficient for the applications LIN is intended for.</li>
-            <li><strong>Voltage Levels:</strong> LIN uses a voltage level of 12V for communication, making it compatible with automotive systems that use 12V DC.</li>
-            <li><strong>Bus Topology:</strong> The LIN network typically has a bus topology, where multiple devices are connected to the same single wire. The devices communicate via a single communication line.</li>
-            <li><strong>Master-Slave Communication:</strong> In the LIN protocol, there is always one master node (usually a microcontroller or ECU), and the slave nodes (which may be sensors or actuators) follow the master's commands.</li>
-            <li><strong>Checksum:</strong> LIN uses a checksum (calculated from the data bytes) to verify data integrity during communication. This helps ensure that data sent over the network is not corrupted.</li>
-        </ul>
+    // info/warn boxes
+    document.querySelectorAll('.info-box,.warn-box').forEach(b => { b.classList.add('anim-box'); io.observe(b); });
 
-        <h2>LIN Packet Structure</h2>
-        <p>
-            The communication in LIN is done in packets, and each packet consists of the following elements:
-        </p>
-        <ul>
-            <li><strong>Sync Break:</strong> The Sync Break is a special signal indicating the start of a new communication cycle. It helps synchronize all devices on the network.</li>
-            <li><strong>Sync Byte:</strong> Following the Sync Break, the Sync Byte is transmitted to synchronize the baud rate between the master and slave devices.</li>
-            <li><strong>Identifier:</strong> Each message in the LIN protocol has an identifier field, which defines the type of message being transmitted and the priority of the message.</li>
-            <li><strong>Data Field:</strong> This field contains the actual data being transmitted, which can vary in length depending on the type of message. Typically, the data field is between 1 and 8 bytes in length.</li>
-            <li><strong>Checksum:</strong> The checksum is the last field in the packet. It is used to verify that the data was transmitted correctly. The receiving node calculates the checksum based on the received data and compares it to the transmitted checksum value.</li>
-        </ul>
-        <p>
-            A typical LIN frame might look like this:
-        </p>
-        <pre><code>Sync Break | Sync Byte | Identifier | Data Field | Checksum</code></pre>
+    // code blocks
+    document.querySelectorAll('pre').forEach(c => { c.classList.add('anim-code'); io.observe(c); });
 
-        <h2>LIN Pin Description</h2>
-        <p>
-            LIN uses a single-wire communication system, and the following are the primary pin requirements for LIN-based systems:
-        </p>
-        <h3>Key LIN Pins:</h3>
-        <ul>
-            <li><strong>LIN (Single Wire):</strong> This is the primary data line used for communication. All devices (master and slave) communicate over this wire. It is a bidirectional line, meaning both master and slave nodes send and receive data on this line.</li>
-            <li><strong>Ground (GND):</strong> This is the ground reference pin for the network. It connects all devices to the same ground potential.</li>
-        </ul>
-        <p>
-            LIN communication typically involves a single wire for data transfer and a ground reference. Additionally, the use of pull-up resistors ensures that the line is driven high when no data is being transmitted.
-        </p>
+    // list items stagger
+    document.querySelectorAll('.article-body li').forEach((li,i) => {
+      li.classList.add('anim-li');
+      li.style.transitionDelay = (i % 6) * 0.07 + 's';
+      io.observe(li);
+    });
 
-        <h2>Applications of LIN</h2>
-        <p>
-            LIN is commonly used in automotive and industrial applications, where lower cost, simpler communication, and a single-wire bus system are required. Some typical applications of LIN include:
-        </p>
-        <ul>
-            <li><strong>Automotive Control Systems:</strong> LIN is often used in automotive applications, such as controlling windows, mirrors, lighting, HVAC systems, and seat adjustments.</li>
-            <li><strong>Industrial Automation:</strong> LIN can be used in industrial environments to connect sensors, actuators, and controllers in low-cost and simple systems.</li>
-            <li><strong>Home Automation:</strong> LIN is also used in home automation systems for controlling lighting, security devices, and other systems requiring low-cost communication.</li>
-        </ul>
+    // protocol headers
+    document.querySelectorAll('.proto-header').forEach((h,i) => {
+      h.style.transitionDelay = i * 0.1 + 's';
+      io.observe(h);
+    });
 
-        <h2>LIN vs CAN Protocol</h2>
-        <p>
-            While both LIN and CAN are used in automotive applications, they differ significantly:
-        </p>
-        <ul>
-            <li><strong>Speed:</strong> CAN supports higher data rates (up to 1 Mbps), while LIN operates at a lower data rate of 20 kbps.</li>
-            <li><strong>Complexity:</strong> CAN is more complex and supports multiple masters and a more sophisticated error handling system, while LIN is simpler with a single master and basic error detection via checksum.</li>
-            <li><strong>Cost:</strong> LIN is more cost-effective due to its simpler architecture and lower data rate requirements, making it ideal for simpler, less critical applications.</li>
-        </ul>
-  <div class="example">
-            <p><strong>Example: Sending a LIN Message</strong></p>
-            <code>
-                void setup() { <br>
-                &nbsp;&nbsp;Serial.begin(19200); <br>
-                } <br>
-                void loop() { <br>
-                &nbsp;&nbsp;Serial.write(0x55); // Sync Byte <br>
-                &nbsp;&nbsp;delay(1000); <br>
-                }
-            </code>
-        </div>
-        <h2>Conclusion</h2>
-        <p>
-            The LIN protocol is a simple and cost-effective communication protocol used in automotive and industrial applications. Its single-wire architecture, low data rates, and ease of implementation make it a practical choice for low-cost devices that do not require the higher speeds or complexity of other protocols like CAN. Understanding the key features of LIN, including its packet structure, pin description, and applications, will help in designing efficient systems that use this protocol.
-        </p>
-    </article>
-         <header>
-        <h1>Understanding RS485 and MODBUS Communication Protocols</h1>
-    </header>
-    <article>
-        <h2>What is RS485?</h2>
-        <p>
-            **RS485** is a standard for electrical signaling in differential data transmission systems. It is commonly used in industrial automation and control systems because it allows for long-distance communication (up to 4,000 feet or 1,200 meters) and supports multi-point systems with multiple devices connected to the same bus. RS485 uses differential signaling, meaning data is transmitted as the difference between two voltage levels, making it more resistant to electrical noise compared to single-ended transmission methods like RS232.
-        </p>
-        <p>
-            RS485 is often used in industrial networks and protocols such as MODBUS for communication between devices like programmable logic controllers (PLCs), sensors, and actuators.
-        </p>
+    // IoT layers stagger
+    document.querySelectorAll('.iot-layer').forEach((l,i) => {
+      l.style.transitionDelay = i * 0.1 + 's';
+      io.observe(l);
+    });
 
-        <h2>RS485 Standards</h2>
-        <p>
-            RS485 communication follows a few key standards:
-        </p>
-        <ul>
-            <li><strong>Voltage Levels:</strong> RS485 uses differential voltage levels, typically between -7V and +12V. A difference of at least 2V between the differential pair (A and B) is required for reliable data transmission.</li>
-            <li><strong>Transmission Distance:</strong> RS485 can communicate over long distances—up to 4,000 feet (1,200 meters) under ideal conditions.</li>
-            <li><strong>Multi-Point Configuration:</strong> RS485 supports a multi-drop system, allowing up to 32 devices to share the same bus for communication. This is why it's ideal for industrial control systems.</li>
-            <li><strong>Baud Rate:</strong> RS485 supports data rates from 300 bps to 10 Mbps, making it flexible depending on the application.</li>
-        </ul>
+    // app cards stagger
+    document.querySelectorAll('.app-card').forEach((c,i) => {
+      c.style.transitionDelay = i * 0.08 + 's';
+      io.observe(c);
+    });
 
-        <h2>RS485 Pin Description</h2>
-        <p>
-            The typical RS485 bus consists of the following two wires:
-        </p>
-        <ul>
-            <li><strong>A (Non-inverting)</strong>: The positive signal line, which carries the positive side of the differential signal.</li>
-            <li><strong>B (Inverting)</strong>: The negative signal line, which carries the negative side of the differential signal.</li>
-            <li><strong>Ground (GND):</strong> Common ground reference for the devices on the network.</li>
-        </ul>
+    // video cards stagger
+    document.querySelectorAll('.video-card').forEach((c,i) => {
+      c.style.transitionDelay = i * 0.12 + 's';
+      io.observe(c);
+    });
 
-        <h2>What is MODBUS?</h2>
-        <p>
-            **MODBUS** is a communication protocol used for transmitting data between electronic devices in industrial applications. It was developed by Modicon (now Schneider Electric) in 1979 and has become one of the most widely used protocols in automation systems. MODBUS operates in a client-server architecture (also called master-slave), where a master device (e.g., a PLC or computer) controls the communication, and the slave devices respond to requests from the master.
-        </p>
+    // more-cards
+    document.querySelectorAll('.more-card').forEach((c,i) => {
+      c.style.transitionDelay = i * 0.1 + 's';
+      io.observe(c);
+    });
 
-        <h2>MODBUS Standards</h2>
-        <p>
-            MODBUS is a simple protocol and supports both serial communication (RS485, RS232) and Ethernet communication (MODBUS TCP). The most common MODBUS versions are:
-        </p>
-        <ul>
-            <li><strong>MODBUS RTU (Remote Terminal Unit):</strong> The standard binary format for serial communication over RS485 or RS232. It is widely used in industrial systems.</li>
-            <li><strong>MODBUS ASCII:</strong> A text-based version of MODBUS used in serial communication. It is less efficient than MODBUS RTU due to the larger message size but is still used in certain systems.</li>
-            <li><strong>MODBUS TCP:</strong> This is MODBUS over Ethernet. It uses TCP/IP protocols for communication over a local area network (LAN) and is used for higher-speed communication.</li>
-        </ul>
+    // comparison table rows
+    document.querySelectorAll('.proto-table tr').forEach((r,i) => {
+      r.style.transitionDelay = i * 0.07 + 's';
+      io.observe(r);
+    });
 
-        <h2>MODBUS Packet Structure</h2>
-        <p>
-            MODBUS messages consist of the following fields:
-        </p>
-        <ul>
-            <li><strong>Slave Address:</strong> The unique address of the slave device. This is typically one byte in length.</li>
-            <li><strong>Function Code:</strong> A byte indicating the type of action to be performed by the slave, such as reading or writing data.</li>
-            <li><strong>Data:</strong> The actual data being transmitted. The length of the data field depends on the function code and the type of request (e.g., a read request or write request).</li>
-            <li><strong>CRC (Cyclic Redundancy Check):</strong> A 16-bit checksum used to verify the integrity of the message. It is calculated over the slave address, function code, and data fields and is used by the receiver to check for errors.</li>
-        </ul>
-        <p>
-            A typical MODBUS RTU frame would look like this:
-        </p>
-        <pre><code>Slave Address | Function Code | Data | CRC</code></pre>
+    // course stat items
+    document.querySelectorAll('.cs-item').forEach((c,i) => {
+      c.classList.add('anim-card');
+      c.style.transitionDelay = i * 0.1 + 's';
+      io.observe(c);
+    });
 
-        <h2>RS485 + MODBUS in Industrial Communication</h2>
-        <p>
-            **RS485** and **MODBUS** are commonly used together in industrial automation systems. RS485 provides the physical layer for the network, allowing for reliable, long-distance communication over a differential pair of wires. On top of this, the MODBUS protocol is used for higher-level communication, allowing devices to exchange data, issue commands, and receive responses. This combination is especially powerful for applications like process control, manufacturing, and building automation systems.
-        </p>
+  })();
 
-        <h2>RS485 + MODBUS Pin Description</h2>
-        <p>
-            For RS485-based communication with MODBUS, the physical connections typically consist of:
-        </p>
-        <ul>
-            <li><strong>A (Non-inverting signal):</strong> This is one of the differential signal lines for data transmission.</li>
-            <li><strong>B (Inverting signal):</strong> This is the second differential signal line for data transmission.</li>
-            <li><strong>Ground (GND):</strong> The reference ground for all devices connected to the RS485 bus.</li>
-            <li><strong>Termination Resistor:</strong> A termination resistor is often placed at both ends of the bus to prevent reflections and signal degradation, particularly over long distances.</li>
-        </ul>
-
-        <h2>Applications of RS485 and MODBUS</h2>
-        <p>
-            RS485 and MODBUS are used in a wide variety of industries, including:
-        </p>
-        <ul>
-            <li><strong>Industrial Automation:</strong> Connecting sensors, actuators, controllers, and PLCs in factories and plants.</li>
-            <li><strong>Building Automation:</strong> Used for controlling lighting, HVAC systems, and security devices.</li>
-            <li><strong>Energy Management:</strong> Widely used for communication with energy meters, solar power inverters, and other energy management systems.</li>
-            <li><strong>Transportation Systems:</strong> Used in railways, traffic control, and other transportation-related infrastructure.</li>
-        </ul>
-<div class="example">
-            <p><strong>Example: Sending MODBUS Data Over RS485</strong></p>
-            <code>
-                #include &lt;ModbusRtu.h&gt; <br>
-                Modbus master(0, Serial, 0); <br>
-                void setup() { <br>
-                &nbsp;&nbsp;Serial.begin(9600); <br>
-                &nbsp;&nbsp;master.begin(9600); <br>
-                } <br>
-                void loop() { <br>
-                &nbsp;&nbsp;master.poll(); <br>
-                }
-            </code>
-        </div>
-        <h2>Conclusion</h2>
-        <p>
-            The combination of **RS485** and **MODBUS** provides a robust, reliable, and cost-effective solution for industrial communication. RS485 enables long-distance, noise-resistant data transmission, while MODBUS provides an easy-to-implement, standardized protocol for communication. Together, they are commonly used in applications ranging from industrial automation and energy management to building systems and transportation. By understanding the standards, packet structure, and pin descriptions of both protocols, you can design efficient and scalable systems for a variety of industrial use cases.
-        </p>
-
-        <h2>Conclusion </h2>
-        <p>
-            Understanding different communication protocols like I2C, UART, SPI, LIN, and RS485/MODBUS is essential for embedded system design. Each protocol has specific advantages and use cases, making them suitable for different applications in industrial, automotive, and embedded electronics.
-        </p>
-    </article>
-
-    </main>
-    <footer>
-        <p>&copy; 2025 Your Name. All Rights Reserved.<a href="../blogs.html">Back to Blog</a></p>
-    </footer>
+</script>
 </body>
 </html>

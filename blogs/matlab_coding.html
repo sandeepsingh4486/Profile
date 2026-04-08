@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MATLAB for Engineers — Video Course — Sandeep Singh R</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#0a0f1e;--navy2:#111827;--card:#151d30;--border:#1e2d45;--gold:#f0a500;--gold2:#ffc73a;--teal:#00c9a7;--text:#e2e8f0;--muted:#8898aa;--white:#ffffff;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+    #rp{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));z-index:200;width:0;transition:width 0.1s linear;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 5%;background:rgba(10,15,30,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--white);text-decoration:none;} .nav-logo span{color:var(--gold);}
+    .nav-links{display:flex;gap:1.6rem;list-style:none;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:0.86rem;font-weight:500;transition:color 0.2s;position:relative;}
+    .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--gold);transition:width 0.3s;}
+    .nav-links a:hover{color:var(--white);} .nav-links a:hover::after,.nav-links a.active::after{width:100%;} .nav-links a.active{color:var(--gold);}
+    .nav-cta{background:var(--gold)!important;color:var(--navy)!important;padding:0.4rem 1rem;border-radius:6px;font-weight:700!important;} .nav-cta::after{display:none!important;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;} .hamburger span{display:block;width:22px;height:2px;background:var(--white);}
+    .mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;background:var(--navy2);border-bottom:1px solid var(--border);padding:1.5rem 5%;z-index:99;flex-direction:column;gap:1.2rem;}
+    .mobile-menu a{color:var(--text);text-decoration:none;font-size:1rem;} .mobile-menu.open{display:flex;}
+    /* PAGE LAYOUT */
+    .page-wrap{max-width:1100px;margin:0 auto;padding:5.5rem 5% 4rem;position:relative;z-index:1;}
+    /* HERO */
+    .course-hero{display:grid;grid-template-columns:1fr 320px;gap:2.5rem;align-items:start;margin-bottom:3rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border);}
+    .article-cat{display:inline-flex;font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:50px;margin-bottom:0.9rem;background:rgba(239,68,68,0.1);color:#fca5a5;border:1px solid rgba(239,68,68,0.25);}
+    h1.article-title{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,3.5vw,2.4rem);font-weight:800;color:var(--white);letter-spacing:-1px;line-height:1.15;margin-bottom:0.9rem;}
+    .article-excerpt{font-size:0.95rem;color:var(--muted);line-height:1.8;margin-bottom:1.2rem;}
+    .a-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.2rem;}
+    .atag{font-size:0.7rem;padding:0.18rem 0.6rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);border-radius:4px;}
+    .course-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;}
+    .cs-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0.9rem;text-align:center;}
+    .cs-num{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--gold);}
+    .cs-label{font-size:0.72rem;color:var(--muted);margin-top:0.2rem;}
+    /* COURSE SIDEBAR */
+    .course-info-card{background:var(--card);border:1px solid rgba(240,165,0,0.2);border-radius:16px;padding:1.5rem;position:relative;overflow:hidden;}
+    .course-info-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));}
+    .ci-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--white);margin-bottom:1rem;}
+    .ci-list{list-style:none;display:flex;flex-direction:column;gap:0.6rem;}
+    .ci-list li{display:flex;align-items:flex-start;gap:0.6rem;font-size:0.82rem;color:var(--muted);}
+    .ci-list li::before{content:'✓';color:var(--teal);font-weight:700;flex-shrink:0;}
+    /* SECTION TITLES */
+    .sec-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;color:var(--white);margin-bottom:0.4rem;}
+    .sec-sub{color:var(--muted);font-size:0.88rem;margin-bottom:1.8rem;}
+    .divider{width:48px;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:2px;margin-bottom:1rem;}
+    /* VIDEO GRID */
+    .videos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-bottom:3rem;}
+    .video-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all 0.3s;}
+    .video-card:hover{border-color:rgba(240,165,0,0.3);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.3);}
+    .video-thumb{position:relative;padding-top:56.25%;background:var(--navy);}
+    .video-thumb iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+    .video-body{padding:1.1rem 1.2rem;}
+    .ch-num{font-size:0.68rem;font-weight:700;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.3rem;}
+    .ch-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.92rem;color:var(--white);margin-bottom:0.3rem;line-height:1.3;}
+    .ch-desc{font-size:0.78rem;color:var(--muted);line-height:1.5;}
+    /* TOPICS LIST */
+    .topics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.8rem;margin-bottom:3rem;}
+    .topic-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0.9rem 1rem;display:flex;align-items:center;gap:0.8rem;transition:border-color 0.25s;}
+    .topic-item:hover{border-color:rgba(0,201,167,0.3);}
+    .ti-icon{font-size:1.3rem;flex-shrink:0;}
+    .ti-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.84rem;color:var(--white);}
+    .ti-desc{font-size:0.74rem;color:var(--muted);}
+    /* AUTHOR */
+    .author-bio{background:var(--card);border:1px solid rgba(240,165,0,0.2);border-radius:16px;padding:1.4rem;display:flex;gap:1.1rem;align-items:center;margin-bottom:2rem;}
+    .author-photo{width:65px;height:65px;border-radius:50%;border:2px solid var(--gold);flex-shrink:0;background:linear-gradient(135deg,var(--gold),var(--teal));}
+    .author-name{font-family:'Syne',sans-serif;font-weight:700;color:var(--white);font-size:0.92rem;margin-bottom:0.15rem;}
+    .author-role{color:var(--gold);font-size:0.75rem;font-weight:600;margin-bottom:0.35rem;}
+    .author-desc{color:var(--muted);font-size:0.8rem;line-height:1.6;}
+    .more-blogs{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+    .more-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-decoration:none;color:inherit;transition:all 0.25s;display:block;}
+    .more-card:hover{border-color:rgba(240,165,0,0.3);transform:translateY(-3px);}
+    .more-icon{font-size:1.3rem;margin-bottom:0.4rem;} .more-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;color:var(--white);}
+    footer{background:var(--navy);border-top:1px solid var(--border);padding:1.8rem 5%;text-align:center;color:var(--muted);font-size:0.8rem;position:relative;z-index:1;}
+    footer a{color:var(--gold);text-decoration:none;} footer p+p{margin-top:0.3rem;}
+    .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--gold);color:var(--navy);width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;z-index:99;opacity:0;transform:translateY(10px);transition:all 0.3s;text-decoration:none;}
+    .scroll-top.visible{opacity:1;transform:translateY(0);}
+    @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.course-hero{grid-template-columns:1fr;}.videos-grid{grid-template-columns:1fr;}.topics-grid{grid-template-columns:1fr;}}
+    @media(max-width:600px){.more-blogs{grid-template-columns:1fr;}.course-stats{grid-template-columns:repeat(3,1fr);}}
+  
+    /* ── SCROLL ANIMATIONS ── */
+    @keyframes slideInLeft{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes slideInRight{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes slideInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes popIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+    @keyframes glowPulse{0%,100%{box-shadow:0 0 0 0 rgba(240,165,0,0)}50%{box-shadow:0 0 20px 4px rgba(240,165,0,0.15)}}
+    @keyframes borderDraw{from{width:0}to{width:50px}}
+    @keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+    /* heading animations */
+    .anim-h2{opacity:0;transform:translateX(-24px);transition:opacity 0.55s ease,transform 0.55s ease;}
+    .anim-h2.in{opacity:1;transform:translateX(0);}
+    .anim-h3{opacity:0;transform:translateX(-16px);transition:opacity 0.45s ease,transform 0.45s ease;}
+    .anim-h3.in{opacity:1;transform:translateX(0);}
+
+    /* paragraph fade */
+    .anim-p{opacity:0;transform:translateY(16px);transition:opacity 0.5s ease,transform 0.5s ease;}
+    .anim-p.in{opacity:1;transform:translateY(0);}
+
+    /* box pop */
+    .anim-box{opacity:0;transform:scale(0.95);transition:opacity 0.45s ease,transform 0.45s ease;}
+    .anim-box.in{opacity:1;transform:scale(1);}
+
+    /* card stagger */
+    .anim-card{opacity:0;transform:translateY(24px);transition:opacity 0.5s ease,transform 0.5s ease;}
+    .anim-card.in{opacity:1;transform:translateY(0);}
+
+    /* list item stagger */
+    .anim-li{opacity:0;transform:translateX(-12px);transition:opacity 0.4s ease,transform 0.4s ease;}
+    .anim-li.in{opacity:1;transform:translateX(0);}
+
+    /* code block slide */
+    .anim-code{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease;}
+    .anim-code.in{opacity:1;transform:translateY(0);}
+
+    /* glow on hover for h2 */
+    .article-body h2:hover{color:var(--gold2);transition:color 0.3s;}
+    .article-body h3:hover{color:var(--gold2);transition:color 0.3s;}
+
+    /* info/warn box left-border grow on appear */
+    .info-box.in,.warn-box.in{animation:glowPulse 1.2s ease 0.3s;}
+
+    /* proto-header slide */
+    .proto-header{opacity:0;transform:translateX(-20px);transition:opacity 0.5s ease,transform 0.5s ease;}
+    .proto-header.in{opacity:1;transform:translateX(0);}
+
+    /* IoT layers stagger */
+    .iot-layer{opacity:0;transform:translateX(-20px);transition:opacity 0.45s ease,transform 0.45s ease;}
+    .iot-layer.in{opacity:1;transform:translateX(0);}
+
+    /* app cards pop */
+    .app-card{opacity:0;transform:scale(0.88);transition:opacity 0.4s ease,transform 0.4s ease;}
+    .app-card.in{opacity:1;transform:scale(1);}
+
+    /* video cards slide up */
+    .video-card{opacity:0;transform:translateY(28px);transition:opacity 0.5s ease,transform 0.5s ease;}
+    .video-card.in{opacity:1;transform:translateY(0);}
+
+    /* more-blogs cards */
+    .more-card{opacity:0;transform:translateY(16px);transition:opacity 0.4s ease,transform 0.4s ease,border-color 0.25s,box-shadow 0.25s;}
+    .more-card.in{opacity:1;transform:translateY(0);}
+
+    /* table rows */
+    .proto-table tr{opacity:0;transform:translateY(8px);transition:opacity 0.35s ease,transform 0.35s ease;}
+    .proto-table tr.in{opacity:1;transform:translateY(0);}
+
+    /* toc active highlight pulse */
+    .toc-list a.active{animation:glowPulse 2s infinite;}
+
+  </style>
+</head>
+<body>
+<div id="rp"></div>
+<nav id="navbar">
+  <a href="../index.html" class="nav-logo">Sandeep<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../about.html">About</a></li>
+    <li><a href="../experience.html">Experience</a></li>
+    <li><a href="../blogs.html" class="active">Blogs</a></li>
+    <li><a href="../contact.html">Contact</a></li>
+    <li><a href="../documents.html">Documents</a></li>
+  </ul>
+  <div class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mm">
+  <a href="../index.html">Home</a><a href="../about.html">About</a>
+  <a href="../blogs.html">Blogs</a><a href="../contact.html">Contact</a>
+  <a href="../documents.html">Documents</a>
+</div>
+
+<div class="page-wrap">
+
+  <!-- COURSE HERO -->
+  <div class="course-hero">
+    <div>
+      <span class="article-cat">📊 MATLAB</span>
+      <h1 class="article-title">MATLAB for Engineers — Complete Video Course</h1>
+      <p class="article-excerpt">A structured 7-chapter video course covering everything from MATLAB basics to GUI development — taught by Sandeep Singh R, published on Udemy. All 7 chapters are freely accessible below.</p>
+      <div class="a-tags">
+        <span class="atag">MATLAB</span><span class="atag">Signal Processing</span><span class="atag">GUI Development</span>
+        <span class="atag">Matrix Operations</span><span class="atag">Engineering</span>
+      </div>
+      <div class="course-stats">
+        <div class="cs-item"><div class="cs-num">7</div><div class="cs-label">Chapters</div></div>
+        <div class="cs-item"><div class="cs-num">Free</div><div class="cs-label">Access</div></div>
+        <div class="cs-item"><div class="cs-num">All</div><div class="cs-label">Levels</div></div>
+      </div>
+    </div>
+    <div class="course-info-card">
+      <div class="ci-title">What You'll Learn</div>
+      <ul class="ci-list">
+        <li>MATLAB environment and workflow basics</li>
+        <li>Matrix and array operations</li>
+        <li>Mathematical and statistical functions</li>
+        <li>Flow control — loops, conditionals, functions</li>
+        <li>Writing reusable user-defined functions</li>
+        <li>2D/3D plotting and data visualization</li>
+        <li>Building interactive GUI applications</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- VIDEOS -->
+  <div class="divider"></div>
+  <div class="sec-title">Course Chapters</div>
+  <p class="sec-sub">All 7 chapters — watch directly below or open in YouTube.</p>
+
+  <div class="videos-grid">
+
+    <div class="video-card">
+      <div class="video-thumb">
+        <iframe src="https://www.youtube.com/embed/tFLq0SHPw_Q" allowfullscreen loading="lazy" title="Chapter 1 - What is MATLAB"></iframe>
+      </div>
+      <div class="video-body">
+        <div class="ch-num">Chapter 1</div>
+        <div class="ch-title">What is MATLAB?</div>
+        <div class="ch-desc">Introduction to MATLAB — the environment, workspace, command window, and why engineers use it.</div>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb">
+        <iframe src="https://www.youtube.com/embed/0f-WC2Vz9hU" allowfullscreen loading="lazy" title="Chapter 2 - Matrix Operations"></iframe>
+      </div>
+      <div class="video-body">
+        <div class="ch-num">Chapter 2</div>
+        <div class="ch-title">Matrix Operations</div>
+        <div class="ch-desc">Creating matrices, array indexing, transpose, inverse, element-wise operations — the core of MATLAB.</div>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb">
+        <iframe src="https://www.youtube.com/embed/CTZv-5AtDPk" allowfullscreen loading="lazy" title="Chapter 3 - Mathematical Operations"></iframe>
+      </div>
+      <div class="video-body">
+        <div class="ch-num">Chapter 3</div>
+        <div class="ch-title">Mathematical Operations</div>
+        <div class="ch-desc">Built-in math functions, trigonometry, statistics, signal processing operations in MATLAB.</div>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb">
+        <iframe src="https://www.youtube.com/embed/rnTENrxQ9tc" allowfullscreen loading="lazy" title="Chapter 4 - Flow Control"></iframe>
+      </div>
+      <div class="video-body">
+        <div class="ch-num">Chapter 4</div>
+        <div class="ch-title">Flow Control</div>
+        <div class="ch-desc">if/else, for loops, while loops, switch-case — writing logic and control structures in MATLAB scripts.</div>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb">
+        <iframe src="https://www.youtube.com/embed/gJ3vOlqFEPA" allowfullscreen loading="lazy" title="Chapter 5 - User Defined Functions"></iframe>
+      </div>
+      <div class="video-body">
+        <div class="ch-num">Chapter 5</div>
+        <div class="ch-title">User-Defined Functions</div>
+        <div class="ch-desc">Writing reusable .m function files, input/output arguments, function handles, and modular code structure.</div>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb">
+        <iframe src="https://www.youtube.com/embed/2pzjZxWLdBE" allowfullscreen loading="lazy" title="Chapter 6 - Plots in MATLAB"></iframe>
+      </div>
+      <div class="video-body">
+        <div class="ch-num">Chapter 6</div>
+        <div class="ch-title">Plots in MATLAB</div>
+        <div class="ch-desc">2D and 3D plots, subplots, figure formatting, colour maps, and publication-quality visualizations.</div>
+      </div>
+    </div>
+
+    <div class="video-card" style="grid-column:1 / -1; max-width: 540px;">
+      <div class="video-thumb">
+        <iframe src="https://www.youtube.com/embed/kIcky95QOBI" allowfullscreen loading="lazy" title="Chapter 7 - GUI Development"></iframe>
+      </div>
+      <div class="video-body">
+        <div class="ch-num">Chapter 7 — Capstone</div>
+        <div class="ch-title">GUI Development in MATLAB</div>
+        <div class="ch-desc">Building interactive GUI applications using GUIDE and App Designer — buttons, sliders, plots, callbacks. This is what I used professionally for engineering decision dashboards at Microchip.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TOPICS -->
+  <div class="divider"></div>
+  <div class="sec-title">Course Topics</div>
+  <p class="sec-sub">Everything covered across the 7 chapters.</p>
+  <div class="topics-grid">
+    <div class="topic-item"><div class="ti-icon">🖥️</div><div><div class="ti-name">MATLAB Environment</div><div class="ti-desc">IDE, workspace, command window, script files</div></div></div>
+    <div class="topic-item"><div class="ti-icon">🔢</div><div><div class="ti-name">Matrix & Array Ops</div><div class="ti-desc">Core data structure in MATLAB — creation, indexing, operations</div></div></div>
+    <div class="topic-item"><div class="ti-icon">📐</div><div><div class="ti-name">Math Functions</div><div class="ti-desc">Built-in functions for trigonometry, statistics, signal processing</div></div></div>
+    <div class="topic-item"><div class="ti-icon">🔀</div><div><div class="ti-name">Flow Control</div><div class="ti-desc">Loops, conditionals, and control logic in MATLAB</div></div></div>
+    <div class="topic-item"><div class="ti-icon">🧩</div><div><div class="ti-name">Functions</div><div class="ti-desc">Modular code — user-defined functions and function files</div></div></div>
+    <div class="topic-item"><div class="ti-icon">📈</div><div><div class="ti-name">Data Visualization</div><div class="ti-desc">2D/3D plots, subplots, formatted engineering figures</div></div></div>
+    <div class="topic-item"><div class="ti-icon">🖱️</div><div><div class="ti-name">GUI Applications</div><div class="ti-desc">Interactive dashboards and tools with GUIDE / App Designer</div></div></div>
+    <div class="topic-item"><div class="ti-icon">📡</div><div><div class="ti-name">Signal Processing</div><div class="ti-desc">FFT, filtering, and signal analysis workflows</div></div></div>
+  </div>
+
+  <!-- AUTHOR -->
+  <div class="author-bio">
+    <div class="author-photo"></div>
+    <div>
+      <div class="author-name">Sandeep Singh R — Course Instructor</div>
+      <div class="author-role">PMP® | XLRI-Certified PM | MATLAB Expert | Udemy Instructor</div>
+      <div class="author-desc">I've used MATLAB professionally for 10+ years — from NRB acoustic research at PESIT to delivering MATLAB GUI dashboards for Microchip as a consultant. This course distils that experience into practical, engineering-focused lessons. I've taught 100+ students through Udemy and live workshops at MSRIT, BMSIT, and PSR Engineering College.</div>
+    </div>
+  </div>
+
+  <!-- MORE -->
+  <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin-bottom:1rem;">More Articles</div>
+  <div class="more-blogs">
+    <a href="embedded_basics.html" class="more-card"><div class="more-icon">🔌</div><div class="more-title">Embedded Systems Basics</div></a>
+    <a href="communicationprotocol.html" class="more-card"><div class="more-icon">📡</div><div class="more-title">Communication Protocols Guide</div></a>
+    <a href="IOT.html" class="more-card"><div class="more-icon">🌐</div><div class="more-title">IoT Architecture & Applications</div></a>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 <a href="../index.html">Sandeep Singh R</a> · PMP® Certified Project & Product Manager · Bengaluru, India</p>
+  <p><a href="../blogs.html">← Back to all blogs</a></p>
+</footer>
+<a href="#" class="scroll-top" id="st">↑</a>
+<script>
+  const rp=document.getElementById('rp'),st=document.getElementById('st');
+  window.addEventListener('scroll',()=>{
+    const s=document.documentElement;
+    rp.style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%';
+    st.classList.toggle('visible',scrollY>400);
+    document.getElementById('navbar').classList.toggle('scrolled',scrollY>50);
+  });
+
+  /* ── ANIMATION ENGINE ── */
+  (function(){
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(!e.isIntersecting) return;
+        const el = e.target;
+        el.classList.add('in');
+        io.unobserve(el);
+      });
+    }, {threshold: 0.12, rootMargin: '0px 0px -40px 0px'});
+
+    // h2 & h3
+    document.querySelectorAll('.article-body h2').forEach(h => { h.classList.add('anim-h2'); io.observe(h); });
+    document.querySelectorAll('.article-body h3').forEach(h => { h.classList.add('anim-h3'); io.observe(h); });
+    document.querySelectorAll('.article-body h4').forEach(h => { h.classList.add('anim-h3'); io.observe(h); });
+
+    // paragraphs (staggered)
+    document.querySelectorAll('.article-body p').forEach((p,i) => {
+      p.classList.add('anim-p');
+      p.style.transitionDelay = (i % 4) * 0.06 + 's';
+      io.observe(p);
+    });
+
+    // info/warn boxes
+    document.querySelectorAll('.info-box,.warn-box').forEach(b => { b.classList.add('anim-box'); io.observe(b); });
+
+    // code blocks
+    document.querySelectorAll('pre').forEach(c => { c.classList.add('anim-code'); io.observe(c); });
+
+    // list items stagger
+    document.querySelectorAll('.article-body li').forEach((li,i) => {
+      li.classList.add('anim-li');
+      li.style.transitionDelay = (i % 6) * 0.07 + 's';
+      io.observe(li);
+    });
+
+    // protocol headers
+    document.querySelectorAll('.proto-header').forEach((h,i) => {
+      h.style.transitionDelay = i * 0.1 + 's';
+      io.observe(h);
+    });
+
+    // IoT layers stagger
+    document.querySelectorAll('.iot-layer').forEach((l,i) => {
+      l.style.transitionDelay = i * 0.1 + 's';
+      io.observe(l);
+    });
+
+    // app cards stagger
+    document.querySelectorAll('.app-card').forEach((c,i) => {
+      c.style.transitionDelay = i * 0.08 + 's';
+      io.observe(c);
+    });
+
+    // video cards stagger
+    document.querySelectorAll('.video-card').forEach((c,i) => {
+      c.style.transitionDelay = i * 0.12 + 's';
+      io.observe(c);
+    });
+
+    // more-cards
+    document.querySelectorAll('.more-card').forEach((c,i) => {
+      c.style.transitionDelay = i * 0.1 + 's';
+      io.observe(c);
+    });
+
+    // comparison table rows
+    document.querySelectorAll('.proto-table tr').forEach((r,i) => {
+      r.style.transitionDelay = i * 0.07 + 's';
+      io.observe(r);
+    });
+
+    // course stat items
+    document.querySelectorAll('.cs-item').forEach((c,i) => {
+      c.classList.add('anim-card');
+      c.style.transitionDelay = i * 0.1 + 's';
+      io.observe(c);
+    });
+
+  })();
+
+</script>
+</body>
+</html>
