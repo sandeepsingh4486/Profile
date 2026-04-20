@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Safe Load Indicators for Cranes — Sandeep Singh R</title>
+  <meta name="description" content="Technical article on SLI/LMI systems — IS 4573, IEC 61508 SIL 2, dual-channel architecture."/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#0a0f1e;--navy2:#111827;--card:#151d30;--border:#1e2d45;--gold:#f0a500;--gold2:#ffc73a;--teal:#00c9a7;--text:#e2e8f0;--muted:#8898aa;--white:#ffffff;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+    #rp{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2));z-index:200;width:0;transition:width 0.1s linear;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 5%;background:rgba(10,15,30,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--white);text-decoration:none;} .nav-logo span{color:var(--gold);}
+    .nav-links{display:flex;gap:1.6rem;list-style:none;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:0.86rem;font-weight:500;transition:color 0.2s;position:relative;}
+    .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--gold);transition:width 0.3s;}
+    .nav-links a:hover{color:var(--white);} .nav-links a:hover::after,.nav-links a.active::after{width:100%;} .nav-links a.active{color:var(--gold);}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;} .hamburger span{display:block;width:22px;height:2px;background:var(--white);}
+    .mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;background:var(--navy2);border-bottom:1px solid var(--border);padding:1.5rem 5%;z-index:99;flex-direction:column;gap:1.2rem;}
+    .mobile-menu a{color:var(--text);text-decoration:none;font-size:1rem;} .mobile-menu.open{display:flex;}
+    .article-wrap{display:grid;grid-template-columns:240px 1fr;gap:2.5rem;max-width:1200px;margin:0 auto;padding:5.5rem 5% 4rem;align-items:start;position:relative;z-index:1;}
+    .toc-sidebar{position:sticky;top:80px;}
+    .toc-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;margin-bottom:1rem;}
+    .toc-label{font-family:'Syne',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.9rem;}
+    .toc-list{list-style:none;display:flex;flex-direction:column;gap:0.3rem;}
+    .toc-list a{font-size:0.8rem;color:var(--muted);text-decoration:none;padding:0.28rem 0.6rem;border-radius:6px;border-left:2px solid transparent;transition:all 0.2s;display:block;line-height:1.4;}
+    .toc-list a:hover,.toc-list a.active{color:var(--gold);border-left-color:var(--gold);background:rgba(240,165,0,0.06);}
+    .meta-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.1rem;}
+    .meta-row{display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;color:var(--muted);padding:0.35rem 0;border-bottom:1px solid var(--border);} .meta-row:last-child{border-bottom:none;} .meta-row strong{color:var(--text);}
+    .article-cat{display:inline-flex;font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:50px;margin-bottom:0.9rem;background:rgba(240,165,0,0.1);color:var(--gold);border:1px solid rgba(240,165,0,0.25);}
+    h1.article-title{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,3.5vw,2.4rem);font-weight:800;color:var(--white);letter-spacing:-1px;line-height:1.15;margin-bottom:0.9rem;}
+    .article-excerpt{font-size:1rem;color:var(--muted);line-height:1.8;max-width:680px;margin-bottom:1.2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
+    .a-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.5rem;}
+    .atag{font-size:0.7rem;padding:0.18rem 0.6rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);border-radius:4px;}
+    .article-body h2{font-family:'Syne',sans-serif;font-size:1.45rem;font-weight:800;color:var(--white);margin:2.4rem 0 0.9rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);scroll-margin-top:85px;}
+    .article-body h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--gold);margin:1.8rem 0 0.6rem;}
+    .article-body p{color:var(--muted);line-height:1.9;margin-bottom:1rem;font-size:0.95rem;} .article-body p strong{color:var(--text);}
+    .article-body ul,.article-body ol{padding-left:1.5rem;margin-bottom:1.1rem;}
+    .article-body li{color:var(--muted);font-size:0.93rem;line-height:1.8;margin-bottom:0.35rem;} .article-body li strong{color:var(--text);}
+    .info-box{background:rgba(0,201,167,0.06);border-left:3px solid var(--teal);border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin:1.4rem 0;}
+    .info-box p{color:var(--text);margin:0;font-size:0.91rem;}
+    .warn-box{background:rgba(240,165,0,0.06);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin:1.4rem 0;}
+    .warn-box p{color:var(--text);margin:0;font-size:0.91rem;}
+    .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.5rem 0;}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem;text-align:center;}
+    .stat-num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--gold);line-height:1;margin-bottom:0.3rem;}
+    .stat-label{font-size:0.78rem;color:var(--muted);}
+    .data-table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.84rem;overflow-x:auto;display:block;}
+    .data-table th{background:rgba(240,165,0,0.08);color:var(--gold);font-family:'Syne',sans-serif;font-weight:700;padding:0.65rem 0.9rem;text-align:left;border:1px solid var(--border);}
+    .data-table td{color:var(--muted);padding:0.55rem 0.9rem;border:1px solid var(--border);vertical-align:top;} .data-table td strong{color:var(--text);}
+    .data-table tr:hover td{background:rgba(255,255,255,0.02);}
+    .crane-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;margin:1.5rem 0;}
+    .crane-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;transition:all 0.3s;}
+    .crane-card:hover{border-color:rgba(240,165,0,0.35);transform:translateY(-3px);}
+    .crane-icon{font-size:2rem;margin-bottom:0.7rem;}
+    .crane-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;color:var(--white);margin-bottom:0.3rem;}
+    .crane-sub{font-size:0.8rem;color:var(--gold);margin-bottom:0.6rem;}
+    .crane-desc{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+    .crane-specs{margin-top:0.8rem;display:flex;flex-wrap:wrap;gap:0.4rem;}
+    .cspec{font-size:0.7rem;padding:0.15rem 0.5rem;background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.2);color:var(--teal);border-radius:4px;}
+    .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;}
+    .compare-col{background:var(--card);border-radius:12px;padding:1.3rem;border:1px solid var(--border);}
+    .compare-col.danger{border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.04);}
+    .compare-col.safe{border-color:rgba(0,201,167,0.3);background:rgba(0,201,167,0.04);}
+    .compare-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;margin-bottom:0.8rem;}
+    .compare-col.danger .compare-title{color:#fca5a5;}
+    .compare-col.safe .compare-title{color:var(--teal);}
+    .compare-list{list-style:none;display:flex;flex-direction:column;gap:0.5rem;}
+    .compare-list li{font-size:0.83rem;color:var(--muted);padding-left:1.2rem;position:relative;}
+    .compare-col.danger .compare-list li::before{content:'✕';position:absolute;left:0;color:#ef4444;}
+    .compare-col.safe .compare-list li::before{content:'✓';position:absolute;left:0;color:var(--teal);}
+    hr.sep{height:1px;background:linear-gradient(90deg,var(--gold),var(--teal),transparent);margin:2.5rem 0;border:none;}
+    .author-bio{background:var(--card);border:1px solid rgba(240,165,0,0.2);border-radius:16px;padding:1.4rem;display:flex;gap:1.1rem;align-items:center;margin-top:2.5rem;}
+    .author-photo{width:65px;height:65px;border-radius:50%;border:2px solid var(--gold);flex-shrink:0;object-fit:cover;background:linear-gradient(135deg,var(--gold),var(--teal));}
+    .author-name{font-family:'Syne',sans-serif;font-weight:700;color:var(--white);font-size:0.92rem;margin-bottom:0.15rem;}
+    .author-role{color:var(--gold);font-size:0.75rem;font-weight:600;margin-bottom:0.35rem;}
+    .author-desc{color:var(--muted);font-size:0.8rem;line-height:1.6;}
+    .more-blogs{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.2rem;}
+    .more-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-decoration:none;color:inherit;transition:all 0.25s;display:block;}
+    .more-card:hover{border-color:rgba(240,165,0,0.3);transform:translateY(-3px);}
+    .more-icon{font-size:1.3rem;margin-bottom:0.4rem;} .more-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;color:var(--white);}
+    footer{background:var(--navy);border-top:1px solid var(--border);padding:1.8rem 5%;text-align:center;color:var(--muted);font-size:0.8rem;position:relative;z-index:1;}
+    footer a{color:var(--gold);text-decoration:none;} footer p+p{margin-top:0.3rem;}
+    .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--gold);color:var(--navy);width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;z-index:99;opacity:0;transform:translateY(10px);transition:all 0.3s;text-decoration:none;}
+    .scroll-top.visible{opacity:1;transform:translateY(0);}
+    .anim-h2{opacity:0;transform:translateX(-24px);transition:opacity 0.55s ease,transform 0.55s ease;} .anim-h2.in{opacity:1;transform:translateX(0);}
+    .anim-h3{opacity:0;transform:translateX(-16px);transition:opacity 0.45s ease,transform 0.45s ease;} .anim-h3.in{opacity:1;transform:translateX(0);}
+    .anim-p{opacity:0;transform:translateY(16px);transition:opacity 0.5s ease,transform 0.5s ease;} .anim-p.in{opacity:1;transform:translateY(0);}
+    .anim-li{opacity:0;transform:translateX(-12px);transition:opacity 0.4s ease,transform 0.4s ease;} .anim-li.in{opacity:1;transform:translateX(0);}
+    .info-box,.warn-box{opacity:0;transform:scale(0.97);transition:opacity 0.45s ease,transform 0.45s ease;} .info-box.in,.warn-box.in{opacity:1;transform:scale(1);}
+    .stat-card{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease;} .stat-card.in{opacity:1;transform:translateY(0);}
+    .crane-card{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease,border-color 0.3s;} .crane-card.in{opacity:1;transform:translateY(0);}
+    .data-table tr{opacity:0;transform:translateY(8px);transition:opacity 0.35s ease,transform 0.35s ease;} .data-table tr.in{opacity:1;transform:translateY(0);}
+    .more-card{opacity:0;transform:translateY(16px);transition:opacity 0.4s ease,transform 0.4s ease,border-color 0.25s;} .more-card.in{opacity:1;transform:translateY(0);}
+    @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.article-wrap{grid-template-columns:1fr;padding-top:5rem;}.toc-sidebar{display:none;}.crane-grid{grid-template-columns:1fr;}.compare-grid{grid-template-columns:1fr;}.stat-row{grid-template-columns:repeat(3,1fr);}}
+    @media(max-width:600px){.more-blogs{grid-template-columns:1fr;}.stat-row{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<div id="rp"></div>
+<nav id="navbar">
+  <a href="../index.html" class="nav-logo">Sandeep<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../about.html">About</a></li>
+    <li><a href="../experience.html">Experience</a></li>
+    <li><a href="../blogs.html" class="active">Blogs</a></li>
+    <li><a href="../contact.html">Contact</a></li>
+    <li><a href="../documents.html">Documents</a></li>
+  </ul>
+  <div class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mm">
+  <a href="../index.html">Home</a><a href="../about.html">About</a>
+  <a href="../blogs.html">Blogs</a><a href="../contact.html">Contact</a>
+  <a href="../documents.html">Documents</a>
+</div>
+
+<div class="article-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-card">
+      <div class="toc-label">Contents</div>
+      <ul class="toc-list">
+        <li><a href="#intro">§01 Introduction</a></li>
+        <li><a href="#impact">§02 Safety Impact</a></li>
+        <li><a href="#architecture">§03 System Architecture</a></li>
+        <li><a href="#overload">§04 Overload Protection</a></li>
+        <li><a href="#platforms">§05 Crane Types</a></li>
+        <li><a href="#business">§06 Business Case</a></li>
+        <li><a href="#standards">§07 Standards</a></li>
+      </ul>
+    </div>
+    <div class="meta-card">
+      <div class="meta-row"><span>📂</span><strong>Industrial Safety</strong></div>
+      <div class="meta-row"><span>🏷</span><strong>Article 01 of 02</strong></div>
+      <div class="meta-row"><span>✍️</span><strong>Sandeep Singh R, PMP®</strong></div>
+      <div class="meta-row"><span>📜</span><strong>Patent 453281-001</strong></div>
+    </div>
+  </aside>
+
+  <main>
+    <span class="article-cat">🏗️ Article 01 · Industrial Safety Systems · </span>
+    <h1 class="article-title">Safe Load Indicators for Cranes:<br>The Engineering Behind Every Safe Lift</h1>
+    <p class="article-excerpt">A comprehensive technical article on SLI/LMI systems — from IS 4573 and IEC 61508 SIL 2 architecture to sensor design, load chart implementation.</p>
+    <div class="a-tags">
+      <span class="atag">IS 4573</span><span class="atag">EN 13000</span><span class="atag">IEC 61508</span>
+      <span class="atag">SIL 2</span><span class="atag">Dual-Channel</span><span class="atag"></span>
+      <span class="atag">STM32</span><span class="atag">Safety-Critical</span>
+    </div>
+
+    <div class="article-body">
+
+      <h2 id="intro">§01 — Introduction</h2>
+      <p>Every crane lift reduces to a single number: <strong>actual load as a percentage of rated capacity</strong>. A Safe Load Indicator makes that number visible, audible, and — above 100% — physically impossible to ignore.</p>
+      <p>A <strong>Safe Load Indicator (SLI)</strong> — also called a Load Moment Indicator (LMI) or Rated Capacity Indicator (RCI) — continuously compares the actual load moment against the crane's certified rated capacity envelope. When load approaches 90%, it warns. At 100%, it stops the hoist. No bypass. No override.</p>
+      <p>In India, fitment of a certified SLI is mandatory under <strong>IS 4573</strong> for all mobile cranes. Globally, <strong>EN 13000</strong> (Europe), <strong>ASME B30.5</strong> (USA), and <strong>ISO 10245</strong> mandate SLI/LMI on all modern lifting equipment.</p>
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-num">80%+</div><div class="stat-label">of crane upsets caused by exceeding rated capacity</div></div>
+        <div class="stat-card"><div class="stat-num">85%</div><div class="stat-label">reduction in crane accidents after SLI fitment — ILO data</div></div>
+      </div>
+
+      <h2 id="impact">§02 — Before vs After: What SLI Changes on Every Site</h2>
+      <div class="compare-grid">
+        <div class="compare-col danger">
+          <div class="compare-title">⚠ Before SLI — At Risk</div>
+          <ul class="compare-list">
+            <li>No load measurement — unknown load at all times</li>
+            <li>Guesswork and visual estimation only</li>
+            <li>Overload possible on any lift</li>
+            <li>Boom failure and structural damage risk</li>
+            <li>No data logging — no audit trail</li>
+            <li>Non-compliant with IS 4573 / EN 13000</li>
+            <li>Operator life at risk on every shift</li>
+            <li>Insurance cover void on site incidents</li>
+          </ul>
+        </div>
+        <div class="compare-col safe">
+          <div class="compare-title">✓ After SLI — Protected</div>
+          <ul class="compare-list">
+            <li>Live load display confirmed safe at rated %</li>
+            <li>Auto hoist inhibit relay at 100% — hardwired</li>
+            <li>Audible alarm from 90% pre-warning threshold</li>
+            <li>IS 4573 / EN 13000 / ASME B30 compliant</li>
+            <li>256 MB data log — events timestamped</li>
+            <li>Full audit trail — USB and Bluetooth export</li>
+            <li>Operator fully protected on every lift</li>
+            <li>Insurance and site liability protected</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2 id="architecture">§03 — System Architecture</h2>
+      <p>Every SLI is built around a four-layer architecture: <strong>Sensors → Signal Conditioner → ECU → Outputs</strong>. Together they achieve the accuracy, reliability, and safety integrity required by IEC 61508 SIL 2.</p>
+      <h3>Sensor Subsystem</h3>
+      <table class="data-table">
+        <tr><th>Sensor</th><th>Specification</th><th>Output</th><th>Standard</th></tr>
+        <tr><td><strong>Load Cell / Load Pin</strong></td><td>0–100 t · ±0.5% FS · IP67</td><td>4–20 mA</td><td>IS 4573 / ISO 10245</td></tr>
+        <tr><td><strong>Boom Angle Sensor</strong></td><td>0–90° · 0.1° · MEMS · −40/+85°C</td><td>CAN Bus</td><td>IS 4573 / EN 13000</td></tr>
+        <tr><td><strong>Boom Length Encoder</strong></td><td>Absolute / incremental</td><td>Pulse / CAN</td><td>EN 13000</td></tr>
+        <tr><td><strong>Slew Encoder</strong></td><td>0–360° · sector derating</td><td>CAN Bus</td><td>ASME B30.5</td></tr>
+        <tr><td><strong>Wind Anemometer</strong></td><td>0–60 m/s · cup or ultrasonic</td><td>RS-485</td><td>EN 13000</td></tr>
+        <tr><td><strong>Outrigger Switches</strong></td><td>Hall-effect · 4-point</td><td>24V discrete</td><td>ISO 10245-3</td></tr>
+      </table>
+      <h3>ECU Core — SLI-2000 PRO</h3>
+      <p><strong>32-bit processor</strong> · 256 MB non-volatile data log · CAN Bus + RS-485 I/O · <strong>24V DC hardwired motion cut relay</strong> · Bilinear interpolation on certified load chart tables · CRC32 integrity protection · Operating range −40°C to +85°C · IP65 · EMC: IEC 61000-4-x</p>
+      <div class="info-box"><p>💡 <strong>SIL 2 Architecture:</strong> The SLI-2000 uses a dual-channel hardware architecture with independent watchdog timers and cross-channel monitoring — meeting IEC 61508 SIL 2 requirements. A single-point hardware failure cannot result in loss of overload protection.</p></div>
+
+      <h2 id="overload">§04 — Overload Protection in Action</h2>
+      <p>At <strong>90% rated capacity</strong> the operator hears a pre-warning. At <strong>100%</strong> the motion cut relay interrupts the hoist circuit physically — hardwired, no software bypass possible.</p>
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-num">22.4t</div><div class="stat-label">Actual load attempted</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:#ef4444">140%</div><div class="stat-label">Load percentage — +6.4t excess</div></div>
+        <div class="stat-card"><div class="stat-num">16.0t</div><div class="stat-label">Rated capacity at 28.6m radius</div></div>
+      </div>
+      <div class="warn-box"><p>⚠ <strong>OVERLOAD — HOIST MOTION INHIBITED:</strong> At 14:32:07 the SLI-2000 logged overload event #14. Hoist up/down disabled by hardwired relay. Slew and travel remain operational. 14 timestamped overload events gives the safety officer pattern intelligence — without the data log, this evidence disappears. With it, you act before the 15th alarm is a collapse.</p></div>
+
+      <h2 id="platforms">§05 — Five Crane Types, One Custom Solution Each</h2>
+      <p>A single SLI design cannot serve all crane platforms:</p>
+      <div class="crane-grid">
+        <div class="crane-card">
+          <div class="crane-icon">🏗️</div>
+          <div class="crane-name">Tower Crane — SLI-2000</div>
+          <div class="crane-sub">Fixed-mast · Horizontal jib · Top-slewing · Up to 25t</div>
+          <div class="crane-desc">Load cell at hook block, pendulum boom angle sensor, trolley position via rope encoder. Anti-two-block and wind monitoring included.</div>
+          <div class="crane-specs"><span class="cspec">IS 4573</span><span class="cspec">EN 13000</span><span class="cspec">FEM 1.001</span></div>
+        </div>
+        <div class="crane-card">
+          <div class="crane-icon">🚛</div>
+          <div class="crane-name">Telescopic Crane — LMI</div>
+          <div class="crane-sub">Mobile · All-terrain · Hydraulic boom · 25–500t</div>
+          <div class="crane-desc">Load moment calculation with boom length + angle sensing, jib/fly-jib detection, outrigger span monitoring, auto duty chart selection.</div>
+          <div class="crane-specs"><span class="cspec">IS 4573</span><span class="cspec">EN 13000</span><span class="cspec">BS 7262</span></div>
+        </div>
+        <div class="crane-card">
+          <div class="crane-icon">🚐</div>
+          <div class="crane-name">Truck Mounted Crane (TMC)</div>
+          <div class="crane-sub">Knuckle Boom · Outrigger monitoring · 2–30t</div>
+          <div class="crane-desc">Dual-knuckle angle sensing, outrigger deploy interlock, slew zone restriction, rear vs. side duty charts, OEM CAN bus integration.</div>
+          <div class="crane-specs"><span class="cspec">IS 4573</span><span class="cspec">EN 12999</span><span class="cspec">LOLER</span></div>
+        </div>
+        <div class="crane-card">
+          <div class="crane-icon">🏎️</div>
+          <div class="crane-name">Pick and Carry Crane (PNC)</div>
+          <div class="crane-sub">Rubber Tyred · Travel with suspended load · 5–50t</div>
+          <div class="crane-desc">Tipping load monitoring, travel-with-load SLI, stability margin display, travel speed interlock (max 5 km/h), anti-tip alarm + cutout.</div>
+          <div class="crane-specs"><span class="cspec">IS 4573</span><span class="cspec">ASME B30.5</span></div>
+        </div>
+        <div class="crane-card">
+          <div class="crane-icon">🏭</div>
+          <div class="crane-name">EOT Crane — Electric Overhead Travelling</div>
+          <div class="crane-sub">Double Girder · Duty cycle monitoring · 1–500t</div>
+          <div class="crane-desc">Overload relay at 110%, hoist limit switch, anti-snag/anti-collision, trolley/bridge position encoder, FEM 1.001 duty class cycle counting, SCADA/PLC integration.</div>
+          <div class="crane-specs"><span class="cspec">IS 3177</span><span class="cspec">FEM 1.001</span><span class="cspec">IEC 60204</span><span class="cspec">M1–M8</span></div>
+        </div>
+        <div class="crane-card" style="background:rgba(240,165,0,0.04);border-color:rgba(240,165,0,0.2);">
+          <div class="crane-icon">📊</div>
+          <div class="crane-name">EOT Duty Cycle Counting — Why It Matters</div>
+          <div class="crane-sub">FEM 1.001 M5 = up to 1.25 million load cycles</div>
+          <div class="crane-desc">At 148 lifts today, the SLI's cycle counter tracks cumulative usage. When the crane approaches its certified cycle limit, the system alerts maintenance — preventing structural fatigue failures that visual inspection will never detect.</div>
+          <div class="crane-specs"><span class="cspec">148 lifts/day tracked</span><span class="cspec">Predictive maintenance</span></div>
+        </div>
+      </div>
+
+      <h2 id="business">§06 — The Business Case: Four Pillars</h2>
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-num">85%</div><div class="stat-label">Reduction in crane overload accidents — ILO industry data</div></div>
+        <div class="stat-card"><div class="stat-num">+30%</div><div class="stat-label">Increase in lift productivity — operators work at rated load</div></div>
+        <div class="stat-card"><div class="stat-num">256 MB</div><div class="stat-label">Onboard event storage — USB & Bluetooth, timestamped</div></div>
+      </div>
+      <ul>
+        <li><strong>Safety:</strong> Hoist inhibit on overload · Audible + visual alarm · Protects operators and riggers · Real-time load monitoring</li>
+        <li><strong>Compliance:</strong> IS 4573 / EN 13000 / ASME B30 / ISO 10245 · Factory Inspectorate approved · Site liability and insurance protection</li>
+        <li><strong>Efficiency:</strong> Accurate load readings eliminate under-utilisation · Faster lift planning · Reduced cycle time</li>
+        <li><strong>Data:</strong> Full operational history · Date/time stamped events · USB & Bluetooth export · Maintenance scheduling · Incident reconstruction</li>
+      </ul>
+
+      <h2 id="standards">§07 — Regulatory Framework</h2>
+      <table class="data-table">
+        <tr><th>Standard</th><th>Jurisdiction</th><th>Key Requirement</th><th>Authority</th></tr>
+        <tr><td><strong>IS 4573</strong></td><td>India</td><td>Mandatory SLI · alarm 90% · cutout 100%</td><td>DGMS · Director of Factories</td></tr>
+        <tr><td><strong>IS 3177</strong></td><td>India (EOT)</td><td>Overload relay at 110% · duty cycle counting</td><td>Factory Inspectorate · BIS</td></tr>
+        <tr><td><strong>EN 13000:2010+A1</strong></td><td>Europe (CE)</td><td>RCI mandatory on all mobile cranes</td><td>TÜV · DNV-GL · Bureau Veritas</td></tr>
+        <tr><td><strong>ISO 10245-1…5</strong></td><td>International</td><td>Core LMI architecture · ±2% FS accuracy</td><td>National standards bodies</td></tr>
+        <tr><td><strong>ASME B30.5</strong></td><td>USA</td><td>LMI required on all mobile cranes &gt;3t</td><td>OSHA</td></tr>
+        <tr><td><strong>IEC 61508:2010</strong></td><td>Global</td><td>Functional safety lifecycle · SIL 2 target</td><td>TÜV · Exida assessors</td></tr>
+      </table>
+     
+      <hr class="sep"/>
+      <div class="author-bio">
+        <div class="author-photo"></div>
+        <div>
+          <div class="author-name">Sandeep Singh R — Project Manager, </div>
+          <div class="author-role">PMP® · PMI #11304027 · Design Patent 453281-001 · EFY Best Design Award</div>
+          <div class="author-desc">Led end-to-end delivery of SLI systems at Klug Avalon Mechatronics — requirements through hardware/firmware design, calibration, certification, and client deployment. 8-member team, 40% crane downtime reduction, 30,000+ systems in field.</div>
+        </div>
+      </div>
+      <div style="margin-top:2.5rem;">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin-bottom:1rem;">More Articles</div>
+        <div class="more-blogs">
+          <a href="article-afcs-lru.html" class="more-card"><div class="more-icon">✈️</div><div class="more-title">AFCS LRU Testing — Article 02</div></a>
+          <a href="embedded_basics.html" class="more-card"><div class="more-icon">🔌</div><div class="more-title">Embedded Systems Basics</div></a>
+          <a href="communicationprotocol.html" class="more-card"><div class="more-icon">📡</div><div class="more-title">Communication Protocols</div></a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <p>© 2025 <a href="../index.html">Sandeep Singh R</a> · PMP® Certified Project & Product Manager · Bengaluru, India</p>
+  <p><a href="../blogs.html">← Back to all blogs</a></p>
+</footer>
+<a href="#" class="scroll-top" id="st">↑</a>
+<script>
+  const rp=document.getElementById('rp'),st=document.getElementById('st');
+  window.addEventListener('scroll',()=>{
+    const s=document.documentElement;
+    rp.style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%';
+    st.classList.toggle('visible',scrollY>400);
+    document.getElementById('navbar').classList.toggle('scrolled',scrollY>50);
+    document.querySelectorAll('.article-body h2').forEach(h=>{
+      const a=document.querySelector('.toc-list a[href="#'+h.id+'"]');
+      if(a)a.classList.toggle('active',h.getBoundingClientRect().top<120);
+    });
+  });
+  const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}}),{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.article-body h2').forEach(h=>{h.classList.add('anim-h2');io.observe(h);});
+  document.querySelectorAll('.article-body h3').forEach(h=>{h.classList.add('anim-h3');io.observe(h);});
+  document.querySelectorAll('.article-body p').forEach((p,i)=>{p.classList.add('anim-p');p.style.transitionDelay=(i%4)*0.06+'s';io.observe(p);});
+  document.querySelectorAll('.info-box,.warn-box').forEach(b=>io.observe(b));
+  document.querySelectorAll('.stat-card').forEach((c,i)=>{c.style.transitionDelay=i*0.1+'s';io.observe(c);});
+  document.querySelectorAll('.crane-card').forEach((c,i)=>{c.style.transitionDelay=i*0.08+'s';io.observe(c);});
+  document.querySelectorAll('.data-table tr').forEach((r,i)=>{r.style.transitionDelay=i*0.06+'s';io.observe(r);});
+  document.querySelectorAll('.more-card').forEach((c,i)=>{c.style.transitionDelay=i*0.1+'s';io.observe(c);});
+  document.querySelectorAll('.article-body li').forEach((l,i)=>{l.classList.add('anim-li');l.style.transitionDelay=(i%6)*0.07+'s';io.observe(l);});
+</script>
+</body>
+</html>

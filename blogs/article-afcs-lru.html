@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AFCS LRU Testing — Civil Avionics — Sandeep Singh R</title>
+  <meta name="description" content="Technical article on AFCS LRU-level testing — DO-178C, DO-160G, HIL simulation, ARINC 429, MIL-STD-1553, and BITE verification."/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#0a0f1e;--navy2:#111827;--card:#151d30;--border:#1e2d45;--gold:#f0a500;--gold2:#ffc73a;--teal:#00c9a7;--text:#e2e8f0;--muted:#8898aa;--white:#ffffff;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+    #rp{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--teal),#14b8a6);z-index:200;width:0;transition:width 0.1s linear;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 5%;background:rgba(10,15,30,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--white);text-decoration:none;} .nav-logo span{color:var(--gold);}
+    .nav-links{display:flex;gap:1.6rem;list-style:none;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:0.86rem;font-weight:500;transition:color 0.2s;position:relative;}
+    .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--gold);transition:width 0.3s;}
+    .nav-links a:hover{color:var(--white);} .nav-links a:hover::after,.nav-links a.active::after{width:100%;} .nav-links a.active{color:var(--gold);}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;} .hamburger span{display:block;width:22px;height:2px;background:var(--white);}
+    .mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;background:var(--navy2);border-bottom:1px solid var(--border);padding:1.5rem 5%;z-index:99;flex-direction:column;gap:1.2rem;}
+    .mobile-menu a{color:var(--text);text-decoration:none;font-size:1rem;} .mobile-menu.open{display:flex;}
+    .article-wrap{display:grid;grid-template-columns:240px 1fr;gap:2.5rem;max-width:1200px;margin:0 auto;padding:5.5rem 5% 4rem;align-items:start;position:relative;z-index:1;}
+    .toc-sidebar{position:sticky;top:80px;}
+    .toc-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;margin-bottom:1rem;}
+    .toc-label{font-family:'Syne',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:0.9rem;}
+    .toc-list{list-style:none;display:flex;flex-direction:column;gap:0.3rem;}
+    .toc-list a{font-size:0.8rem;color:var(--muted);text-decoration:none;padding:0.28rem 0.6rem;border-radius:6px;border-left:2px solid transparent;transition:all 0.2s;display:block;line-height:1.4;}
+    .toc-list a:hover,.toc-list a.active{color:var(--teal);border-left-color:var(--teal);background:rgba(0,201,167,0.06);}
+    .meta-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.1rem;}
+    .meta-row{display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;color:var(--muted);padding:0.35rem 0;border-bottom:1px solid var(--border);} .meta-row:last-child{border-bottom:none;} .meta-row strong{color:var(--text);}
+    .article-cat{display:inline-flex;font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:50px;margin-bottom:0.9rem;background:rgba(0,201,167,0.1);color:var(--teal);border:1px solid rgba(0,201,167,0.25);}
+    h1.article-title{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,3.5vw,2.4rem);font-weight:800;color:var(--white);letter-spacing:-1px;line-height:1.15;margin-bottom:0.9rem;}
+    .article-excerpt{font-size:1rem;color:var(--muted);line-height:1.8;max-width:680px;margin-bottom:1.2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
+    .a-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.5rem;}
+    .atag{font-size:0.7rem;padding:0.18rem 0.6rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);border-radius:4px;}
+    .article-body h2{font-family:'Syne',sans-serif;font-size:1.45rem;font-weight:800;color:var(--white);margin:2.4rem 0 0.9rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);scroll-margin-top:85px;}
+    .article-body h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--teal);margin:1.8rem 0 0.6rem;}
+    .article-body h4{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;color:var(--gold);margin:1.4rem 0 0.4rem;}
+    .article-body p{color:var(--muted);line-height:1.9;margin-bottom:1rem;font-size:0.95rem;} .article-body p strong{color:var(--text);}
+    .article-body ul,.article-body ol{padding-left:1.5rem;margin-bottom:1.1rem;}
+    .article-body li{color:var(--muted);font-size:0.93rem;line-height:1.8;margin-bottom:0.35rem;} .article-body li strong{color:var(--text);}
+    .article-body pre{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:1.2rem 1.4rem;overflow-x:auto;margin:1.2rem 0;}
+    .article-body code{font-family:'Fira Code','Courier New',monospace;font-size:0.86rem;color:#e6edf3;line-height:1.7;}
+    .article-body p code,.article-body li code{background:rgba(255,255,255,0.07);border:1px solid var(--border);border-radius:4px;padding:0.1rem 0.38rem;font-size:0.82rem;color:var(--teal);font-family:'Fira Code',monospace;}
+    .info-box{background:rgba(0,201,167,0.06);border-left:3px solid var(--teal);border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin:1.4rem 0;}
+    .info-box p{color:var(--text);margin:0;font-size:0.91rem;}
+    .warn-box{background:rgba(240,165,0,0.06);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin:1.4rem 0;}
+    .warn-box p{color:var(--text);margin:0;font-size:0.91rem;}
+    .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.5rem 0;}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem;text-align:center;}
+    .stat-num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--teal);line-height:1;margin-bottom:0.3rem;}
+    .stat-label{font-size:0.78rem;color:var(--muted);}
+    .data-table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.84rem;overflow-x:auto;display:block;}
+    .data-table th{background:rgba(0,201,167,0.08);color:var(--teal);font-family:'Syne',sans-serif;font-weight:700;padding:0.65rem 0.9rem;text-align:left;border:1px solid var(--border);}
+    .data-table td{color:var(--muted);padding:0.55rem 0.9rem;border:1px solid var(--border);vertical-align:top;} .data-table td strong{color:var(--text);}
+    .data-table tr:hover td{background:rgba(255,255,255,0.02);}
+    /* LRU CARDS */
+    .lru-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;margin:1.5rem 0;}
+    .lru-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;transition:all 0.3s;}
+    .lru-card:hover{border-color:rgba(0,201,167,0.3);transform:translateY(-3px);}
+    .lru-icon{font-size:1.6rem;margin-bottom:0.5rem;}
+    .lru-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--white);margin-bottom:0.2rem;}
+    .lru-sub{font-size:0.78rem;color:var(--teal);margin-bottom:0.5rem;}
+    .lru-desc{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+    .dal-badge{display:inline-block;font-size:0.68rem;font-weight:700;padding:0.15rem 0.5rem;border-radius:4px;margin-top:0.5rem;}
+    .dal-a{background:rgba(239,68,68,0.15);color:#fca5a5;border:1px solid rgba(239,68,68,0.3);}
+    .dal-b{background:rgba(240,165,0,0.1);color:var(--gold);border:1px solid rgba(240,165,0,0.2);}
+    .dal-c{background:rgba(0,201,167,0.1);color:var(--teal);border:1px solid rgba(0,201,167,0.2);}
+    /* BUS MONITOR */
+    .bus-monitor{background:#0d1117;border:1px solid var(--border);border-radius:12px;padding:1.4rem;margin:1.5rem 0;font-family:'Fira Code',monospace;font-size:0.82rem;}
+    .bm-header{color:var(--teal);font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:0.5rem;}
+    .bm-row{display:grid;grid-template-columns:80px 60px 100px 60px 1fr;gap:0.8rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);align-items:center;}
+    .bm-addr{color:#7dd3fc;} .bm-val{color:#86efac;} .bm-label{color:var(--muted);} .bm-ch{color:#fbbf24;} .bm-desc{color:rgba(136,152,170,0.7);font-size:0.75rem;}
+    .bm-warn{color:#fca5a5;}
+    .bm-footer{margin-top:0.8rem;padding-top:0.5rem;border-top:1px solid var(--border);color:var(--muted);font-size:0.75rem;}
+    hr.sep{height:1px;background:linear-gradient(90deg,var(--teal),var(--gold),transparent);margin:2.5rem 0;border:none;}
+    .author-bio{background:var(--card);border:1px solid rgba(0,201,167,0.2);border-radius:16px;padding:1.4rem;display:flex;gap:1.1rem;align-items:center;margin-top:2.5rem;}
+    .author-photo{width:65px;height:65px;border-radius:50%;border:2px solid var(--teal);flex-shrink:0;background:linear-gradient(135deg,var(--teal),var(--gold));}
+    .author-name{font-family:'Syne',sans-serif;font-weight:700;color:var(--white);font-size:0.92rem;margin-bottom:0.15rem;}
+    .author-role{color:var(--teal);font-size:0.75rem;font-weight:600;margin-bottom:0.35rem;}
+    .author-desc{color:var(--muted);font-size:0.8rem;line-height:1.6;}
+    .more-blogs{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.2rem;}
+    .more-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-decoration:none;color:inherit;transition:all 0.25s;display:block;}
+    .more-card:hover{border-color:rgba(0,201,167,0.3);transform:translateY(-3px);}
+    .more-icon{font-size:1.3rem;margin-bottom:0.4rem;} .more-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;color:var(--white);}
+    footer{background:var(--navy);border-top:1px solid var(--border);padding:1.8rem 5%;text-align:center;color:var(--muted);font-size:0.8rem;position:relative;z-index:1;}
+    footer a{color:var(--gold);text-decoration:none;} footer p+p{margin-top:0.3rem;}
+    .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--teal);color:var(--navy);width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;z-index:99;opacity:0;transform:translateY(10px);transition:all 0.3s;text-decoration:none;}
+    .scroll-top.visible{opacity:1;transform:translateY(0);}
+    .anim-h2{opacity:0;transform:translateX(-24px);transition:opacity 0.55s ease,transform 0.55s ease;} .anim-h2.in{opacity:1;transform:translateX(0);}
+    .anim-h3{opacity:0;transform:translateX(-16px);transition:opacity 0.45s ease,transform 0.45s ease;} .anim-h3.in{opacity:1;transform:translateX(0);}
+    .anim-p{opacity:0;transform:translateY(16px);transition:opacity 0.5s ease,transform 0.5s ease;} .anim-p.in{opacity:1;transform:translateY(0);}
+    .anim-li{opacity:0;transform:translateX(-12px);transition:opacity 0.4s ease,transform 0.4s ease;} .anim-li.in{opacity:1;transform:translateX(0);}
+    .info-box,.warn-box{opacity:0;transform:scale(0.97);transition:opacity 0.45s ease,transform 0.45s ease;} .info-box.in,.warn-box.in{opacity:1;transform:scale(1);}
+    .stat-card{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease;} .stat-card.in{opacity:1;transform:translateY(0);}
+    .lru-card{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease,border-color 0.3s;} .lru-card.in{opacity:1;transform:translateY(0);}
+    .data-table tr{opacity:0;transform:translateY(8px);transition:opacity 0.35s ease,transform 0.35s ease;} .data-table tr.in{opacity:1;transform:translateY(0);}
+    .more-card{opacity:0;transform:translateY(16px);transition:opacity 0.4s ease,transform 0.4s ease,border-color 0.25s;} .more-card.in{opacity:1;transform:translateY(0);}
+    @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.article-wrap{grid-template-columns:1fr;padding-top:5rem;}.toc-sidebar{display:none;}.lru-grid{grid-template-columns:1fr;}.stat-row{grid-template-columns:repeat(3,1fr);}.bm-row{grid-template-columns:1fr 1fr;}}
+    @media(max-width:600px){.more-blogs{grid-template-columns:1fr;}.stat-row{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<div id="rp"></div>
+<nav id="navbar">
+  <a href="../index.html" class="nav-logo">Sandeep<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../about.html">About</a></li>
+    <li><a href="../experience.html">Experience</a></li>
+    <li><a href="../blogs.html" class="active">Blogs</a></li>
+    <li><a href="../contact.html">Contact</a></li>
+    <li><a href="../documents.html">Documents</a></li>
+  </ul>
+  <div class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mm">
+  <a href="../index.html">Home</a><a href="../about.html">About</a>
+  <a href="../blogs.html">Blogs</a><a href="../contact.html">Contact</a>
+  <a href="../documents.html">Documents</a>
+</div>
+
+<div class="article-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-card">
+      <div class="toc-label">Contents</div>
+      <ul class="toc-list">
+        <li><a href="#intro">§01 Introduction</a></li>
+        <li><a href="#bus">§02 Bus Topology</a></li>
+        <li><a href="#ats">§03 Automated Test System</a></li>
+        <li><a href="#bench">§04 LRU Test Bench</a></li>
+        <li><a href="#hil">§05 HIL Simulation</a></li>
+        <li><a href="#standards">§06 Standards & DAL</a></li>
+      </ul>
+    </div>
+    <div class="meta-card">
+      <div class="meta-row"><span>📂</span><strong>Civil Avionics</strong></div>
+      <div class="meta-row"><span>🏷</span><strong>Article 02 of 02</strong></div>
+      <div class="meta-row"><span>✍️</span><strong>Sandeep Singh R, PMP®</strong></div>
+      <div class="meta-row"><span>🔬</span><strong>DO-178C · DO-160G</strong></div>
+      <div class="meta-row"><span>⚠</span><strong>Civil scope only</strong></div>
+    </div>
+  </aside>
+
+  <main>
+    <span class="article-cat">✈️ Article 02 · Civil Avionics · Safety-Critical Testing</span>
+    <h1 class="article-title">Automated Flight Control System Testing:<br>LRU-Level Verification</h1>
+    <p class="article-excerpt">DO-178C, DO-160G, HIL simulation, ARINC 429, MIL-STD-1553, and BITE verification — a complete breakdown of AFCS LRU-level testing methodology from real avionics work.</p>
+    <div class="a-tags">
+      <span class="atag">DO-178C</span><span class="atag">DO-160G</span><span class="atag">ARP4754A</span>
+      <span class="atag">HIL Simulation</span><span class="atag">ARINC 429</span><span class="atag">MIL-STD-1553</span>
+      <span class="atag">BITE</span><span class="atag">DAL A</span>
+    </div>
+
+    <div class="warn-box" style="margin-bottom:1.5rem;"><p>⚠ <strong>Scope:</strong> This article covers civil and dual-use avionics (FAA/EASA context). Defence-classified AFCS — combat fly-by-wire, missile guidance, autonomous UAV — involves ITAR/EAR controls and national defence requirements outside this scope.</p></div>
+
+    <div class="article-body">
+
+      <h2 id="intro">§01 — Introduction: The LRU at the Heart of Every Safe Flight</h2>
+      <p>Testing an LRU is not just running software — it is proving, to mathematical certainty, that the code controlling your control surfaces will not kill anyone.</p>
+      <p>An <strong>Automated Flight Control System (AFCS)</strong> is a safety-critical avionics architecture responsible for maintaining aircraft stability and executing pilot commands. A <strong>Line Replaceable Unit (LRU)</strong> is the fundamental modular building block — a self-contained, removable avionics box designed for rapid maintenance replacement.</p>
+      <h3>Typical AFCS LRUs</h3>
+      <div class="lru-grid">
+        <div class="lru-card">
+          <div class="lru-icon">🖥️</div>
+          <div class="lru-name">FCC — Flight Control Computer</div>
+          <div class="lru-sub">MIL-STD-1553B (primary bus)</div>
+          <div class="lru-desc">Autopilot control laws, fly-by-wire lanes. The most safety-critical LRU in the system.</div>
+          <span class="dal-badge dal-a">DAL A</span>
+        </div>
+        <div class="lru-card">
+          <div class="lru-icon">⚙️</div>
+          <div class="lru-name">ACE — Actuator Control Electronics</div>
+          <div class="lru-sub">MIL-STD-1553 / ARINC 429</div>
+          <div class="lru-desc">Drives flight control surface actuators based on FCC commands.</div>
+          <span class="dal-badge dal-a">DAL A</span>
+        </div>
+        <div class="lru-card">
+          <div class="lru-icon">📡</div>
+          <div class="lru-name">ADC — Air Data Computer</div>
+          <div class="lru-sub">ARINC 429 Rx (Labels 206, 203, 210)</div>
+          <div class="lru-desc">Airspeed, altitude, Mach number, Angle of Attack — primary flight envelope data.</div>
+          <span class="dal-badge dal-b">DAL B</span>
+        </div>
+        <div class="lru-card">
+          <div class="lru-icon">🧭</div>
+          <div class="lru-name">IRS/IRU — Inertial Reference</div>
+          <div class="lru-sub">ARINC 429 Rx (Labels 320, 321, 325)</div>
+          <div class="lru-desc">Attitude, heading, acceleration — the aircraft's internal motion reference.</div>
+          <span class="dal-badge dal-b">DAL B</span>
+        </div>
+        <div class="lru-card">
+          <div class="lru-icon">🗺️</div>
+          <div class="lru-name">FMC/FMS — Flight Management</div>
+          <div class="lru-sub">MIL-STD-1553 RT + ARINC 429</div>
+          <div class="lru-desc">Navigation, LNAV/VNAV guidance — translates route planning into autopilot commands.</div>
+          <span class="dal-badge dal-c">DAL B/C</span>
+        </div>
+        <div class="lru-card">
+          <div class="lru-icon">⚠️</div>
+          <div class="lru-name">TCAS/WXR — Safety Systems</div>
+          <div class="lru-sub">MIL-STD-1553 RT</div>
+          <div class="lru-desc">Collision avoidance (RA/TA advisories) and weather radar display.</div>
+          <span class="dal-badge dal-b">DAL B</span>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-num">DAL A</div><div class="stat-label">Highest assurance — MC/DC coverage + independence mandatory for FCC/ACE</div></div>
+        <div class="stat-card"><div class="stat-num">71</div><div class="stat-label">DO-178C objectives to satisfy for full DAL A certification</div></div>
+        <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">Bus errors across 12,844 ARINC 429 words in the HIL test run</div></div>
+      </div>
+
+      <h2 id="bus">§02 — Avionics Bus Topology</h2>
+      <p>Understanding the bus topology is essential for designing the LRU Test Bench (LTB) correctly — every interface must be simulated with the right hardware cards, at the right timing, with the right error injection capability.</p>
+
+      <h3>ARINC 429 — Why One-Way Architecture Is a Safety Feature</h3>
+      <p>ARINC 429 is strictly <strong>one transmitter → up to 20 receivers</strong>. No receiver can respond on the same wire pair. A failed receiver cannot corrupt data for other receivers. A transmitter fault affects only that label stream — it cannot take down the whole bus. This architectural simplicity is a fundamental safety benefit, not a limitation.</p>
+
+      <table class="data-table">
+        <tr><th>LRU</th><th>Function</th><th>Bus Interface</th><th>DAL</th></tr>
+        <tr><td><strong>FCC</strong></td><td>Autopilot control laws; fly-by-wire lanes</td><td>MIL-STD-1553B (primary)</td><td><strong>A</strong></td></tr>
+        <tr><td><strong>ACE</strong></td><td>Drive flight control surface actuators</td><td>MIL-STD-1553 / ARINC 429</td><td><strong>A</strong></td></tr>
+        <tr><td><strong>ADC</strong></td><td>Airspeed, altitude, Mach, AoA</td><td>ARINC 429 Rx (Labels 206, 203, 210)</td><td>B</td></tr>
+        <tr><td><strong>IRS/IRU</strong></td><td>Attitude, heading, acceleration</td><td>ARINC 429 Rx (Labels 320, 321, 325)</td><td>B</td></tr>
+        <tr><td><strong>FMC/FMS</strong></td><td>Navigation, LNAV/VNAV guidance</td><td>MIL-STD-1553 RT + ARINC 429</td><td>B/C</td></tr>
+        <tr><td><strong>TCAS/WXR</strong></td><td>RA/TA advisories, weather display</td><td>MIL-STD-1553 RT</td><td>B</td></tr>
+      </table>
+
+      <h2 id="ats">§03 — Automated Test System (ATS) Architecture</h2>
+      <p>The ATS orchestrates every functional test, replacing manual execution with repeatable, evidence-generating sequences that DO-178C certification demands.</p>
+
+      <table class="data-table">
+        <tr><th>ATS Module</th><th>Function</th><th>Typical Hardware / Software</th></tr>
+        <tr><td><strong>Test Controller</strong></td><td>Sequencer/scheduler — orchestrates test steps; evaluates pass/fail; manages flow branching</td><td>NI TestStand / Python ATP framework</td></tr>
+        <tr><td><strong>Signal Simulator</strong></td><td>Generates analogue stimuli, RF signals, discrete I/O states for all sensor inputs</td><td>NI PXI AWG / DAC / SLSC modules</td></tr>
+        <tr><td><strong>Bus Interface</strong></td><td>Simulates all bus traffic; label/SDI injection; error injection for negative tests</td><td>AIM GmbH / Astronics DDC bus cards</td></tr>
+        <tr><td><strong>Power Supply</strong></td><td>Supplies aircraft power; DO-160G §16 transient injection (undervolt, interruption)</td><td>Kepco programmable PSU; DO-160G injector</td></tr>
+        <tr><td><strong>Results Logger</strong></td><td>Records all inputs, outputs, expected vs. actual with timestamps; generates certification evidence</td><td>TestStand results; Codebeamer traceability</td></tr>
+      </table>
+
+      <h2 id="bench">§04 — LRU Test Bench: What You See Through the Lab Window</h2>
+      <p>The bench below reflects actual test conditions for an avionics module under DO-178C / DO-254 qualification. Every readout is meaningful and verifiable against requirements.</p>
+
+      <pre><code>TEST PROCEDURE: ATE-TP-0042 REV C
+SEQ:0044  FAULT:0  BUS:A+B  TEMP:32°C  LOOP:CONT
+─────────────────────────────────────────────────
+SIGNAL GEN  : 1.0000 GHz   → 288.4 MHz  PASS
+POWER SUPPLY: 28.0 VDC     → ±0.5V tolerance
+ARINC 429   : Bus analyser  → RX monitoring
+ENVIRONMENT : 23±2°C / 45±5% RH
+ESD         : Protected workspace active
+─────────────────────────────────────────────────
+STATUS: ALL CHECKS PASSED  [ATE-TP-0042 Rev C]</code></pre>
+
+      <ul>
+        <li><strong>SEQ:0044 — FAULT:0:</strong> Test sequence step 44 running; zero faults across all completed steps</li>
+        <li><strong>BUS:A+B:</strong> Both MIL-STD-1553 redundant channels monitored simultaneously</li>
+        <li><strong>TEMP:32°C · LOOP:CONT:</strong> LRU case temperature within spec; continuous loop endurance mode active</li>
+        <li><strong>28.0 VDC:</strong> Aircraft bus nominal — within ±0.5V tolerance for this test phase</li>
+        <li><strong>ATE-TP-0042 Rev C:</strong> Formal DO-178C controlled test procedure — configuration managed, approved baseline</li>
+        <li><strong>ESD Protected Workspace:</strong> DO-254 hardware test requirement — prevents latent CMOS damage in FPGA-based LRUs</li>
+      </ul>
+
+      <h2 id="hil">§05 — Hardware-in-the-Loop (HIL) Simulation</h2>
+      <p>HIL places the physical LRU inside a <strong>closed-loop real-time simulation</strong> of the aircraft. The LRU believes it is flying. Every failure mode unsafe to evaluate in the air can be safely tested in the lab.</p>
+
+      <div class="info-box"><p>💡 <strong>Why HIL is mandatory for DAL A:</strong> DO-178C requires coverage of all executable code paths (MC/DC for DAL A). Many failure branches — sensor failure, bus timeout, redundancy switchover — are physically impossible to trigger in a real aircraft without risk. HIL makes these branches reachable, testable, and certifiable.</p></div>
+
+      <h3>Live HIL Bus Monitor — Data from Lab</h3>
+      <div class="bus-monitor">
+        <div class="bm-header">DATA BUS MONITOR — MODEL: FCS_7.3 · t=12.45s · STEP:1ms · OVRUN:0 · LAT:0.8ms</div>
+        <div class="bm-row"><span class="bm-addr">0xA142</span><span class="bm-val">270.3</span><span class="bm-label">LABEL:310</span><span class="bm-ch">CH:A</span><span class="bm-desc">True Airspeed (kts) · BNR 19-bit · ADC source · sample 1</span></div>
+        <div class="bm-row"><span class="bm-addr">0xA142</span><span class="bm-val">270.4</span><span class="bm-label">LABEL:310</span><span class="bm-ch">CH:A</span><span class="bm-desc">True Airspeed (kts) · +0.1 kt increment</span></div>
+        <div class="bm-row"><span class="bm-addr">0xB201</span><span class="bm-val">-3.22</span><span class="bm-label">LABEL:174</span><span class="bm-ch">CH:B</span><span class="bm-desc">Pitch Rate (°/s) · BNR signed · IRS source · nose-down</span></div>
+        <div class="bm-row"><span class="bm-addr">0xA310</span><span class="bm-val">1013</span><span class="bm-label">LABEL:203</span><span class="bm-ch">CH:A</span><span class="bm-desc">Static Pressure (hPa) · BNR · ADC altitude source</span></div>
+        <div class="bm-row"><span class="bm-addr">0xA142</span><span class="bm-val">270.5</span><span class="bm-label">LABEL:310</span><span class="bm-ch">CH:A</span><span class="bm-desc">True Airspeed (kts) · BNR 19-bit · sample 3</span></div>
+        <div class="bm-row"><span class="bm-addr bm-warn">0xC001</span><span class="bm-val bm-warn">WARN</span><span class="bm-label">LABEL:377</span><span class="bm-ch">CH:B</span><span class="bm-desc">System status word · warning condition injected for test</span></div>
+        <div class="bm-footer">RX: 12,844 words · ERR: 0 · RATE: 100kbps · BUS: ARINC 429</div>
+      </div>
+
+      <div class="warn-box"><p>⚠ <strong>Label 0xC001 WARN:</strong> This is an intentionally injected fault for negative test coverage — verifying that the FCC correctly handles a system status word warning. The 0 error count on 12,844 words confirms the bus is clean under nominal conditions. This negative test case satisfies DO-178C MC/DC coverage for the warning-handling code branch.</p></div>
+
+      <h2 id="standards">§06 — Standards, DAL & Certification Evidence</h2>
+      <table class="data-table">
+        <tr><th>Standard</th><th>Scope</th><th>Key Requirement</th></tr>
+        <tr><td><strong>DO-178C</strong></td><td>Airborne software</td><td>DAL A–E objectives; MC/DC coverage for DAL A; 71 objectives total at DAL A</td></tr>
+        <tr><td><strong>DO-254</strong></td><td>Airborne hardware (FPGA/ASIC)</td><td>Hardware design assurance levels; formal verification for DAL A/B</td></tr>
+        <tr><td><strong>DO-160G</strong></td><td>Environmental testing</td><td>Temperature, vibration, EMI, power quality, lightning — 26 test categories</td></tr>
+        <tr><td><strong>ARP4754A</strong></td><td>System development</td><td>System-level safety assessment; allocation of DAL to functions/LRUs</td></tr>
+        <tr><td><strong>ARINC 429</strong></td><td>Data bus</td><td>Unidirectional serial bus; 100 kbps/12.5 kbps; label-based addressing</td></tr>
+        <tr><td><strong>MIL-STD-1553B</strong></td><td>Data bus</td><td>Dual-redundant bidirectional bus; 1 Mbps; bus controller / remote terminal</td></tr>
+      </table>
+
+      <div class="info-box"><p>💡 <strong>MC/DC — Modified Condition/Decision Coverage:</strong> Required at DAL A. Every condition in every decision must independently affect the decision outcome. This is the most rigorous software test coverage criterion in DO-178C — it proves that no single code decision can fail silently without a test detecting it.</p></div>
+
+      <hr class="sep"/>
+      <div class="author-bio">
+        <div class="author-photo"></div>
+        <div>
+          <div class="author-name">Sandeep Singh R</div>
+          <div class="author-role">PMP® · DO-178B/C Background · Senior Embedded PM</div>
+          <div class="author-desc">Hands-on avionics background from the AFCS project — hardware rig testing, HIL simulation, and FreeRTOS integration. 10+ years delivering safety-critical embedded systems across industrial, avionics, and automotive domains.</div>
+        </div>
+      </div>
+      <div style="margin-top:2.5rem;">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin-bottom:1rem;">More Articles</div>
+        <div class="more-blogs">
+          <a href="article-sli-cranes.html" class="more-card"><div class="more-icon">🏗️</div><div class="more-title">SLI for Cranes — Article 01</div></a>
+          <a href="embedded_basics.html" class="more-card"><div class="more-icon">🔌</div><div class="more-title">Embedded Systems Basics</div></a>
+          <a href="communicationprotocol.html" class="more-card"><div class="more-icon">📡</div><div class="more-title">Communication Protocols</div></a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <p>© 2025 <a href="../index.html">Sandeep Singh R</a> · PMP® Certified Project & Product Manager · Bengaluru, India</p>
+  <p><a href="../blogs.html">← Back to all blogs</a></p>
+</footer>
+<a href="#" class="scroll-top" id="st">↑</a>
+<script>
+  const rp=document.getElementById('rp'),st=document.getElementById('st');
+  window.addEventListener('scroll',()=>{
+    const s=document.documentElement;
+    rp.style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%';
+    st.classList.toggle('visible',scrollY>400);
+    document.getElementById('navbar').classList.toggle('scrolled',scrollY>50);
+    document.querySelectorAll('.article-body h2').forEach(h=>{
+      const a=document.querySelector('.toc-list a[href="#'+h.id+'"]');
+      if(a)a.classList.toggle('active',h.getBoundingClientRect().top<120);
+    });
+  });
+  const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}}),{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.article-body h2').forEach(h=>{h.classList.add('anim-h2');io.observe(h);});
+  document.querySelectorAll('.article-body h3').forEach(h=>{h.classList.add('anim-h3');io.observe(h);});
+  document.querySelectorAll('.article-body p').forEach((p,i)=>{p.classList.add('anim-p');p.style.transitionDelay=(i%4)*0.06+'s';io.observe(p);});
+  document.querySelectorAll('.info-box,.warn-box').forEach(b=>io.observe(b));
+  document.querySelectorAll('.stat-card').forEach((c,i)=>{c.style.transitionDelay=i*0.1+'s';io.observe(c);});
+  document.querySelectorAll('.lru-card').forEach((c,i)=>{c.style.transitionDelay=i*0.08+'s';io.observe(c);});
+  document.querySelectorAll('.data-table tr').forEach((r,i)=>{r.style.transitionDelay=i*0.06+'s';io.observe(r);});
+  document.querySelectorAll('.more-card').forEach((c,i)=>{c.style.transitionDelay=i*0.1+'s';io.observe(c);});
+  document.querySelectorAll('.article-body li').forEach((l,i)=>{l.classList.add('anim-li');l.style.transitionDelay=(i%6)*0.07+'s';io.observe(l);});
+</script>
+</body>
+</html>
