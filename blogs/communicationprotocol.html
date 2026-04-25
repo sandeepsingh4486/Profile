@@ -369,6 +369,363 @@
         <li><strong>Flow Control:</strong> Hardware (RTS/CTS lines) or software (XON/XOFF characters)</li>
         <li><strong>Voltage levels:</strong> TTL (0/3.3V or 0/5V) for MCU pins. RS-232 uses ±12V — need a level shifter.</li>
       </ul>
+      <h3>Key Parameters</h3>
+      <ul>
+        <li><strong>Baud Rate:</strong> Both devices must match exactly — 9600, 115200, 1Mbps. Mismatch = garbage data.</li>
+        <li><strong>Frame format (8N1):</strong> 8 data bits, No parity, 1 stop bit — the most common configuration.</li>
+        <li><strong>Flow Control:</strong> Hardware (RTS/CTS lines) or software (XON/XOFF characters)</li>
+        <li><strong>Voltage levels:</strong> TTL (0/3.3V or 0/5V) for MCU pins. RS-232 uses ±12V — need a level shifter.</li>
+      </ul>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!--  RTS / CTS HARDWARE FLOW CONTROL SECTION  -->
+      <!-- ══════════════════════════════════════════ -->
+      <h3 id="rtscts">Hardware Flow Control — RTS &amp; CTS</h3>
+
+      <p>Without flow control, a fast transmitter can overwhelm a slow receiver's buffer — causing dropped bytes with no error flag. <strong>RTS (Request To Send)</strong> and <strong>CTS (Clear To Send)</strong> are two extra wires that let both devices negotiate when it is safe to transmit. This is called <strong>hardware flow control</strong>.</p>
+
+      <div class="info-box"><p>💡 <strong>Analogy:</strong> Think of RTS/CTS like traffic lights at a narrow bridge. The receiver controls the light (CTS). The transmitter waits at red (CTS HIGH = stop) and only crosses when the light turns green (CTS LOW = go). No data is ever pushed onto an overwhelmed receiver.</p></div>
+
+      <!-- CONCEPT CARDS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0;">
+        <div style="background:var(--card);border:1px solid rgba(240,165,0,0.3);border-radius:12px;padding:1.1rem;">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:#f0a500;margin-bottom:0.4rem;">RTS — Request To Send</div>
+          <div style="font-size:0.82rem;color:var(--muted);line-height:1.7;">Output pin on the <strong style="color:var(--text)">transmitter</strong>. Driven LOW to say <em>"I have data — are you ready?"</em>. Driven HIGH when the transmitter has nothing to send or is pausing. Connected to the receiver's CTS pin.</div>
+          <div style="margin-top:0.7rem;display:flex;gap:0.4rem;flex-wrap:wrap;">
+            <span style="font-size:0.7rem;padding:0.15rem 0.5rem;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.3);color:#f0a500;border-radius:4px;">Output on TX device</span>
+            <span style="font-size:0.7rem;padding:0.15rem 0.5rem;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.3);color:#f0a500;border-radius:4px;">LOW = "ready to send"</span>
+          </div>
+        </div>
+        <div style="background:var(--card);border:1px solid rgba(0,201,167,0.3);border-radius:12px;padding:1.1rem;">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:#00c9a7;margin-bottom:0.4rem;">CTS — Clear To Send</div>
+          <div style="font-size:0.82rem;color:var(--muted);line-height:1.7;">Input pin on the <strong style="color:var(--text)">transmitter</strong>. Driven LOW by the <strong style="color:var(--text)">receiver</strong> to say <em>"buffer ready — send now"</em>. Goes HIGH when the receiver's buffer is full — forcing the transmitter to pause. Connected to the transmitter's RTS pin on the other end.</div>
+          <div style="margin-top:0.7rem;display:flex;gap:0.4rem;flex-wrap:wrap;">
+            <span style="font-size:0.7rem;padding:0.15rem 0.5rem;background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.3);color:#00c9a7;border-radius:4px;">Input on TX device</span>
+            <span style="font-size:0.7rem;padding:0.15rem 0.5rem;background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.3);color:#00c9a7;border-radius:4px;">LOW = "safe to send"</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="warn-box"><p>⚠️ <strong>Cross-wiring rule:</strong> RTS of Device A → CTS of Device B. RTS of Device B → CTS of Device A. This is the single most common wiring mistake. On a straight-through cable both pins short to each other — you need a null-modem cable or cross-over jumpers.</p></div>
+
+      <!-- ANIMATION 1: 4-wire UART connection diagram with RTS/CTS -->
+      <div class="illus-wrap">
+        <svg width="100%" viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+          <defs>
+            <marker id="arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 2L8 5L2 8" fill="none" stroke="#00c9a7" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+            <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 2L8 5L2 8" fill="none" stroke="#f0a500" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+            <marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 2L8 5L2 8" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+            <style>
+              @keyframes txflow{0%{opacity:0;}10%{opacity:1;}80%{opacity:1;}100%{opacity:0;}}
+              @keyframes rtslow{0%,10%{fill:#ef4444;opacity:0.3;}11%,89%{fill:#5dcaa5;opacity:1;}90%,100%{fill:#ef4444;opacity:0.4;}}
+              @keyframes ctslow{0%,18%{fill:#ef4444;opacity:0.3;}19%,79%{fill:#00c9a7;opacity:1;}80%,100%{fill:#ef4444;opacity:0.4;}}
+              @keyframes pindraw{from{stroke-dashoffset:200;}to{stroke-dashoffset:0;}}
+              @keyframes bufflevel{0%{width:0;}20%{width:0;}50%{width:90px;}70%{width:90px;}85%{width:20px;}100%{width:20px;}}
+              .txpkt{animation:txflow 4s ease-in-out infinite;opacity:0;}
+              .txpkt2{animation:txflow 4s ease-in-out infinite;animation-delay:0.5s;opacity:0;}
+              .txpkt3{animation:txflow 4s ease-in-out infinite;animation-delay:1s;opacity:0;}
+              .rtsind{animation:rtslow 4s step-start infinite;}
+              .ctsind{animation:ctslow 4s step-start infinite;}
+              .pinline{stroke-dasharray:200;stroke-dashoffset:200;animation:pindraw 0.8s ease forwards;}
+              .pl1{animation-delay:0.1s;}.pl2{animation-delay:0.3s;}.pl3{animation-delay:0.5s;}.pl4{animation-delay:0.7s;}
+              .buflevel{animation:bufflevel 4s ease-in-out infinite;}
+            </style>
+          </defs>
+
+          <text x="350" y="16" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="11" fill="#e2e8f0">UART HARDWARE FLOW CONTROL — 4-WIRE CONNECTION</text>
+
+          <!-- Device A (MCU transmitter) -->
+          <rect x="14" y="30" width="160" height="180" rx="10" fill="#111827" stroke="#00c9a7" stroke-width="1.5"/>
+          <text x="94" y="52" text-anchor="middle" font-family="Syne,sans-serif" font-weight="800" font-size="11" fill="#00c9a7">MCU A</text>
+          <text x="94" y="66" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">Transmitter side</text>
+
+          <!-- Pin labels A -->
+          <text x="155" y="100" text-anchor="end" font-family="Fira Code,monospace" font-size="9.5" fill="#00c9a7">TX ●</text>
+          <text x="155" y="125" text-anchor="end" font-family="Fira Code,monospace" font-size="9.5" fill="#f0a500">RX ●</text>
+          <text x="155" y="150" text-anchor="end" font-family="Fira Code,monospace" font-size="9.5" fill="#ef4444">RTS ●</text>
+          <text x="155" y="175" text-anchor="end" font-family="Fira Code,monospace" font-size="9.5" fill="#5dcaa5">CTS ●</text>
+
+          <!-- RTS indicator light A -->
+          <circle cx="30" cy="147" r="7" class="rtsind" style="fill:#5dcaa5"/>
+          <text x="42" y="151" font-family="sans-serif" font-size="7" fill="#8898aa">Assert LOW</text>
+
+          <!-- Device B (receiver) -->
+          <rect x="526" y="30" width="160" height="180" rx="10" fill="#111827" stroke="#f0a500" stroke-width="1.5"/>
+          <text x="606" y="52" text-anchor="middle" font-family="Syne,sans-serif" font-weight="800" font-size="11" fill="#f0a500">MCU B</text>
+          <text x="606" y="66" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">Receiver side</text>
+
+          <!-- Pin labels B -->
+          <text x="542" y="100" font-family="Fira Code,monospace" font-size="9.5" fill="#00c9a7">● RX</text>
+          <text x="542" y="125" font-family="Fira Code,monospace" font-size="9.5" fill="#f0a500">● TX</text>
+          <text x="542" y="150" font-family="Fira Code,monospace" font-size="9.5" fill="#5dcaa5">● CTS</text>
+          <text x="542" y="175" font-family="Fira Code,monospace" font-size="9.5" fill="#ef4444">● RTS</text>
+
+          <!-- CTS indicator light B -->
+          <circle cx="666" cy="147" r="7" class="ctsind" style="fill:#00c9a7"/>
+          <text x="640" y="151" text-anchor="end" font-family="sans-serif" font-size="7" fill="#8898aa">CTS LOW</text>
+
+          <!-- Wires with labels — TX → RX (teal) -->
+          <line x1="174" y1="97" x2="526" y2="97" stroke="#00c9a7" stroke-width="2" class="pinline pl1" marker-end="url(#arr1)"/>
+          <text x="350" y="91" text-anchor="middle" font-family="Fira Code,monospace" font-size="8.5" fill="#00c9a7">TX ──────────────────── RX</text>
+
+          <!-- RX ← TX (gold) -->
+          <line x1="526" y1="122" x2="174" y2="122" stroke="#f0a500" stroke-width="2" class="pinline pl2" marker-end="url(#arr2)"/>
+          <text x="350" y="116" text-anchor="middle" font-family="Fira Code,monospace" font-size="8.5" fill="#f0a500">RX ←──────────────────── TX</text>
+
+          <!-- RTS → CTS (red → teal — cross wired!) -->
+          <line x1="174" y1="147" x2="526" y2="147" stroke="#5dcaa5" stroke-width="2" class="pinline pl3" marker-end="url(#arr1)"/>
+          <text x="350" y="141" text-anchor="middle" font-family="Fira Code,monospace" font-size="8.5" fill="#5dcaa5">RTS ─────────────────── CTS</text>
+
+          <!-- CTS ← RTS (cross wired!) -->
+          <line x1="526" y1="172" x2="174" y2="172" stroke="#ef4444" stroke-width="2" class="pinline pl4" marker-end="url(#arr3)"/>
+          <text x="350" y="166" text-anchor="middle" font-family="Fira Code,monospace" font-size="8.5" fill="#ef4444">CTS ←─────────────────── RTS</text>
+
+          <!-- Cross-wire callout -->
+          <rect x="270" y="185" width="162" height="22" rx="5" fill="rgba(239,68,68,0.1)" stroke="#ef444455" stroke-width="0.8"/>
+          <text x="351" y="199" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8.5" fill="#ef4444">⚡ RTS of A → CTS of B (cross!)</text>
+
+          <!-- Animated data packets on TX line -->
+          <circle r="6" fill="#00c9a7" class="txpkt"><animateMotion dur="4s" begin="0.8s" repeatCount="indefinite" path="M174,97 L526,97"/></circle>
+          <circle r="6" fill="#00c9a7" class="txpkt2"><animateMotion dur="4s" begin="1.3s" repeatCount="indefinite" path="M174,97 L526,97"/></circle>
+          <circle r="6" fill="#00c9a7" class="txpkt3"><animateMotion dur="4s" begin="1.8s" repeatCount="indefinite" path="M174,97 L526,97"/></circle>
+
+          <!-- Buffer at B -->
+          <text x="606" y="100" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#8898aa" dy="80">RX buffer</text>
+          <rect x="556" y="184" width="100" height="10" rx="3" fill="#1e2d45" stroke="#1e2d45"/>
+          <rect x="556" y="184" width="20" height="10" rx="3" fill="#00c9a7" class="buflevel"/>
+        </svg>
+        <div class="illus-caption">Fig 2b — 4-wire UART connection with hardware flow control. TX→RX carry data (straight across). RTS of A crosses to CTS of B, and RTS of B crosses to CTS of A. The indicator circles show RTS asserted (green = LOW = "I want to send") and CTS acknowledged (teal = LOW = "safe to send"). Animated packets flow only when CTS is LOW.</div>
+      </div>
+
+      <!-- ANIMATION 2: Full RTS/CTS handshake timing diagram -->
+      <div class="illus-wrap">
+        <svg width="100%" viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+          <defs>
+            <style>
+              /* Phase timing:
+                 0–10%  : idle
+                 11–25% : MCU-A asserts RTS LOW → MCU-B sees CTS LOW → TX begins
+                 26–55% : Data bytes flowing
+                 56–70% : B buffer fills → B de-asserts CTS (HIGH) → A pauses TX
+                 71–85% : B drains buffer → B re-asserts CTS LOW → A resumes
+                 86–100%: Transaction complete, RTS goes HIGH
+              */
+              @keyframes rtsWire{
+                0%,10%{stroke:#1e2d45;}
+                11%,85%{stroke:#5dcaa5;stroke-width:3;}
+                86%,100%{stroke:#1e2d45;}
+              }
+              @keyframes ctsWire{
+                0%,18%{stroke:#1e2d45;}
+                19%,55%{stroke:#00c9a7;stroke-width:3;}
+                56%,70%{stroke:#ef4444;stroke-width:2;}
+                71%,85%{stroke:#00c9a7;stroke-width:3;}
+                86%,100%{stroke:#1e2d45;}
+              }
+              @keyframes dataWire{
+                0%,19%{stroke:#1e2d45;stroke-dasharray:4 3;}
+                20%,55%{stroke:#00c9a7;stroke-width:2.5;stroke-dasharray:none;}
+                56%,70%{stroke:#ef444455;stroke-width:1.5;stroke-dasharray:4 3;}
+                71%,85%{stroke:#00c9a7;stroke-width:2.5;stroke-dasharray:none;}
+                86%,100%{stroke:#1e2d45;stroke-dasharray:4 3;}
+              }
+              /* Signal waveforms */
+              @keyframes sigRTS{
+                0%,10%{opacity:0;}
+                11%{opacity:1;}
+                100%{opacity:1;}
+              }
+              @keyframes sigCTS{
+                0%,18%{opacity:0;}
+                19%{opacity:1;}
+                100%{opacity:1;}
+              }
+              @keyframes sigTX{
+                0%,19%{opacity:0;}
+                20%{opacity:1;}
+                100%{opacity:1;}
+              }
+              /* State labels */
+              @keyframes phase1{0%,10%{opacity:0;}11%,25%{opacity:1;}26%,100%{opacity:0;}}
+              @keyframes phase2{0%,25%{opacity:0;}26%,55%{opacity:1;}56%,100%{opacity:0;}}
+              @keyframes phase3{0%,55%{opacity:0;}56%,70%{opacity:1;}71%,100%{opacity:0;}}
+              @keyframes phase4{0%,70%{opacity:0;}71%,85%{opacity:1;}86%,100%{opacity:0;}}
+              @keyframes phase5{0%,85%{opacity:0;}86%,100%{opacity:1;}}
+              /* Data byte packets on TX line waveform */
+              @keyframes byte1{0%,20%{opacity:0;}21%,54%{opacity:1;}55%,100%{opacity:0;}}
+              @keyframes byte2{0%,28%{opacity:0;}29%,54%{opacity:1;}55%,100%{opacity:0;}}
+              @keyframes byte3{0%,36%{opacity:0;}37%,54%{opacity:1;}55%,100%{opacity:0;}}
+              @keyframes byte4{0%,44%{opacity:0;}45%,54%{opacity:1;}55%,100%{opacity:0;}}
+              /* Paused byte (grayed) */
+              @keyframes bytepause{0%,56%{opacity:0;}57%,70%{opacity:0.4;}71%,100%{opacity:0;}}
+              /* Resume bytes */
+              @keyframes byteresume{0%,71%{opacity:0;}72%,84%{opacity:1;}85%,100%{opacity:0;}}
+              /* Buffer fill bar */
+              @keyframes buffill{0%,19%{width:4px;}20%,55%{width:4px;animation-timing-function:ease-in;}55%{width:96px;}56%,70%{width:96px;}71%,85%{width:4px;animation-timing-function:ease-out;}86%,100%{width:4px;}}
+              /* Buffer colour */
+              @keyframes bufcol{0%,55%{fill:#00c9a7;}56%,70%{fill:#ef4444;}71%,100%{fill:#00c9a7;}}
+
+              .rwire{animation:rtsWire 7s step-start infinite;}
+              .cwire{animation:ctsWire 7s step-start infinite;}
+              .dwire{animation:dataWire 7s step-start infinite;}
+              .ph1{animation:phase1 7s step-start infinite;opacity:0;}
+              .ph2{animation:phase2 7s step-start infinite;opacity:0;}
+              .ph3{animation:phase3 7s step-start infinite;opacity:0;}
+              .ph4{animation:phase4 7s step-start infinite;opacity:0;}
+              .ph5{animation:phase5 7s step-start infinite;opacity:0;}
+              .byt1{animation:byte1 7s step-start infinite;opacity:0;}
+              .byt2{animation:byte2 7s step-start infinite;opacity:0;}
+              .byt3{animation:byte3 7s step-start infinite;opacity:0;}
+              .byt4{animation:byte4 7s step-start infinite;opacity:0;}
+              .bytpause{animation:bytepause 7s step-start infinite;opacity:0;}
+              .bytresume{animation:byteresume 7s step-start infinite;opacity:0;}
+              .buffbar{animation:buffill 7s ease-in-out infinite;width:4px;}
+              .buffcol{animation:bufcol 7s step-start infinite;fill:#00c9a7;}
+            </style>
+          </defs>
+
+          <text x="350" y="16" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="11" fill="#e2e8f0">RTS / CTS HANDSHAKE — FULL TIMING SEQUENCE</text>
+
+          <!-- Y axis signal labels -->
+          <text x="48" y="55" text-anchor="end" font-family="Fira Code,monospace" font-size="9" fill="#5dcaa5">RTS(A)</text>
+          <text x="48" y="115" text-anchor="end" font-family="Fira Code,monospace" font-size="9" fill="#00c9a7">CTS(A)</text>
+          <text x="48" y="175" text-anchor="end" font-family="Fira Code,monospace" font-size="9" fill="#00c9a7">TX Data</text>
+
+          <!-- HIGH/LOW labels -->
+          <text x="52" y="45" font-family="sans-serif" font-size="7" fill="#4b5563">HIGH</text>
+          <text x="52" y="66" font-family="sans-serif" font-size="7" fill="#5dcaa5">LOW</text>
+          <text x="52" y="105" font-family="sans-serif" font-size="7" fill="#4b5563">HIGH</text>
+          <text x="52" y="126" font-family="sans-serif" font-size="7" fill="#00c9a7">LOW</text>
+
+          <!-- ── RTS(A) WAVEFORM ──
+               IDLE=HIGH, Assert=LOW(11%), De-assert=HIGH(86%)  -->
+          <!-- idle high -->
+          <line x1="58" y1="44" x2="128" y2="44" stroke="#5dcaa5" stroke-width="2" opacity="0.3"/>
+          <!-- falls LOW at 11% (≈77px from 58) -->
+          <line x1="128" y1="44" x2="128" y2="62" stroke="#5dcaa5" stroke-width="2"/>
+          <!-- stays LOW through 85% (≈595px) -->
+          <line x1="128" y1="62" x2="595" y2="62" stroke="#5dcaa5" stroke-width="2"/>
+          <!-- rises HIGH at 86% -->
+          <line x1="595" y1="62" x2="595" y2="44" stroke="#5dcaa5" stroke-width="2"/>
+          <line x1="595" y1="44" x2="686" y2="44" stroke="#5dcaa5" stroke-width="2" opacity="0.3"/>
+          <!-- labels -->
+          <text x="93" y="40" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#5dcaa533">IDLE (HIGH)</text>
+          <text x="360" y="58" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#5dcaa5">RTS LOW — "I want to send"</text>
+          <text x="640" y="40" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#5dcaa533">IDLE</text>
+
+          <!-- ── CTS(A) WAVEFORM ──
+               IDLE=HIGH, LOW at 19% (≈143px), HIGH at 56% (≈392px), LOW at 71% (≈497px), HIGH at 86% (≈595px) -->
+          <line x1="58" y1="104" x2="143" y2="104" stroke="#00c9a7" stroke-width="2" opacity="0.3"/>
+          <line x1="143" y1="104" x2="143" y2="122" stroke="#00c9a7" stroke-width="2"/>
+          <line x1="143" y1="122" x2="392" y2="122" stroke="#00c9a7" stroke-width="2"/>
+          <!-- CTS goes HIGH when buffer full -->
+          <line x1="392" y1="122" x2="392" y2="104" stroke="#ef4444" stroke-width="2"/>
+          <line x1="392" y1="104" x2="497" y2="104" stroke="#ef4444" stroke-width="2"/>
+          <!-- CTS goes LOW again when buffer drains -->
+          <line x1="497" y1="104" x2="497" y2="122" stroke="#00c9a7" stroke-width="2"/>
+          <line x1="497" y1="122" x2="595" y2="122" stroke="#00c9a7" stroke-width="2"/>
+          <line x1="595" y1="122" x2="595" y2="104" stroke="#00c9a7" stroke-width="2"/>
+          <line x1="595" y1="104" x2="686" y2="104" stroke="#00c9a7" stroke-width="2" opacity="0.3"/>
+          <!-- CTS labels -->
+          <text x="268" y="118" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#00c9a7">CTS LOW = "clear to send"</text>
+          <text x="445" y="100" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#ef4444">CTS HIGH = "buffer full, pause!"</text>
+          <text x="546" y="118" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#00c9a7">CTS LOW = resume</text>
+
+          <!-- ── TX DATA WAVEFORM ──
+               silent until CTS LOW (143px), active 143–392px, paused 392–497px, active 497–595px -->
+          <line x1="58" y1="174" x2="143" y2="174" stroke="#1e2d45" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <!-- byte 1 -->
+          <path d="M143,174 L143,155 L213,155 L213,174" stroke="#00c9a7" stroke-width="2" fill="none"/>
+          <rect x="143" y="148" width="70" height="20" rx="3" fill="rgba(0,201,167,0.15)" class="byt1"/>
+          <text x="178" y="161" text-anchor="middle" font-family="Fira Code,monospace" font-size="8" fill="#00c9a7" class="byt1">0x48 'H'</text>
+          <!-- byte 2 -->
+          <path d="M213,174 L213,155 L283,155 L283,174" stroke="#00c9a7" stroke-width="2" fill="none"/>
+          <rect x="213" y="148" width="70" height="20" rx="3" fill="rgba(0,201,167,0.15)" class="byt2"/>
+          <text x="248" y="161" text-anchor="middle" font-family="Fira Code,monospace" font-size="8" fill="#00c9a7" class="byt2">0x65 'e'</text>
+          <!-- byte 3 -->
+          <path d="M283,174 L283,155 L353,155 L353,174" stroke="#00c9a7" stroke-width="2" fill="none"/>
+          <rect x="283" y="148" width="70" height="20" rx="3" fill="rgba(0,201,167,0.15)" class="byt3"/>
+          <text x="318" y="161" text-anchor="middle" font-family="Fira Code,monospace" font-size="8" fill="#00c9a7" class="byt3">0x6C 'l'</text>
+          <!-- byte 4 -->
+          <path d="M353,174 L353,155 L392,155 L392,174" stroke="#00c9a7" stroke-width="2" fill="none"/>
+          <rect x="353" y="148" width="39" height="20" rx="3" fill="rgba(0,201,167,0.15)" class="byt4"/>
+          <text x="372" y="161" text-anchor="middle" font-family="Fira Code,monospace" font-size="8" fill="#00c9a7" class="byt4">0x6C</text>
+          <!-- paused (gray dashes) -->
+          <line x1="392" y1="174" x2="497" y2="174" stroke="#ef444444" stroke-width="1.5" stroke-dasharray="6 4"/>
+          <rect x="402" y="162" width="85" height="18" rx="4" fill="rgba(239,68,68,0.1)" stroke="#ef444444" class="bytpause"/>
+          <text x="444" y="174" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#ef4444" class="bytpause">TX PAUSED ⏸</text>
+          <!-- resume byte -->
+          <path d="M497,174 L497,155 L567,155 L567,174" stroke="#00c9a7" stroke-width="2" fill="none"/>
+          <rect x="497" y="148" width="70" height="20" rx="3" fill="rgba(0,201,167,0.15)" class="bytresume"/>
+          <text x="532" y="161" text-anchor="middle" font-family="Fira Code,monospace" font-size="8" fill="#00c9a7" class="bytresume">0x6F 'o'</text>
+          <line x1="567" y1="174" x2="686" y2="174" stroke="#1e2d45" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+          <!-- Buffer fill bar (receiver B) -->
+          <text x="350" y="202" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#e2e8f0">MCU-B RX BUFFER</text>
+          <rect x="252" y="208" width="100" height="14" rx="3" fill="#0d1117" stroke="#1e2d45" stroke-width="1"/>
+          <rect x="252" y="208" height="14" rx="3" class="buffbar buffcol"/>
+          <text x="360" y="219" font-family="sans-serif" font-size="8" fill="#8898aa">← fills → 100% full → drains</text>
+
+          <!-- Phase banners -->
+          <rect x="58" y="225" width="70" height="14" rx="3" fill="rgba(93,202,165,0.1)" stroke="#5dcaa544" stroke-width="0.8"/>
+          <text x="93" y="235" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#5dcaa5">① IDLE</text>
+
+          <rect x="128" y="225" width="70" height="14" rx="3" fill="rgba(240,165,0,0.1)" stroke="#f0a50044" stroke-width="0.8"/>
+          <text x="163" y="235" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#f0a500">② Handshake</text>
+
+          <rect x="198" y="225" width="194" height="14" rx="3" fill="rgba(0,201,167,0.1)" stroke="#00c9a744" stroke-width="0.8"/>
+          <text x="295" y="235" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#00c9a7">③ Data flowing (CTS LOW)</text>
+
+          <rect x="392" y="225" width="105" height="14" rx="3" fill="rgba(239,68,68,0.12)" stroke="#ef444444" stroke-width="0.8"/>
+          <text x="444" y="235" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#ef4444">④ Paused (CTS HIGH)</text>
+
+          <rect x="497" y="225" width="98" height="14" rx="3" fill="rgba(0,201,167,0.1)" stroke="#00c9a744" stroke-width="0.8"/>
+          <text x="546" y="235" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#00c9a7">⑤ Resume</text>
+
+          <rect x="595" y="225" width="91" height="14" rx="3" fill="rgba(93,202,165,0.08)" stroke="#5dcaa533" stroke-width="0.8"/>
+          <text x="640" y="235" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#5dcaa5">⑥ Done</text>
+
+          <!-- Step legend -->
+          <text x="58" y="258" font-family="sans-serif" font-size="7.5" fill="#8898aa">① A idle — RTS HIGH, CTS HIGH, TX silent</text>
+          <text x="58" y="270" font-family="sans-serif" font-size="7.5" fill="#f0a500">② A asserts RTS LOW → B sees CTS LOW → grants permission</text>
+          <text x="58" y="282" font-family="sans-serif" font-size="7.5" fill="#00c9a7">③ A transmits bytes H-e-l-l while CTS remains LOW</text>
+          <text x="58" y="294" font-family="sans-serif" font-size="7.5" fill="#ef4444">④ B buffer fills → B drives CTS HIGH → A stops mid-stream (no data lost)</text>
+          <text x="58" y="306" font-family="sans-serif" font-size="7.5" fill="#00c9a7">⑤ B drains buffer → B drives CTS LOW again → A resumes with 'o'</text>
+        </svg>
+        <div class="illus-caption">Fig 2c — Full RTS/CTS handshake timing. Five phases: ① both idle, ② A asserts RTS to request permission, ③ B grants CTS and data flows (H-e-l-l), ④ B's buffer fills so it raises CTS HIGH — A freezes mid-message without losing data, ⑤ buffer drains, B re-asserts CTS LOW, A resumes. The RX buffer bar at the bottom shows fill level turning red at capacity.</div>
+      </div>
+
+      <!-- WHEN TO USE -->
+      <h3>When Do You Actually Need RTS/CTS?</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0;">
+        <div style="background:rgba(0,201,167,0.06);border:1px solid rgba(0,201,167,0.25);border-radius:10px;padding:1rem;">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:#00c9a7;margin-bottom:0.5rem;">✅ Use RTS/CTS when…</div>
+          <ul style="list-style:none;padding:0;">
+            <li style="font-size:0.8rem;color:var(--muted);padding:0.25rem 0;border-bottom:1px solid rgba(0,201,167,0.1);">High baud rate (&gt;115200) + slow receiver</li>
+            <li style="font-size:0.8rem;color:var(--muted);padding:0.25rem 0;border-bottom:1px solid rgba(0,201,167,0.1);">Large bursts of data (file transfer, firmware OTA)</li>
+            <li style="font-size:0.8rem;color:var(--muted);padding:0.25rem 0;border-bottom:1px solid rgba(0,201,167,0.1);">Receiver has small FIFO buffer (&lt;16 bytes)</li>
+            <li style="font-size:0.8rem;color:var(--muted);padding:0.25rem 0;border-bottom:1px solid rgba(0,201,167,0.1);">GPS modules at 1Mbps baud</li>
+            <li style="font-size:0.8rem;color:var(--muted);padding:0.25rem 0;">Bluetooth HC-05 modules in bulk transfer</li>
+          </ul>
+        </div>
+        <div style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:1rem;">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:#ef4444;margin-bottom:0.5rem;">❌ Skip RTS/CTS when…</div>
+          <ul style="list-style:none;padding:0;">
+            <li style="font-size:0.8rem;color:var(--muted);padding:0.25rem 0;border-bottom:1px solid rgba(239,68,68,0.1);">Only 2 wires available (TX, RX)</li>
+            <li style="font-size:0.8rem;color:var(--muted);padding:0.25rem 0;border-bottom:1px solid rgba(239,68,68,0.1);">Low baud rate (9600–115200) with small packets</li>
+            <li style="font-size:0.8rem;color:var(--muted);padding:0.25rem 0;border-bottom:1px solid rgba(239,68,68,0.1);">Debug console / simple sensor readout</li>
+            <li style="font-size:0.8rem;color:var(--muted);padding:0.25rem 0;border-bottom:1px solid rgba(239,68,68,0.1);">Software handles retries / framing anyway</li>
+            <li style="font-size:0.8rem;color:var(--muted);padding:0.25rem 0;">MCU pins are scarce</li>
+          </ul>
+        </div>
+      </div>
+
       <h3>Code Example — MCU UART Init</h3>
       <pre><code>// UART setup — transmit "Hello" at 115200 baud
 void setup() {
@@ -588,6 +945,110 @@ void loop() {
         <li><strong>No ACK, no addressing:</strong> If the slave doesn't respond, you won't know from the protocol alone — add application-level checksums for critical data.</li>
       </ul>
 
+      <!-- ANIMATION: SPI multi-slave working — how CS selects each device -->
+      <div class="illus-wrap">
+        <svg width="100%" viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+          <defs>
+            <style>
+              /* CS1 active = flash selected (cycle A) */
+              @keyframes cs1low{ 0%,5%{y:34;height:14;fill:rgba(239,68,68,0.15);}
+                6%,34%{y:48;height:0;fill:rgba(93,202,165,0.25);}
+                35%,100%{y:34;height:14;fill:rgba(239,68,68,0.15);} }
+              /* CS2 active = ADC selected (cycle B) */
+              @keyframes cs2low{ 0%,39%{y:34;height:14;fill:rgba(239,68,68,0.15);}
+                40%,68%{y:48;height:0;fill:rgba(240,165,0,0.25);}
+                69%,100%{y:34;height:14;fill:rgba(239,68,68,0.15);} }
+              /* CS3 active = display selected (cycle C) */
+              @keyframes cs3low{ 0%,72%{y:34;height:14;fill:rgba(239,68,68,0.15);}
+                73%,95%{y:48;height:0;fill:rgba(136,152,170,0.25);}
+                96%,100%{y:34;height:14;fill:rgba(239,68,68,0.15);} }
+              @keyframes dataflow1{0%,5%{opacity:0;}6%,34%{opacity:1;}35%,100%{opacity:0;}}
+              @keyframes dataflow2{0%,39%{opacity:0;}40%,68%{opacity:1;}69%,100%{opacity:0;}}
+              @keyframes dataflow3{0%,72%{opacity:0;}73%,95%{opacity:1;}96%,100%{opacity:0;}}
+              @keyframes sckrun{from{stroke-dashoffset:300;}to{stroke-dashoffset:0;}}
+              @keyframes slavelight1{0%,5%{stroke:#1e2d45;fill:#111827;}6%,34%{stroke:#5dcaa5;fill:rgba(93,202,165,0.12);}35%,100%{stroke:#1e2d45;fill:#111827;}}
+              @keyframes slavelight2{0%,39%{stroke:#1e2d45;fill:#111827;}40%,68%{stroke:#f0a500;fill:rgba(240,165,0,0.12);}69%,100%{stroke:#1e2d45;fill:#111827;}}
+              @keyframes slavelight3{0%,72%{stroke:#1e2d45;fill:#111827;}73%,95%{stroke:#8898aa;fill:rgba(136,152,170,0.12);}96%,100%{stroke:#1e2d45;fill:#111827;}}
+              .df1{animation:dataflow1 6s step-start infinite;}
+              .df2{animation:dataflow2 6s step-start infinite;}
+              .df3{animation:dataflow3 6s step-start infinite;}
+              .sl1box{animation:slavelight1 6s step-start infinite;}
+              .sl2box{animation:slavelight2 6s step-start infinite;}
+              .sl3box{animation:slavelight3 6s step-start infinite;}
+              .sckl{stroke-dasharray:300;stroke-dashoffset:300;animation:sckrun 1.2s ease forwards;}
+            </style>
+          </defs>
+
+          <text x="350" y="16" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="11" fill="#e2e8f0">SPI MULTI-SLAVE WORKING — CS SELECTS ONE DEVICE AT A TIME</text>
+
+          <!-- MASTER MCU -->
+          <rect x="14" y="90" width="130" height="130" rx="8" fill="#111827" stroke="#5dcaa5" stroke-width="1.5"/>
+          <text x="79" y="116" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="10" fill="#5dcaa5">MCU MASTER</text>
+          <text x="79" y="130" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">MOSI ────────→</text>
+          <text x="79" y="144" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">MISO ←────────</text>
+          <text x="79" y="158" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#5dcaa5">SCK  ────────→</text>
+          <text x="79" y="172" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#ef4444">CS1  ────────→</text>
+          <text x="79" y="186" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#ef4444">CS2  ────────→</text>
+          <text x="79" y="200" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#ef4444">CS3  ────────→</text>
+
+          <!-- Shared MOSI/MISO/SCK bus lines -->
+          <line x1="144" y1="130" x2="220" y2="130" stroke="#00c9a7" stroke-width="1.5" stroke-dasharray="4 2"/>
+          <line x1="144" y1="144" x2="220" y2="144" stroke="#f0a500" stroke-width="1.5" stroke-dasharray="4 2"/>
+          <line x1="144" y1="158" x2="700" y2="158" stroke="#5dcaa5" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.5"/>
+          <line x1="220" y1="130" x2="700" y2="130" stroke="#00c9a7" stroke-width="1.2" opacity="0.25"/>
+          <line x1="220" y1="144" x2="700" y2="144" stroke="#f0a500" stroke-width="1.2" opacity="0.25"/>
+
+          <!-- SLAVE 1: Flash Memory -->
+          <rect x="220" y="90" width="140" height="130" rx="8" fill="#111827" stroke="#1e2d45" stroke-width="1.5" class="sl1box"/>
+          <text x="290" y="113" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9.5" fill="#5dcaa5">SLAVE 1</text>
+          <text x="290" y="126" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">SPI Flash W25Q64</text>
+          <text x="290" y="140" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4b5563">64Mbit storage</text>
+          <line x1="144" y1="172" x2="290" y2="172" stroke="#ef4444" stroke-width="1.5"/>
+          <line x1="290" y1="172" x2="290" y2="200" stroke="#ef4444" stroke-width="1.5"/>
+          <rect x="250" y="200" width="80" height="14" rx="3" class="df1" style="opacity:0"/>
+          <text x="290" y="211" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#5dcaa5" class="df1" style="opacity:0">CS1 LOW → ACTIVE</text>
+          <!-- animated data packet slave 1 -->
+          <circle r="5" fill="#5dcaa5" class="df1" style="opacity:0"><animateMotion dur="0.8s" begin="0.36s" repeatCount="indefinite" path="M144,130 L220,130"/></circle>
+
+          <!-- SLAVE 2: ADC -->
+          <rect x="390" y="90" width="140" height="130" rx="8" fill="#111827" stroke="#1e2d45" stroke-width="1.5" class="sl2box"/>
+          <text x="460" y="113" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9.5" fill="#f0a500">SLAVE 2</text>
+          <text x="460" y="126" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">12-bit ADC MCP3204</text>
+          <text x="460" y="140" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4b5563">4-channel analog</text>
+          <line x1="144" y1="186" x2="460" y2="186" stroke="#ef4444" stroke-width="1.5"/>
+          <line x1="460" y1="186" x2="460" y2="200" stroke="#ef4444" stroke-width="1.5"/>
+          <rect x="420" y="200" width="80" height="14" rx="3" class="df2" style="opacity:0"/>
+          <text x="460" y="211" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#f0a500" class="df2" style="opacity:0">CS2 LOW → ACTIVE</text>
+          <circle r="5" fill="#f0a500" class="df2" style="opacity:0"><animateMotion dur="0.8s" begin="2.4s" repeatCount="indefinite" path="M144,130 L390,130"/></circle>
+
+          <!-- SLAVE 3: TFT Display -->
+          <rect x="558" y="90" width="128" height="130" rx="8" fill="#111827" stroke="#1e2d45" stroke-width="1.5" class="sl3box"/>
+          <text x="622" y="113" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9.5" fill="#8898aa">SLAVE 3</text>
+          <text x="622" y="126" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">TFT Display ILI9341</text>
+          <text x="622" y="140" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4b5563">240×320 colour</text>
+          <line x1="144" y1="200" x2="622" y2="200" stroke="#ef4444" stroke-width="1.5"/>
+          <line x1="622" y1="200" x2="622" y2="214" stroke="#ef4444" stroke-width="1.5"/>
+          <rect x="574" y="214" width="96" height="14" rx="3" class="df3" style="opacity:0"/>
+          <text x="622" y="225" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#8898aa" class="df3" style="opacity:0">CS3 LOW → ACTIVE</text>
+          <circle r="5" fill="#8898aa" class="df3" style="opacity:0"><animateMotion dur="0.8s" begin="4.38s" repeatCount="indefinite" path="M144,130 L558,130"/></circle>
+
+          <!-- Timeline bar -->
+          <rect x="14" y="240" width="672" height="60" rx="6" fill="#0d1117" stroke="#1e2d45" stroke-width="1"/>
+          <text x="20" y="255" font-family="Syne,sans-serif" font-weight="700" font-size="8.5" fill="#8898aa">TIME →</text>
+          <!-- cycle A: CS1 active -->
+          <rect x="50" y="248" width="200" height="18" rx="3" fill="rgba(93,202,165,0.2)" stroke="#5dcaa544" stroke-width="0.8"/>
+          <text x="150" y="260" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#5dcaa5">CS1 low → Flash read (8 bytes)</text>
+          <!-- cycle B: CS2 active -->
+          <rect x="258" y="248" width="200" height="18" rx="3" fill="rgba(240,165,0,0.2)" stroke="#f0a50044" stroke-width="0.8"/>
+          <text x="358" y="260" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#f0a500">CS2 low → ADC read channel 0</text>
+          <!-- cycle C: CS3 active -->
+          <rect x="466" y="248" width="200" height="18" rx="3" fill="rgba(136,152,170,0.2)" stroke="#8898aa44" stroke-width="0.8"/>
+          <text x="566" y="260" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#8898aa">CS3 low → TFT write pixel burst</text>
+          <text x="350" y="292" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4b5563">Only one CS is ever LOW at a time — highlighted slave = active · others ignore MOSI/MISO</text>
+        </svg>
+        <div class="illus-caption">Fig 4b — SPI multi-slave working. Three slaves share MOSI, MISO, SCK — each gets a dedicated CS line. Only the slave whose CS is pulled LOW is active; others tri-state their MISO output. Animated glowing border and data packets show which device is currently selected.</div>
+      </div>
+
       <hr class="sep"/>
 
       <!-- ═══════════════════ LIN ═══════════════════ -->
@@ -606,8 +1067,142 @@ void loop() {
       </div>
       <h2 id="lin">LIN</h2>
       <p><strong>LIN</strong> is a low-cost, single-wire serial protocol for lower-priority automotive subsystems — seat position motors, mirror adjustment, window controls, HVAC, ambient lighting. A modern car uses LIN for everything that doesn't need CAN's speed or robustness.</p>
-      <h3>Frame Structure</h3>
-      <pre><code>Break field (13+ dominant bits) | Sync byte (0x55) | PID (Protected ID) | Data (1–8 bytes) | Checksum</code></pre>
+
+      <!-- ANIMATION: LIN frame structure + automotive body network -->
+      <div class="illus-wrap">
+        <svg width="100%" viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+          <defs>
+            <style>
+              @keyframes lindraw{from{stroke-dashoffset:600;}to{stroke-dashoffset:0;}}
+              @keyframes linfield{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+              @keyframes linnode{0%,100%{opacity:0.5;}50%{opacity:1;}}
+              @keyframes linpkt{0%{opacity:0;}10%{opacity:1;}80%{opacity:1;}100%{opacity:0;}}
+              .lline{stroke-dasharray:600;stroke-dashoffset:600;animation:lindraw 2.5s ease forwards;fill:none;}
+              .ll1{animation-delay:0.1s;}.ll2{animation-delay:0.4s;}.ll3{animation-delay:0.7s;}.ll4{animation-delay:1.0s;}.ll5{animation-delay:1.3s;}.ll6{animation-delay:1.6s;}
+              .lfield{animation:linfield 0.4s ease forwards;opacity:0;}
+              .lf1{animation-delay:0.3s;}.lf2{animation-delay:0.7s;}.lf3{animation-delay:1.1s;}.lf4{animation-delay:1.5s;}.lf5{animation-delay:1.9s;}
+              .lnpulse{animation:linnode 2.5s ease-in-out infinite;}
+              .lpkt{animation:linpkt 4s ease-in-out infinite;}
+              .lpkt2{animation:linpkt 4s ease-in-out infinite;animation-delay:1.3s;}
+              .lpkt3{animation:linpkt 4s ease-in-out infinite;animation-delay:2.6s;}
+            </style>
+          </defs>
+
+          <!-- PART 1: LIN Frame waveform (top half) -->
+          <text x="350" y="16" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="11" fill="#e2e8f0">LIN FRAME STRUCTURE — SINGLE WIRE · 12V · 20kbps</text>
+
+          <!-- Single wire signal -->
+          <text x="28" y="62" text-anchor="end" font-family="Fira Code,monospace" font-size="8.5" fill="#8898aa">LIN</text>
+          <!-- idle high -->
+          <line x1="32" y1="55" x2="60" y2="55" stroke="#8898aa" stroke-width="2" class="lline ll1"/>
+          <!-- Break: 13+ dominant (low) bits -->
+          <line x1="60" y1="55" x2="60" y2="80" stroke="#8898aa" stroke-width="2" class="lline ll1"/>
+          <line x1="60" y1="80" x2="130" y2="80" stroke="#8898aa" stroke-width="2" class="lline ll1"/>
+          <line x1="130" y1="80" x2="130" y2="55" stroke="#8898aa" stroke-width="2" class="lline ll1"/>
+          <!-- Sync byte 0x55 — alternating bits -->
+          <path d="M130,55 L160,55 L160,80 L190,80 L190,55 L220,55 L220,80 L250,80 L250,55 L270,55" stroke="#8898aa" stroke-width="2" fill="none" class="lline ll2"/>
+          <!-- PID byte -->
+          <path d="M270,55 L270,80 L300,80 L300,55 L320,55 L320,80 L350,80 L350,55 L380,55" stroke="#f0a500" stroke-width="2" fill="none" class="lline ll3"/>
+          <!-- Data bytes (3 bytes simplified) -->
+          <path d="M380,55 L380,80 L410,80 L410,55 L430,55 L430,80 L460,80 L460,55 L490,55 L490,80 L520,80 L520,55" stroke="#00c9a7" stroke-width="2" fill="none" class="lline ll4"/>
+          <!-- Checksum byte -->
+          <path d="M520,55 L520,80 L550,80 L550,55 L570,55 L570,80 L600,80 L600,55" stroke="#ef4444" stroke-width="2" fill="none" class="lline ll5"/>
+          <!-- Idle -->
+          <line x1="600" y1="55" x2="686" y2="55" stroke="#8898aa" stroke-width="2" class="lline ll6"/>
+
+          <!-- Field Labels -->
+          <rect x="60" y="88" width="70" height="28" rx="4" fill="rgba(136,152,170,0.12)" stroke="#8898aa44" class="lfield lf1"/>
+          <text x="95" y="100" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#8898aa" class="lfield lf1">BREAK</text>
+          <text x="95" y="110" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563" class="lfield lf1">13+ bits LOW</text>
+
+          <rect x="130" y="88" width="140" height="28" rx="4" fill="rgba(136,152,170,0.08)" stroke="#8898aa33" class="lfield lf2"/>
+          <text x="200" y="100" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#8898aa" class="lfield lf2">SYNC (0x55)</text>
+          <text x="200" y="110" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563" class="lfield lf2">Baud rate sync byte</text>
+
+          <rect x="270" y="88" width="110" height="28" rx="4" fill="rgba(240,165,0,0.1)" stroke="#f0a50044" class="lfield lf3"/>
+          <text x="325" y="100" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#f0a500" class="lfield lf3">PID</text>
+          <text x="325" y="110" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563" class="lfield lf3">6-bit ID + 2-bit parity</text>
+
+          <rect x="380" y="88" width="140" height="28" rx="4" fill="rgba(0,201,167,0.1)" stroke="#00c9a744" class="lfield lf4"/>
+          <text x="450" y="100" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#00c9a7" class="lfield lf4">DATA (1–8 bytes)</text>
+          <text x="450" y="110" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563" class="lfield lf4">Published by slave</text>
+
+          <rect x="520" y="88" width="80" height="28" rx="4" fill="rgba(239,68,68,0.1)" stroke="#ef444444" class="lfield lf5"/>
+          <text x="560" y="100" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#ef4444" class="lfield lf5">CHECKSUM</text>
+          <text x="560" y="110" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563" class="lfield lf5">Enhanced/Classic</text>
+
+          <!-- PART 2: Automotive LIN network (bottom half) -->
+          <text x="350" y="142" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="10" fill="#e2e8f0">TYPICAL AUTOMOTIVE LIN CLUSTER</text>
+
+          <!-- LIN bus line -->
+          <line x1="100" y1="190" x2="600" y2="190" stroke="#8898aa" stroke-width="2"/>
+
+          <!-- Master node: BCM -->
+          <rect x="14" y="165" width="86" height="50" rx="6" fill="#111827" stroke="#f0a500" stroke-width="1.5"/>
+          <text x="57" y="184" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#f0a500">BCM</text>
+          <text x="57" y="196" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#8898aa">Body Control</text>
+          <text x="57" y="207" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#f0a50077">LIN MASTER</text>
+          <line x1="100" y1="190" x2="100" y2="190" stroke="#f0a500" stroke-width="1.5"/>
+
+          <!-- Slave 1: Seat -->
+          <rect x="124" y="155" width="80" height="40" rx="5" fill="#0d1526" stroke="#8898aa44" stroke-width="1" class="lnpulse"/>
+          <text x="164" y="170" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">💺 Seat</text>
+          <text x="164" y="182" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">Motor ctrl</text>
+          <text x="164" y="193" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">0x21</text>
+          <line x1="164" y1="195" x2="164" y2="190" stroke="#8898aa44" stroke-width="1.2"/>
+
+          <!-- Slave 2: Mirror -->
+          <rect x="222" y="155" width="80" height="40" rx="5" fill="#0d1526" stroke="#8898aa44" stroke-width="1"/>
+          <text x="262" y="170" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">🪞 Mirror</text>
+          <text x="262" y="182" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">Adjust</text>
+          <text x="262" y="193" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">0x22</text>
+          <line x1="262" y1="195" x2="262" y2="190" stroke="#8898aa44" stroke-width="1.2"/>
+
+          <!-- Slave 3: Window -->
+          <rect x="320" y="155" width="80" height="40" rx="5" fill="#0d1526" stroke="#8898aa44" stroke-width="1"/>
+          <text x="360" y="170" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">🪟 Window</text>
+          <text x="360" y="182" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">Motor</text>
+          <text x="360" y="193" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">0x23</text>
+          <line x1="360" y1="195" x2="360" y2="190" stroke="#8898aa44" stroke-width="1.2"/>
+
+          <!-- Slave 4: HVAC fan -->
+          <rect x="418" y="155" width="80" height="40" rx="5" fill="#0d1526" stroke="#8898aa44" stroke-width="1"/>
+          <text x="458" y="170" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">❄️ HVAC</text>
+          <text x="458" y="182" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">Fan speed</text>
+          <text x="458" y="193" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">0x24</text>
+          <line x1="458" y1="195" x2="458" y2="190" stroke="#8898aa44" stroke-width="1.2"/>
+
+          <!-- Slave 5: Ambient LED -->
+          <rect x="516" y="155" width="88" height="40" rx="5" fill="#0d1526" stroke="#8898aa44" stroke-width="1"/>
+          <text x="560" y="170" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">💡 Ambient</text>
+          <text x="560" y="182" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">LED strip</text>
+          <text x="560" y="193" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">0x25</text>
+          <line x1="560" y1="195" x2="560" y2="190" stroke="#8898aa44" stroke-width="1.2"/>
+
+          <!-- Animated packets on LIN bus -->
+          <circle r="5" fill="#f0a500" class="lpkt"><animateMotion dur="1.5s" begin="0s" repeatCount="indefinite" path="M100,0 L164,0"/></circle>
+          <circle r="5" fill="#f0a500" class="lpkt2"><animateMotion dur="1.5s" begin="1.3s" repeatCount="indefinite" path="M100,0 L360,0"/></circle>
+          <circle r="5" fill="#f0a500" class="lpkt3"><animateMotion dur="1.5s" begin="2.6s" repeatCount="indefinite" path="M100,0 L560,0"/></circle>
+
+          <!-- Termination -->
+          <rect x="610" y="175" width="76" height="30" rx="4" fill="rgba(239,68,68,0.08)" stroke="#ef444433" stroke-width="0.8"/>
+          <text x="648" y="188" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#ef4444">Termination</text>
+          <text x="648" y="199" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#4b5563">1kΩ to 12V</text>
+          <line x1="600" y1="190" x2="610" y2="190" stroke="#8898aa" stroke-width="2"/>
+
+          <text x="350" y="240" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="#4b5563">BCM (master) polls each slave by ID · slaves reply with data · all on a single 12V wire · max 20kbps</text>
+
+          <!-- Key numbers comparison -->
+          <rect x="14" y="255" width="200" height="44" rx="6" fill="rgba(136,152,170,0.06)" stroke="#8898aa33"/>
+          <text x="114" y="271" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#8898aa">LIN STATS</text>
+          <text x="114" y="285" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4b5563">1 wire · 1 master · 16 slaves · 20kbps · 40m · ≈$0.20/node</text>
+          <rect x="226" y="255" width="460" height="44" rx="6" fill="rgba(240,165,0,0.06)" stroke="#f0a50033"/>
+          <text x="456" y="271" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#f0a500">WHY LIN OVER CAN FOR BODY CONTROL?</text>
+          <text x="456" y="285" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4b5563">Single wire saves wiring harness cost · no arbitration needed · perfect for slow non-critical actuators</text>
+        </svg>
+        <div class="illus-caption">Fig 5 — LIN frame (top): Break field wakes all slaves → Sync byte locks baud rate → PID selects which slave → Data published → Checksum. Bottom: A typical BCM LIN cluster in a car door — seats, mirrors, windows, HVAC, ambient LED all on one wire, master polling each slave in schedule.</div>
+      </div>
+
       <h3>LIN vs CAN — When to Use Which</h3>
       <ul>
         <li><strong>LIN:</strong> Single master, 1 wire, ≤20kbps, ≤16 nodes, ≤40m — cheap, simple, no arbitration</li>
@@ -682,6 +1277,116 @@ TX: 01 03 00 00 00 02 C4 0B
     |  |  Start address
     |  Function code (0x03 = Read Holding Registers)
     Slave address</code></pre>
+
+      <!-- ANIMATION: RS485 multi-drop MODBUS network working -->
+      <div class="illus-wrap">
+        <svg width="100%" viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+          <defs>
+            <style>
+              @keyframes rspkt{0%{opacity:0;}8%{opacity:1;}40%{opacity:1;}50%{opacity:0;}100%{opacity:0;}}
+              @keyframes rspktr{0%,50%{opacity:0;}55%{opacity:1;}90%{opacity:1;}100%{opacity:0;}}
+              @keyframes rsnodeactive{0%,8%{stroke:#ef4444;fill:rgba(239,68,68,0.12);}9%,50%{stroke:#ef4444;fill:rgba(239,68,68,0.22);}51%,100%{stroke:#1e2d45;fill:#111827;}}
+              @keyframes rsnodeactive2{0%,38%{stroke:#1e2d45;fill:#111827;}39%,75%{stroke:#f0a500;fill:rgba(240,165,0,0.18);}76%,100%{stroke:#1e2d45;fill:#111827;}}
+              @keyframes rsnodeactive3{0%,68%{stroke:#1e2d45;fill:#111827;}69%,95%{stroke:#5dcaa5;fill:rgba(93,202,165,0.15);}96%,100%{stroke:#1e2d45;fill:#111827;}}
+              @keyframes txpulse{0%,5%{background:rgba(239,68,68,0.2);}6%,45%{background:rgba(239,68,68,0.05);}46%,100%{background:rgba(239,68,68,0.02);}}
+              .rspkt1{animation:rspkt 8s ease-in-out infinite;opacity:0;}
+              .rspktr1{animation:rspktr 8s ease-in-out infinite;opacity:0;}
+              .rspkt2{animation:rspkt 8s ease-in-out infinite;animation-delay:3s;opacity:0;}
+              .rspktr2{animation:rspktr 8s ease-in-out infinite;animation-delay:3s;opacity:0;}
+              .rsna1{animation:rsnodeactive 8s step-start infinite;}
+              .rsna2{animation:rsnodeactive2 8s step-start infinite;}
+              .rsna3{animation:rsnodeactive3 8s step-start infinite;}
+            </style>
+          </defs>
+
+          <text x="350" y="16" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="11" fill="#e2e8f0">RS485 MODBUS RTU — MULTI-DROP INDUSTRIAL NETWORK</text>
+
+          <!-- RS485 twisted pair bus (A and B) -->
+          <text x="350" y="72" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#ef444466">A (+) ────────────────────────────────────────────────────</text>
+          <text x="350" y="82" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#ef444433">B (–) ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─</text>
+
+          <!-- Master: PLC / SCADA -->
+          <rect x="14" y="90" width="110" height="100" rx="8" fill="#111827" stroke="#ef4444" stroke-width="1.8"/>
+          <text x="69" y="112" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9.5" fill="#ef4444">MASTER</text>
+          <text x="69" y="125" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">PLC / SCADA</text>
+          <text x="69" y="140" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#4b5563">TX: 01 03 00 00</text>
+          <text x="69" y="152" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#4b5563">     00 02 C4 0B</text>
+          <text x="69" y="167" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#ef4444">Poll slave 0x01</text>
+          <text x="69" y="180" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#4b5563">fn 0x03 read</text>
+          <line x1="124" y1="140" x2="160" y2="140" stroke="#ef4444" stroke-width="1.5"/>
+
+          <!-- Bus line -->
+          <line x1="160" y1="140" x2="680" y2="140" stroke="#ef4444" stroke-width="2"/>
+          <line x1="160" y1="148" x2="680" y2="148" stroke="#ef4444" stroke-width="1" opacity="0.4" stroke-dasharray="4 3"/>
+
+          <!-- SLAVE 1: VFD Motor Drive -->
+          <rect x="176" y="100" width="106" height="84" rx="7" fill="#111827" stroke="#1e2d45" stroke-width="1.5" class="rsna1"/>
+          <text x="229" y="120" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8.5" fill="#ef4444">SLAVE 0x01</text>
+          <text x="229" y="133" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#8898aa">⚡ VFD Drive</text>
+          <text x="229" y="145" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">Motor frequency</text>
+          <text x="229" y="157" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">speed setpoint</text>
+          <text x="229" y="170" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#ef444488" class="rsna1">RESPONDS →</text>
+          <line x1="229" y1="100" x2="229" y2="140" stroke="#ef4444" stroke-width="1.5"/>
+
+          <!-- SLAVE 2: Energy Meter -->
+          <rect x="316" y="100" width="106" height="84" rx="7" fill="#111827" stroke="#1e2d45" stroke-width="1.5" class="rsna2"/>
+          <text x="369" y="120" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8.5" fill="#f0a500">SLAVE 0x02</text>
+          <text x="369" y="133" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#8898aa">⚡ Energy Meter</text>
+          <text x="369" y="145" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">kWh · kVA</text>
+          <text x="369" y="157" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">Power factor</text>
+          <text x="369" y="170" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#f0a50088" class="rsna2">RESPONDS →</text>
+          <line x1="369" y1="100" x2="369" y2="140" stroke="#f0a500" stroke-width="1.5"/>
+
+          <!-- SLAVE 3: Temp Sensor -->
+          <rect x="456" y="100" width="106" height="84" rx="7" fill="#111827" stroke="#1e2d45" stroke-width="1.5" class="rsna3"/>
+          <text x="509" y="120" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8.5" fill="#5dcaa5">SLAVE 0x03</text>
+          <text x="509" y="133" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#8898aa">🌡 Temp Sensor</text>
+          <text x="509" y="145" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">PT100 RTD</text>
+          <text x="509" y="157" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563">Process temp</text>
+          <text x="509" y="170" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#5dcaa588" class="rsna3">RESPONDS →</text>
+          <line x1="509" y1="100" x2="509" y2="140" stroke="#5dcaa5" stroke-width="1.5"/>
+
+          <!-- SLAVE N: ... -->
+          <rect x="596" y="110" width="84" height="64" rx="7" fill="#0d1117" stroke="#1e2d45" stroke-width="1" stroke-dasharray="4 3"/>
+          <text x="638" y="134" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4b5563">...up to</text>
+          <text x="638" y="147" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4b5563">32 nodes</text>
+          <text x="638" y="160" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#8898aa">1200m range</text>
+          <line x1="638" y1="110" x2="638" y2="140" stroke="#1e2d45" stroke-width="1.2" stroke-dasharray="3 3"/>
+
+          <!-- Animated request packet (master → slave 1) -->
+          <circle r="6" fill="#ef4444" class="rspkt1"><animateMotion dur="1.5s" begin="0s" repeatCount="indefinite" path="M124,140 L176,140"/></circle>
+          <!-- Animated response packet (slave 1 → master) -->
+          <circle r="6" fill="#5dcaa5" class="rspktr1"><animateMotion dur="1.5s" begin="4s" repeatCount="indefinite" path="M176,140 L124,140"/></circle>
+          <!-- Animated request packet (master → slave 2) -->
+          <circle r="6" fill="#f0a500" class="rspkt2"><animateMotion dur="2s" begin="3s" repeatCount="indefinite" path="M124,140 L316,140"/></circle>
+          <!-- Animated response packet (slave 2 → master) -->
+          <circle r="6" fill="#5dcaa5" class="rspktr2"><animateMotion dur="2s" begin="7s" repeatCount="indefinite" path="M316,140 L124,140"/></circle>
+
+          <!-- Termination resistors -->
+          <rect x="14" y="200" width="60" height="18" rx="3" fill="rgba(239,68,68,0.08)" stroke="#ef444433" stroke-width="0.8"/>
+          <text x="44" y="212" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#ef4444">120Ω TERM</text>
+          <rect x="626" y="200" width="60" height="18" rx="3" fill="rgba(239,68,68,0.08)" stroke="#ef444433" stroke-width="0.8"/>
+          <text x="656" y="212" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#ef4444">120Ω TERM</text>
+          <text x="350" y="230" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="#4b5563">120Ω termination resistors at both ends prevent signal reflections on long cable runs</text>
+
+          <!-- Timing diagram strip -->
+          <rect x="14" y="244" width="672" height="46" rx="6" fill="#0d1117" stroke="#1e2d45" stroke-width="1"/>
+          <text x="20" y="259" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#8898aa">TX/RX →</text>
+          <rect x="60" y="252" width="110" height="12" rx="2" fill="rgba(239,68,68,0.3)" stroke="#ef444466"/>
+          <text x="115" y="261" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#ef4444">TX: Poll 0x01 (8 bytes)</text>
+          <rect x="178" y="252" width="120" height="12" rx="2" fill="rgba(93,202,165,0.3)" stroke="#5dcaa566"/>
+          <text x="238" y="261" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#5dcaa5">RX: Response 0x01 (7 bytes)</text>
+          <rect x="306" y="252" width="90" height="12" rx="2" fill="rgba(240,165,0,0.3)" stroke="#f0a50066"/>
+          <text x="351" y="261" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#f0a500">TX: Poll 0x02</text>
+          <rect x="404" y="252" width="120" height="12" rx="2" fill="rgba(93,202,165,0.3)" stroke="#5dcaa566"/>
+          <text x="464" y="261" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#5dcaa5">RX: Response 0x02</text>
+          <rect x="532" y="252" width="80" height="12" rx="2" fill="rgba(136,152,170,0.3)" stroke="#8898aa66"/>
+          <text x="572" y="261" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#8898aa">TX: Poll 0x03 …</text>
+          <text x="350" y="283" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4b5563">Master polls each slave sequentially · half-duplex (one direction at a time) · RS485 driver switches TX↔RX on each transaction</text>
+        </svg>
+        <div class="illus-caption">Fig 6b — RS485 MODBUS RTU multi-drop network. Master PLC/SCADA polls each slave in turn by address. Animated red packets = request (master→slave); green packets = response (slave→master). Half-duplex — only one device transmits at a time. 120Ω termination resistors prevent reflections at both cable ends.</div>
+      </div>
+
       <h3>When to Use RS485 + MODBUS</h3>
       <ul>
         <li>Industrial automation: PLCs, VFDs, sensors, actuators</li>
@@ -708,6 +1413,129 @@ TX: 01 03 00 00 00 02 C4 0B
       </div>
       <h2 id="can">CAN Bus</h2>
       <p><strong>CAN</strong> is a multi-master differential bus originally designed for automotive environments. Unlike I2C or SPI, any node can transmit without a master — arbitration is non-destructive using message priority IDs. Used in my AFCS project for real-time flight control data distribution.</p>
+
+      <!-- ANIMATION: CAN frame structure + arbitration working -->
+      <div class="illus-wrap">
+        <svg width="100%" viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+          <defs>
+            <style>
+              @keyframes candraw{from{stroke-dashoffset:500;}to{stroke-dashoffset:0;}}
+              @keyframes canfield{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+              @keyframes canwin{0%,20%{fill:#111827;stroke:#1e2d45;}21%,60%{fill:rgba(240,165,0,0.15);stroke:#f0a500;}61%,100%{fill:#111827;stroke:#1e2d45;}}
+              @keyframes canloss{0%,20%{fill:#111827;stroke:#1e2d45;}21%,40%{fill:rgba(239,68,68,0.1);stroke:#ef4444;}41%,100%{fill:#111827;stroke:#1e2d45;}}
+              @keyframes canpkt{0%{opacity:0;}5%{opacity:1;}60%{opacity:1;}70%{opacity:0;}100%{opacity:0;}}
+              @keyframes canpkt2{0%,65%{opacity:0;}70%{opacity:1;}90%{opacity:1;}100%{opacity:0;}}
+              @keyframes arbwinner{0%,20%{opacity:0;}21%,60%{opacity:1;}61%,100%{opacity:0;}}
+              @keyframes arbloser{0%,20%{opacity:0;}21%,40%{opacity:0.8;}41%,100%{opacity:0;}}
+              .cline{stroke-dasharray:500;stroke-dashoffset:500;animation:candraw 2s ease forwards;fill:none;}
+              .cl1{animation-delay:0.1s;}.cl2{animation-delay:0.4s;}.cl3{animation-delay:0.7s;}.cl4{animation-delay:1.0s;}.cl5{animation-delay:1.3s;}.cl6{animation-delay:1.6s;}
+              .cfield{animation:canfield 0.4s ease forwards;opacity:0;}
+              .cf1{animation-delay:0.3s;}.cf2{animation-delay:0.7s;}.cf3{animation-delay:1.0s;}.cf4{animation-delay:1.3s;}.cf5{animation-delay:1.6s;}.cf6{animation-delay:1.9s;}
+              .canwin{animation:canwin 5s step-start infinite;}
+              .canloss{animation:canloss 5s step-start infinite;}
+              .canpkt{animation:canpkt 5s ease-in-out infinite;opacity:0;}
+              .canpkt2{animation:canpkt2 5s ease-in-out infinite;opacity:0;}
+              .arbwinner{animation:arbwinner 5s step-start infinite;opacity:0;}
+              .arbloser{animation:arbloser 5s step-start infinite;opacity:0;}
+            </style>
+          </defs>
+
+          <!-- PART 1: CAN Frame -->
+          <text x="350" y="16" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="11" fill="#e2e8f0">CAN FRAME + NON-DESTRUCTIVE ARBITRATION</text>
+
+          <!-- CAN bus diff signal -->
+          <text x="32" y="52" text-anchor="end" font-family="Fira Code,monospace" font-size="8.5" fill="#f0a500">CANH</text>
+          <!-- SOF (dominant = low CANH) -->
+          <line x1="35" y1="44" x2="60" y2="44" stroke="#f0a500" stroke-width="2" class="cline cl1"/>
+          <line x1="60" y1="44" x2="60" y2="58" stroke="#f0a500" stroke-width="2" class="cline cl1"/>
+          <line x1="60" y1="58" x2="100" y2="58" stroke="#f0a500" stroke-width="2" class="cline cl1"/>
+          <!-- Arbitration ID bits (0x0A1 = higher priority) -->
+          <path d="M100,58 L100,44 L130,44 L130,58 L160,58 L160,44 L185,44 L185,58 L210,58 L210,44 L240,44" stroke="#f0a500" stroke-width="2" fill="none" class="cline cl2"/>
+          <!-- RTR + Control -->
+          <line x1="240" y1="44" x2="280" y2="44" stroke="#f0a500" stroke-width="2" class="cline cl3"/>
+          <line x1="280" y1="44" x2="280" y2="58" stroke="#f0a500" stroke-width="2" class="cline cl3"/>
+          <line x1="280" y1="58" x2="320" y2="58" stroke="#f0a500" stroke-width="2" class="cline cl3"/>
+          <!-- Data field -->
+          <path d="M320,58 L320,44 L360,44 L360,58 L400,58 L400,44 L440,44 L440,58 L480,58 L480,44" stroke="#f0a500" stroke-width="2" fill="none" class="cline cl4"/>
+          <!-- CRC -->
+          <path d="M480,44 L480,58 L510,58 L510,44 L540,44 L540,58 L560,58" stroke="#ef4444" stroke-width="2" fill="none" class="cline cl5"/>
+          <!-- ACK + EOF -->
+          <path d="M560,58 L560,44 L590,44 L590,58 L630,58 L630,44 L686,44" stroke="#f0a500" stroke-width="2" fill="none" class="cline cl6"/>
+
+          <!-- Frame field labels -->
+          <rect x="60" y="66" width="40" height="22" rx="3" fill="rgba(240,165,0,0.1)" stroke="#f0a50044" class="cfield cf1"/>
+          <text x="80" y="79" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#f0a500" class="cfield cf1">SOF</text>
+
+          <rect x="100" y="66" width="140" height="22" rx="3" fill="rgba(240,165,0,0.1)" stroke="#f0a50044" class="cfield cf2"/>
+          <text x="170" y="76" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#f0a500" class="cfield cf2">ARBITRATION ID</text>
+          <text x="170" y="85" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563" class="cfield cf2">11 bits · lower = higher priority</text>
+
+          <rect x="240" y="66" width="80" height="22" rx="3" fill="rgba(136,152,170,0.1)" stroke="#8898aa44" class="cfield cf3"/>
+          <text x="280" y="79" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#8898aa" class="cfield cf3">RTR + CTRL</text>
+
+          <rect x="320" y="66" width="160" height="22" rx="3" fill="rgba(0,201,167,0.1)" stroke="#00c9a744" class="cfield cf4"/>
+          <text x="400" y="76" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#00c9a7" class="cfield cf4">DATA (0–8 bytes)</text>
+          <text x="400" y="85" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#4b5563" class="cfield cf4">Engine speed · temp · sensor values</text>
+
+          <rect x="480" y="66" width="80" height="22" rx="3" fill="rgba(239,68,68,0.1)" stroke="#ef444444" class="cfield cf5"/>
+          <text x="520" y="79" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#ef4444" class="cfield cf5">CRC 15-bit</text>
+
+          <rect x="560" y="66" width="126" height="22" rx="3" fill="rgba(240,165,0,0.1)" stroke="#f0a50044" class="cfield cf6"/>
+          <text x="623" y="79" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#f0a500" class="cfield cf6">ACK + EOF</text>
+
+          <!-- PART 2: CAN Arbitration working -->
+          <text x="350" y="112" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="10" fill="#e2e8f0">MULTI-MASTER ARBITRATION — HOW TWO NODES COMPETE</text>
+
+          <!-- CAN bus shared line -->
+          <line x1="160" y1="165" x2="540" y2="165" stroke="#f0a500" stroke-width="2.5"/>
+          <text x="350" y="160" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#f0a50077">CAN Bus (CANH/CANL)</text>
+
+          <!-- Node A: ECU (ID 0x0A1 — WINS) -->
+          <rect x="14" y="125" width="146" height="90" rx="8" fill="#111827" stroke="#1e2d45" stroke-width="1.5" class="canwin"/>
+          <text x="87" y="147" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9.5" fill="#f0a500">ECU NODE A</text>
+          <text x="87" y="160" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">ID: 0x0A1 (lower)</text>
+          <text x="87" y="173" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4b5563">Message: RPM data</text>
+          <text x="87" y="188" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#f0a500" class="arbwinner">✓ WINS ARBITRATION</text>
+          <text x="87" y="201" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#5dcaa5" class="arbwinner">Continues transmitting</text>
+          <line x1="160" y1="165" x2="160" y2="165"/>
+
+          <!-- Node B: ABS (ID 0x1F4 — LOSES) -->
+          <rect x="270" y="125" width="146" height="90" rx="8" fill="#111827" stroke="#1e2d45" stroke-width="1.5" class="canloss"/>
+          <text x="343" y="147" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9.5" fill="#8898aa">ABS NODE B</text>
+          <text x="343" y="160" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">ID: 0x1F4 (higher)</text>
+          <text x="343" y="173" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4b5563">Message: Wheel speed</text>
+          <text x="343" y="188" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#ef4444" class="arbloser">✗ LOSES — backs off</text>
+          <text x="343" y="201" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#8898aa" class="arbloser">Retries after bus free</text>
+
+          <!-- Node C: TCU (just listening) -->
+          <rect x="440" y="125" width="120" height="90" rx="8" fill="#0d1526" stroke="#1e2d45" stroke-width="1"/>
+          <text x="500" y="147" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9.5" fill="#4b5563">TCU NODE C</text>
+          <text x="500" y="160" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4b5563">Transmission</text>
+          <text x="500" y="173" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4b5563">Just listening</text>
+          <text x="500" y="188" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4b5563">Reads RPM from</text>
+          <text x="500" y="200" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#5dcaa5">Node A packet</text>
+
+          <!-- Animated winning packet -->
+          <circle r="7" fill="#f0a500" class="canpkt"><animateMotion dur="2s" begin="1s" repeatCount="indefinite" path="M160,165 L440,165"/></circle>
+          <!-- After win, full message propagates -->
+          <circle r="5" fill="#5dcaa5" class="canpkt2"><animateMotion dur="1.5s" begin="3.5s" repeatCount="indefinite" path="M160,165 L440,165"/></circle>
+
+          <!-- Collision arrow -->
+          <path d="M160,230 L270,230" stroke="#8898aa" stroke-width="1" marker-end="url(#ca)" fill="none"/>
+          <text x="215" y="245" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8898aa">Both start TX simultaneously</text>
+          <text x="215" y="256" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#4b5563">A reads bus: sees dominant (0) — matches its own bit → continues</text>
+          <text x="215" y="268" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#4b5563">B reads bus: sees dominant (0) — but sent recessive (1) → backs off</text>
+
+          <!-- Key insight box -->
+          <rect x="360" y="228" width="320" height="52" rx="6" fill="rgba(240,165,0,0.06)" stroke="rgba(240,165,0,0.25)" stroke-width="1"/>
+          <text x="520" y="244" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#f0a500">NON-DESTRUCTIVE ARBITRATION</text>
+          <text x="520" y="257" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#8898aa">Lower ID = Higher priority = Wins bus access</text>
+          <text x="520" y="268" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#4b5563">Loser retries automatically · no data lost · no collision damage</text>
+          <text x="520" y="279" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#5dcaa5">ID 0x000 = highest priority · ID 0x7FF = lowest</text>
+        </svg>
+        <div class="illus-caption">Fig 7b — CAN frame (top) and multi-master arbitration (bottom). Two nodes start transmitting simultaneously. The node with lower ID (0x0A1) wins — it reads its own bits on the bus and sees agreement. The higher-ID node (0x1F4) detects a mismatch, backs off immediately without corrupting the frame, and retries. Animated gold packet shows the winning message propagating to all listeners.</div>
+      </div>
+
       <h3>CAN Frame Structure</h3>
       <pre><code>| SOF | Arbitration ID (11/29 bit) | Control | Data (0–8B) | CRC | ACK | EOF |
   ^                 ^                                              ^
