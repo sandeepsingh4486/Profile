@@ -96,8 +96,24 @@
     .crane-card{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease,border-color 0.3s;} .crane-card.in{opacity:1;transform:translateY(0);}
     .data-table tr{opacity:0;transform:translateY(8px);transition:opacity 0.35s ease,transform 0.35s ease;} .data-table tr.in{opacity:1;transform:translateY(0);}
     .more-card{opacity:0;transform:translateY(16px);transition:opacity 0.4s ease,transform 0.4s ease,border-color 0.25s;} .more-card.in{opacity:1;transform:translateY(0);}
-    @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.article-wrap{grid-template-columns:1fr;padding-top:5rem;}.toc-sidebar{display:none;}.crane-grid{grid-template-columns:1fr;}.compare-grid{grid-template-columns:1fr;}.stat-row{grid-template-columns:repeat(3,1fr);}}
-    @media(max-width:600px){.more-blogs{grid-template-columns:1fr;}.stat-row{grid-template-columns:1fr;}}
+    /* ILLUSTRATION WRAPPER */
+    .illus-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin:1.8rem 0;overflow:hidden;opacity:0;transform:translateY(18px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .illus-wrap.in{opacity:1;transform:translateY(0);}
+    .illus-caption{font-size:0.75rem;color:var(--muted);margin-top:0.7rem;line-height:1.6;padding-top:0.6rem;border-top:1px solid var(--border);font-style:italic;}
+    /* SIL levels strip */
+    .sil-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;margin:1.5rem 0;}
+    .sil-cell{border-radius:10px;padding:1rem 0.8rem;text-align:center;opacity:0;transform:translateY(16px);transition:opacity 0.5s ease,transform 0.5s ease;}
+    .sil-cell.in{opacity:1;transform:translateY(0);}
+    .sil-num{font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem;line-height:1;margin-bottom:0.3rem;}
+    .sil-label{font-size:0.7rem;color:rgba(255,255,255,0.7);line-height:1.5;}
+    .sil1{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);} .sil1 .sil-num{color:#6ee7b7;}
+    .sil2{background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.3);} .sil2 .sil-num{color:#f0a500;}
+    .sil3{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);} .sil3 .sil-num{color:#fca5a5;}
+    .sil4{background:rgba(239,68,68,0.18);border:1px solid rgba(239,68,68,0.5);} .sil4 .sil-num{color:#ef4444;}
+    @keyframes heroGlow{0%,100%{text-shadow:0 0 0 transparent}50%{text-shadow:0 0 30px rgba(240,165,0,0.3)}}
+    h1.article-title{animation:heroGlow 4s ease-in-out infinite;}
+    @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.article-wrap{grid-template-columns:1fr;padding-top:5rem;}.toc-sidebar{display:none;}.crane-grid{grid-template-columns:1fr;}.compare-grid{grid-template-columns:1fr;}.stat-row{grid-template-columns:repeat(3,1fr);}.sil-strip{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:600px){.more-blogs{grid-template-columns:1fr;}.stat-row{grid-template-columns:1fr;}.sil-strip{grid-template-columns:1fr;}}
   </style>
 </head>
 <body>
@@ -195,6 +211,84 @@
 
       <h2 id="architecture">§03 — System Architecture</h2>
       <p>Every SLI is built around a four-layer architecture: <strong>Sensors → Signal Conditioner → ECU → Outputs</strong>. Together they achieve the accuracy, reliability, and safety integrity required by IEC 61508 SIL 2.</p>
+
+      <!-- SVG: SLI System Architecture -->
+      <div class="illus-wrap" id="svg-sli-arch">
+        <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+          <defs>
+            <marker id="sli-arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#f0a500"/></marker>
+          </defs>
+          <!-- Layer 1: Sensors -->
+          <rect x="10" y="10" width="138" height="240" rx="10" fill="rgba(0,201,167,0.04)" stroke="rgba(0,201,167,0.25)" stroke-width="1.5"/>
+          <text x="79" y="30" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#00c9a7" letter-spacing="1">SENSORS</text>
+          <rect x="20" y="38" width="118" height="24" rx="6" fill="#151d30" stroke="#1e2d45"/>
+          <text x="79" y="54" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#e2e8f0">Load Cell / Load Pin</text>
+          <rect x="20" y="68" width="118" height="24" rx="6" fill="#151d30" stroke="#1e2d45"/>
+          <text x="79" y="84" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#e2e8f0">Boom Angle Sensor</text>
+          <rect x="20" y="98" width="118" height="24" rx="6" fill="#151d30" stroke="#1e2d45"/>
+          <text x="79" y="114" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#e2e8f0">Length Encoder</text>
+          <rect x="20" y="128" width="118" height="24" rx="6" fill="#151d30" stroke="#1e2d45"/>
+          <text x="79" y="144" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#e2e8f0">Slew Encoder</text>
+          <rect x="20" y="158" width="118" height="24" rx="6" fill="#151d30" stroke="#1e2d45"/>
+          <text x="79" y="174" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#e2e8f0">Wind Anemometer</text>
+          <rect x="20" y="188" width="118" height="24" rx="6" fill="#151d30" stroke="#1e2d45"/>
+          <text x="79" y="204" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#e2e8f0">Outrigger Switches</text>
+          <!-- Arrow 1→2 -->
+          <line x1="148" y1="130" x2="188" y2="130" stroke="#f0a500" stroke-width="2" marker-end="url(#sli-arr)"/>
+          <text x="168" y="124" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#8898aa">4-20mA/CAN</text>
+          <!-- Layer 2: Signal Cond -->
+          <rect x="188" y="80" width="130" height="100" rx="10" fill="rgba(240,165,0,0.04)" stroke="rgba(240,165,0,0.25)" stroke-width="1.5"/>
+          <text x="253" y="100" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#f0a500" letter-spacing="1">SIGNAL COND.</text>
+          <rect x="198" y="108" width="110" height="22" rx="5" fill="#151d30" stroke="#1e2d45"/>
+          <text x="253" y="123" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#e2e8f0">ADC 16-bit ΔΣ</text>
+          <rect x="198" y="134" width="110" height="22" rx="5" fill="#151d30" stroke="#1e2d45"/>
+          <text x="253" y="149" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#e2e8f0">EMC filters (IEC61000)</text>
+          <rect x="198" y="160" width="110" height="14" rx="4" fill="rgba(240,165,0,0.1)"/>
+          <text x="253" y="171" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="7.5" fill="#f0a500">IP67 enclosure</text>
+          <!-- Arrow 2→3 -->
+          <line x1="318" y1="130" x2="358" y2="130" stroke="#f0a500" stroke-width="2" marker-end="url(#sli-arr)"/>
+          <text x="338" y="124" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#8898aa">CAN Bus</text>
+          <!-- Layer 3: ECU -->
+          <rect x="358" y="30" width="160" height="200" rx="10" fill="rgba(240,165,0,0.05)" stroke="#f0a500" stroke-width="2"/>
+          <text x="438" y="52" text-anchor="middle" font-family="Syne,sans-serif" font-weight="800" font-size="10" fill="#fff">ECU — SLI-2000 PRO</text>
+          <rect x="368" y="60" width="140" height="20" rx="5" fill="#151d30" stroke="#1e2d45"/>
+          <text x="438" y="74" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#e2e8f0">STM32 32-bit · Dual-chan</text>
+          <rect x="368" y="84" width="140" height="20" rx="5" fill="#151d30" stroke="#1e2d45"/>
+          <text x="438" y="98" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#e2e8f0">Load chart bilinear interp</text>
+          <rect x="368" y="108" width="140" height="20" rx="5" fill="#151d30" stroke="#1e2d45"/>
+          <text x="438" y="122" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#e2e8f0">256MB non-volatile log</text>
+          <rect x="368" y="132" width="140" height="20" rx="5" fill="#151d30" stroke="#1e2d45"/>
+          <text x="438" y="146" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#e2e8f0">Watchdog + cross-monitor</text>
+          <rect x="368" y="156" width="140" height="20" rx="5" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.3)"/>
+          <text x="438" y="170" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#fca5a5">IEC 61508 SIL 2</text>
+          <rect x="368" y="180" width="140" height="20" rx="5" fill="#151d30" stroke="#1e2d45"/>
+          <text x="438" y="194" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#e2e8f0">CRC32 integrity check</text>
+          <!-- Arrow 3→4 -->
+          <line x1="518" y1="130" x2="558" y2="130" stroke="#f0a500" stroke-width="2" marker-end="url(#sli-arr)"/>
+          <!-- Layer 4: Outputs -->
+          <rect x="558" y="30" width="132" height="200" rx="10" fill="rgba(0,201,167,0.04)" stroke="rgba(0,201,167,0.2)" stroke-width="1.5"/>
+          <text x="624" y="50" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#00c9a7" letter-spacing="1">OUTPUTS</text>
+          <rect x="568" y="58" width="112" height="22" rx="5" fill="#151d30" stroke="#1e2d45"/>
+          <text x="624" y="73" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#e2e8f0">Load Display (7")</text>
+          <rect x="568" y="85" width="112" height="22" rx="5" fill="rgba(239,68,68,0.12)" stroke="rgba(239,68,68,0.3)"/>
+          <text x="624" y="100" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#fca5a5">Motion Cut Relay 24V</text>
+          <rect x="568" y="112" width="112" height="22" rx="5" fill="#151d30" stroke="#1e2d45"/>
+          <text x="624" y="127" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#e2e8f0">Audible Alarm 90%</text>
+          <rect x="568" y="139" width="112" height="22" rx="5" fill="#151d30" stroke="#1e2d45"/>
+          <text x="624" y="154" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#e2e8f0">USB/Bluetooth Export</text>
+          <rect x="568" y="166" width="112" height="22" rx="5" fill="#151d30" stroke="#1e2d45"/>
+          <text x="624" y="181" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#e2e8f0">SCADA / PLC (Modbus)</text>
+          <!-- Animated data flow -->
+          <circle r="4" fill="#00c9a7" opacity="0.85">
+            <animateMotion dur="3s" repeatCount="indefinite" path="M 148,50 L 358,50"/>
+          </circle>
+          <circle r="4" fill="#f0a500" opacity="0.85">
+            <animateMotion dur="3s" repeatCount="indefinite" begin="1.5s" path="M 148,160 L 518,160"/>
+          </circle>
+        </svg>
+        <div class="illus-caption">Fig 1 — SLI-2000 four-layer architecture: sensor nodes feed signal conditioning, which feeds the dual-channel SIL 2 ECU, which drives outputs including the hardwired 24V motion cut relay. Animated dots show live data flow paths.</div>
+      </div>
+
       <h3>Sensor Subsystem</h3>
       <table class="data-table">
         <tr><th>Sensor</th><th>Specification</th><th>Output</th><th>Standard</th></tr>
@@ -279,6 +373,61 @@
       </ul>
 
       <h2 id="standards">§07 — Regulatory Framework</h2>
+      <p>The SLI-2000 is designed to satisfy <strong>IEC 61508 SIL 2</strong> — the international functional safety standard for safety-instrumented systems. Understanding SIL levels is essential for selecting the right protection level for a given crane application.</p>
+
+      <div class="sil-strip">
+        <div class="sil-cell sil1"><div class="sil-num">SIL 1</div><div class="sil-label">PFH: 10⁻⁵–10⁻⁶/hr<br>Low-risk industrial</div></div>
+        <div class="sil-cell sil2"><div class="sil-num">SIL 2</div><div class="sil-label">PFH: 10⁻⁶–10⁻⁷/hr<br>SLI target — crane overload</div></div>
+        <div class="sil-cell sil3"><div class="sil-num">SIL 3</div><div class="sil-label">PFH: 10⁻⁷–10⁻⁸/hr<br>High-risk process plant</div></div>
+        <div class="sil-cell sil4"><div class="sil-num">SIL 4</div><div class="sil-label">PFH: 10⁻⁸–10⁻⁹/hr<br>Nuclear / space critical</div></div>
+      </div>
+
+      <!-- SVG: Overload Response Timeline -->
+      <div class="illus-wrap" id="svg-overload">
+        <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+          <defs>
+            <marker id="oa" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#8898aa"/></marker>
+          </defs>
+          <!-- Timeline base -->
+          <line x1="40" y1="90" x2="670" y2="90" stroke="#1e2d45" stroke-width="2" marker-end="url(#oa)"/>
+          <text x="685" y="94" font-family="DM Sans,sans-serif" font-size="9" fill="#8898aa">Load %</text>
+          <!-- Load progression bar -->
+          <rect x="40" y="78" width="300" height="24" rx="4" fill="rgba(0,201,167,0.15)" stroke="rgba(0,201,167,0.3)" stroke-width="1"/>
+          <text x="190" y="94" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#00c9a7">0 – 89%  SAFE OPERATION</text>
+          <rect x="340" y="78" width="120" height="24" rx="4" fill="rgba(240,165,0,0.15)" stroke="rgba(240,165,0,0.4)" stroke-width="1"/>
+          <text x="400" y="94" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#f0a500">90–99%  PRE-WARN</text>
+          <rect x="460" y="70" width="80" height="40" rx="4" fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.5)" stroke-width="2"/>
+          <text x="500" y="88" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#fca5a5">100%</text>
+          <text x="500" y="102" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#fca5a5">CUTOUT</text>
+          <rect x="540" y="60" width="100" height="60" rx="4" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.3)" stroke-width="1"/>
+          <text x="590" y="84" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#8898aa">Hoist inhibited</text>
+          <text x="590" y="98" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#8898aa">Relay open</text>
+          <text x="590" y="112" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#8898aa">No bypass</text>
+          <!-- Tick marks -->
+          <line x1="40" y1="90" x2="40" y2="105"/><text x="40" y="116" text-anchor="middle" font-family="Fira Code,monospace" font-size="8" fill="#8898aa">0%</text>
+          <line x1="340" y1="90" x2="340" y2="105" stroke="#f0a500" stroke-width="1.5"/><text x="340" y="116" text-anchor="middle" font-family="Fira Code,monospace" font-size="8" fill="#f0a500">90%</text>
+          <line x1="460" y1="90" x2="460" y2="110" stroke="#ef4444" stroke-width="2"/><text x="460" y="122" text-anchor="middle" font-family="Fira Code,monospace" font-size="8" fill="#ef4444">100%</text>
+          <!-- Alarm icon annotation -->
+          <text x="400" y="55" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11">🔔</text>
+          <text x="400" y="67" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#f0a500">Audible alarm</text>
+          <text x="500" y="50" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11">🛑</text>
+          <text x="500" y="62" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#ef4444">Relay opens</text>
+          <!-- Animated rising load indicator -->
+          <rect x="40" y="130" width="0" height="10" rx="3" fill="url(#lgrd)" id="load-bar">
+            <animate attributeName="width" from="0" to="420" dur="3s" repeatCount="indefinite" calcMode="linear"/>
+          </rect>
+          <defs>
+            <linearGradient id="lgrd" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#00c9a7"/>
+              <stop offset="72%" stop-color="#f0a500"/>
+              <stop offset="100%" stop-color="#ef4444"/>
+            </linearGradient>
+          </defs>
+          <text x="40" y="154" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">↑ Simulated load rising — relay fires at 100%</text>
+        </svg>
+        <div class="illus-caption">Fig 2 — SLI response timeline: the animated bar shows load rising through safe (green), pre-warning (amber), and cutout (red) zones. At 100% the hardwired relay opens and hoist motion is physically inhibited — no software override is possible.</div>
+      </div>
+
       <table class="data-table">
         <tr><th>Standard</th><th>Jurisdiction</th><th>Key Requirement</th><th>Authority</th></tr>
         <tr><td><strong>IS 4573</strong></td><td>India</td><td>Mandatory SLI · alarm 90% · cutout 100%</td><td>DGMS · Director of Factories</td></tr>
@@ -337,6 +486,8 @@
   document.querySelectorAll('.data-table tr').forEach((r,i)=>{r.style.transitionDelay=i*0.06+'s';io.observe(r);});
   document.querySelectorAll('.more-card').forEach((c,i)=>{c.style.transitionDelay=i*0.1+'s';io.observe(c);});
   document.querySelectorAll('.article-body li').forEach((l,i)=>{l.classList.add('anim-li');l.style.transitionDelay=(i%6)*0.07+'s';io.observe(l);});
+  document.querySelectorAll('.illus-wrap').forEach((c,i)=>{c.style.transitionDelay=i*0.1+'s';io.observe(c);});
+  document.querySelectorAll('.sil-cell').forEach((c,i)=>{c.style.transitionDelay=i*0.12+'s';io.observe(c);});
 </script>
 </body>
 </html>

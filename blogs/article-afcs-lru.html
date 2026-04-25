@@ -99,8 +99,25 @@
     .lru-card{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease,border-color 0.3s;} .lru-card.in{opacity:1;transform:translateY(0);}
     .data-table tr{opacity:0;transform:translateY(8px);transition:opacity 0.35s ease,transform 0.35s ease;} .data-table tr.in{opacity:1;transform:translateY(0);}
     .more-card{opacity:0;transform:translateY(16px);transition:opacity 0.4s ease,transform 0.4s ease,border-color 0.25s;} .more-card.in{opacity:1;transform:translateY(0);}
-    @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.article-wrap{grid-template-columns:1fr;padding-top:5rem;}.toc-sidebar{display:none;}.lru-grid{grid-template-columns:1fr;}.stat-row{grid-template-columns:repeat(3,1fr);}.bm-row{grid-template-columns:1fr 1fr;}}
-    @media(max-width:600px){.more-blogs{grid-template-columns:1fr;}.stat-row{grid-template-columns:1fr;}}
+    /* ILLUSTRATION WRAPPER */
+    .illus-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin:1.8rem 0;overflow:hidden;opacity:0;transform:translateY(18px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .illus-wrap.in{opacity:1;transform:translateY(0);}
+    .illus-caption{font-size:0.75rem;color:var(--muted);margin-top:0.7rem;line-height:1.6;padding-top:0.6rem;border-top:1px solid var(--border);font-style:italic;}
+    /* DO-160G section cards */
+    .do160-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.9rem;margin:1.5rem 0;}
+    .do160-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;opacity:0;transform:translateY(18px);transition:opacity 0.5s ease,transform 0.5s ease;}
+    .do160-card.in{opacity:1;transform:translateY(0);}
+    .do160-card:hover{border-color:rgba(0,201,167,0.3);transform:translateY(-3px);}
+    .do160-icon{font-size:1.6rem;margin-bottom:0.4rem;}
+    .do160-label{font-family:'Syne',sans-serif;font-weight:700;font-size:0.8rem;color:var(--white);margin-bottom:0.25rem;}
+    .do160-detail{font-size:0.72rem;color:var(--muted);line-height:1.5;}
+    /* Header hero glow animation */
+    @keyframes heroGlow{0%,100%{text-shadow:0 0 0 transparent}50%{text-shadow:0 0 30px rgba(0,201,167,0.3)}}
+    h1.article-title{animation:heroGlow 4s ease-in-out infinite;}
+    @keyframes pulseBar{0%,100%{opacity:1}50%{opacity:0.5}}
+    #rp{animation:pulseBar 2s ease-in-out infinite;}
+    @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.article-wrap{grid-template-columns:1fr;padding-top:5rem;}.toc-sidebar{display:none;}.lru-grid{grid-template-columns:1fr;}.stat-row{grid-template-columns:repeat(3,1fr);}.bm-row{grid-template-columns:1fr 1fr;}.do160-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:600px){.more-blogs{grid-template-columns:1fr;}.stat-row{grid-template-columns:1fr;}.do160-grid{grid-template-columns:1fr;}}
   </style>
 </head>
 <body>
@@ -220,6 +237,83 @@
       <h3>ARINC 429 — Why One-Way Architecture Is a Safety Feature</h3>
       <p>ARINC 429 is strictly <strong>one transmitter → up to 20 receivers</strong>. No receiver can respond on the same wire pair. A failed receiver cannot corrupt data for other receivers. A transmitter fault affects only that label stream — it cannot take down the whole bus. This architectural simplicity is a fundamental safety benefit, not a limitation.</p>
 
+      <!-- SVG: AFCS Bus Topology Diagram -->
+      <div class="illus-wrap" id="svg-bus">
+        <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#00c9a7"/>
+            </marker>
+            <marker id="arr-gold" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#f0a500"/>
+            </marker>
+            <filter id="glow-teal"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="glow-gold"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <!-- MIL-STD-1553 backbone -->
+          <rect x="10" y="148" width="680" height="6" rx="3" fill="#1e2d45"/>
+          <rect x="10" y="148" width="680" height="6" rx="3" fill="none" stroke="#00c9a7" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.6"/>
+          <text x="350" y="142" text-anchor="middle" font-family="Fira Code,monospace" font-size="9" fill="#00c9a7" opacity="0.8">MIL-STD-1553B DUAL REDUNDANT BUS — 1 Mbps</text>
+          <!-- FCC (center) -->
+          <rect x="285" y="60" width="130" height="70" rx="10" fill="#151d30" stroke="#00c9a7" stroke-width="2" filter="url(#glow-teal)"/>
+          <text x="350" y="84" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="11" fill="#fff">FCC</text>
+          <text x="350" y="99" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#8898aa">Flight Control Computer</text>
+          <rect x="305" y="108" width="90" height="14" rx="4" fill="rgba(239,68,68,0.15)"/>
+          <text x="350" y="119" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#fca5a5">DAL A</text>
+          <line x1="350" y1="130" x2="350" y2="148" stroke="#00c9a7" stroke-width="2" marker-end="url(#arr)"/>
+          <!-- ACE left -->
+          <rect x="100" y="60" width="120" height="70" rx="10" fill="#151d30" stroke="#f0a500" stroke-width="1.5" filter="url(#glow-gold)"/>
+          <text x="160" y="84" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="11" fill="#fff">ACE</text>
+          <text x="160" y="99" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#8898aa">Actuator Control Elec.</text>
+          <rect x="118" y="108" width="84" height="14" rx="4" fill="rgba(239,68,68,0.15)"/>
+          <text x="160" y="119" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#fca5a5">DAL A</text>
+          <line x1="160" y1="130" x2="160" y2="148" stroke="#f0a500" stroke-width="2" marker-end="url(#arr-gold)"/>
+          <!-- ADC right -->
+          <rect x="480" y="60" width="110" height="70" rx="10" fill="#151d30" stroke="#1e2d45" stroke-width="1.5"/>
+          <text x="535" y="84" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="11" fill="#fff">ADC</text>
+          <text x="535" y="99" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#8898aa">Air Data Computer</text>
+          <rect x="503" y="108" width="64" height="14" rx="4" fill="rgba(240,165,0,0.1)"/>
+          <text x="535" y="119" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#f0a500">DAL B</text>
+          <line x1="535" y1="130" x2="535" y2="148" stroke="#8898aa" stroke-width="1.5"/>
+          <!-- Bottom nodes: IRS, FMC, TCAS -->
+          <rect x="30" y="190" width="110" height="60" rx="10" fill="#151d30" stroke="#1e2d45" stroke-width="1.5"/>
+          <text x="85" y="213" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="10" fill="#fff">IRS/IRU</text>
+          <text x="85" y="228" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">Inertial Reference</text>
+          <text x="85" y="241" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="7.5" fill="#f0a500">DAL B</text>
+          <line x1="85" y1="190" x2="85" y2="154" stroke="#8898aa" stroke-width="1.5" marker-end="url(#arr)"/>
+          <rect x="295" y="190" width="110" height="60" rx="10" fill="#151d30" stroke="#1e2d45" stroke-width="1.5"/>
+          <text x="350" y="213" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="10" fill="#fff">FMC/FMS</text>
+          <text x="350" y="228" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">Flight Management</text>
+          <text x="350" y="241" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="7.5" fill="#f0a500">DAL B/C</text>
+          <line x1="350" y1="190" x2="350" y2="154" stroke="#8898aa" stroke-width="1.5" marker-end="url(#arr)"/>
+          <rect x="555" y="190" width="110" height="60" rx="10" fill="#151d30" stroke="#1e2d45" stroke-width="1.5"/>
+          <text x="610" y="213" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="10" fill="#fff">TCAS/WXR</text>
+          <text x="610" y="228" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">Safety Systems</text>
+          <text x="610" y="241" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="7.5" fill="#f0a500">DAL B</text>
+          <line x1="610" y1="190" x2="610" y2="154" stroke="#8898aa" stroke-width="1.5" marker-end="url(#arr)"/>
+          <!-- ARINC 429 annotation -->
+          <text x="685" y="100" text-anchor="end" font-family="Fira Code,monospace" font-size="8" fill="#00c9a7" opacity="0.7">ARINC 429 →</text>
+          <line x1="590" y1="95" x2="680" y2="95" stroke="#00c9a7" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+          <!-- Data pulse animation -->
+          <circle r="5" fill="#00c9a7" opacity="0.9">
+            <animateMotion dur="2.5s" repeatCount="indefinite" path="M 160,151 L 350,151"/>
+            <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+          <circle r="4" fill="#f0a500" opacity="0.8">
+            <animateMotion dur="3s" repeatCount="indefinite" begin="0.8s" path="M 535,151 L 350,151"/>
+            <animate attributeName="opacity" values="0.8;0.2;0.8" dur="3s" repeatCount="indefinite" begin="0.8s"/>
+          </circle>
+          <!-- Legend -->
+          <rect x="10" y="270" width="12" height="4" rx="2" fill="#00c9a7"/>
+          <text x="27" y="276" font-family="DM Sans,sans-serif" font-size="8" fill="#8898aa">MIL-STD-1553B (1 Mbps)</text>
+          <rect x="160" y="270" width="12" height="4" rx="2" fill="#f0a500"/>
+          <text x="177" y="276" font-family="DM Sans,sans-serif" font-size="8" fill="#8898aa">ARINC 429 (100 kbps)</text>
+          <circle cx="320" cy="272" r="4" fill="#00c9a7" opacity="0.8"/>
+          <text x="330" y="276" font-family="DM Sans,sans-serif" font-size="8" fill="#8898aa">Active data packet</text>
+        </svg>
+        <div class="illus-caption">Fig 1 — AFCS LRU bus topology: FCC and ACE on MIL-STD-1553B backbone (DAL A); ADC, IRS/IRU, FMC, TCAS on ARINC 429 / 1553 secondary (DAL B). Animated pulses show live data flow direction.</div>
+      </div>
+
       <table class="data-table">
         <tr><th>LRU</th><th>Function</th><th>Bus Interface</th><th>DAL</th></tr>
         <tr><td><strong>FCC</strong></td><td>Autopilot control laws; fly-by-wire lanes</td><td>MIL-STD-1553B (primary)</td><td><strong>A</strong></td></tr>
@@ -270,6 +364,56 @@ STATUS: ALL CHECKS PASSED  [ATE-TP-0042 Rev C]</code></pre>
 
       <div class="info-box"><p>💡 <strong>Why HIL is mandatory for DAL A:</strong> DO-178C requires coverage of all executable code paths (MC/DC for DAL A). Many failure branches — sensor failure, bus timeout, redundancy switchover — are physically impossible to trigger in a real aircraft without risk. HIL makes these branches reachable, testable, and certifiable.</p></div>
 
+      <!-- SVG: HIL Closed-Loop Diagram -->
+      <div class="illus-wrap" id="svg-hil">
+        <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+          <defs>
+            <marker id="a2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#00c9a7"/></marker>
+            <marker id="a3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#f0a500"/></marker>
+          </defs>
+          <!-- Physical LRU box -->
+          <rect x="270" y="20" width="160" height="70" rx="12" fill="#151d30" stroke="#00c9a7" stroke-width="2"/>
+          <text x="350" y="46" text-anchor="middle" font-family="Syne,sans-serif" font-weight="800" font-size="12" fill="#fff">PHYSICAL LRU</text>
+          <text x="350" y="61" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#8898aa">FCC under test</text>
+          <text x="350" y="76" text-anchor="middle" font-family="Fira Code,monospace" font-size="8" fill="#00c9a7">DO-178C DAL A</text>
+          <!-- Real-time simulator -->
+          <rect x="30" y="20" width="170" height="70" rx="12" fill="#151d30" stroke="#f0a500" stroke-width="1.5"/>
+          <text x="115" y="46" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="11" fill="#fff">RT SIMULATOR</text>
+          <text x="115" y="61" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#8898aa">Aircraft dynamics model</text>
+          <text x="115" y="76" text-anchor="middle" font-family="Fira Code,monospace" font-size="8" fill="#f0a500">1ms step / real-time</text>
+          <!-- ATS/Results -->
+          <rect x="500" y="20" width="170" height="70" rx="12" fill="#151d30" stroke="#8898aa" stroke-width="1.5"/>
+          <text x="585" y="46" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="11" fill="#fff">ATS / LOGGER</text>
+          <text x="585" y="61" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#8898aa">TestStand + Codebeamer</text>
+          <text x="585" y="76" text-anchor="middle" font-family="Fira Code,monospace" font-size="8" fill="#8898aa">Evidence generator</text>
+          <!-- Arrows RT→LRU (sensor stimuli) -->
+          <line x1="200" y1="55" x2="268" y2="55" stroke="#f0a500" stroke-width="2" marker-end="url(#a3)"/>
+          <text x="234" y="47" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#f0a500">sensor stimuli</text>
+          <!-- Arrows LRU→RT (control outputs) -->
+          <line x1="270" y1="70" x2="202" y2="70" stroke="#00c9a7" stroke-width="2" marker-end="url(#a2)"/>
+          <text x="236" y="81" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#00c9a7">control outputs</text>
+          <!-- LRU→ATS -->
+          <line x1="430" y1="55" x2="498" y2="55" stroke="#8898aa" stroke-width="1.5" marker-end="url(#a2)"/>
+          <text x="464" y="47" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">I/O capture</text>
+          <!-- Failure injection panel -->
+          <rect x="30" y="140" width="640" height="80" rx="12" fill="#0d1117" stroke="#1e2d45" stroke-width="1"/>
+          <text x="350" y="162" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="10" fill="#8898aa">FAULT INJECTION SCENARIOS</text>
+          <!-- Fault badges -->
+          <rect x="50" y="170" width="120" height="22" rx="6" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.3)" stroke-width="1"/>
+          <text x="110" y="185" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#fca5a5">Sensor failure</text>
+          <rect x="185" y="170" width="130" height="22" rx="6" fill="rgba(240,165,0,0.1)" stroke="rgba(240,165,0,0.3)" stroke-width="1"/>
+          <text x="250" y="185" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#f0a500">Bus timeout injection</text>
+          <rect x="330" y="170" width="140" height="22" rx="6" fill="rgba(0,201,167,0.1)" stroke="rgba(0,201,167,0.3)" stroke-width="1"/>
+          <text x="400" y="185" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#00c9a7">Redundancy switchover</text>
+          <rect x="485" y="170" width="165" height="22" rx="6" fill="rgba(99,102,241,0.1)" stroke="rgba(99,102,241,0.3)" stroke-width="1"/>
+          <text x="568" y="185" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#a5b4fc">Power transient (DO-160G)</text>
+          <!-- Connecting arrows from fault panel to LRU -->
+          <line x1="350" y1="140" x2="350" y2="92" stroke="#1e2d45" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#a2)"/>
+          <text x="362" y="118" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa" transform="rotate(-90 362 118)">inject</text>
+        </svg>
+        <div class="illus-caption">Fig 2 — HIL closed-loop architecture: the RT Simulator drives sensor stimuli into the physical FCC; control outputs feed back to update the model in real-time (1ms step). The ATS captures all I/O as certification evidence. Fault injection scenarios cover DO-178C MC/DC branches unreachable in real flight.</div>
+      </div>
+
       <h3>Live HIL Bus Monitor — Data from Lab</h3>
       <div class="bus-monitor">
         <div class="bm-header">DATA BUS MONITOR — MODEL: FCS_7.3 · t=12.45s · STEP:1ms · OVRUN:0 · LAT:0.8ms</div>
@@ -296,6 +440,19 @@ STATUS: ALL CHECKS PASSED  [ATE-TP-0042 Rev C]</code></pre>
       </table>
 
       <div class="info-box"><p>💡 <strong>MC/DC — Modified Condition/Decision Coverage:</strong> Required at DAL A. Every condition in every decision must independently affect the decision outcome. This is the most rigorous software test coverage criterion in DO-178C — it proves that no single code decision can fail silently without a test detecting it.</p></div>
+
+      <div class="info-box"><p>💡 <strong>MC/DC — Modified Condition/Decision Coverage:</strong> Required at DAL A. Every condition in every decision must independently affect the decision outcome. This is the most rigorous software test coverage criterion in DO-178C — it proves that no single code decision can fail silently without a test detecting it.</p></div>
+
+      <h3>DO-160G Environmental Test Categories</h3>
+      <p>Every AFCS LRU must survive 26 environmental test categories under DO-160G before it is airworthy. Below are the six most demanding categories encountered during LRU qualification.</p>
+      <div class="do160-grid">
+        <div class="do160-card"><div class="do160-icon">🌡️</div><div class="do160-label">§4 — Temperature</div><div class="do160-detail">−55°C to +85°C operating range. Thermal shock at 2°C/min ramp rate. Sustained high-temp soak.</div></div>
+        <div class="do160-card"><div class="do160-icon">📳</div><div class="do160-label">§8 — Vibration</div><div class="do160-detail">Random vibration PSD profiles per aircraft zone. Sinusoidal sweep 5–2000 Hz. Structural resonance detection.</div></div>
+        <div class="do160-card"><div class="do160-icon">⚡</div><div class="do160-label">§22 — Lightning</div><div class="do160-detail">Pin injection and cable bundle testing. Transient waveforms 1μs/50μs and 10μs/1000μs. No latch-up tolerance.</div></div>
+        <div class="do160-card"><div class="do160-icon">📡</div><div class="do160-label">§21 — EMI/EMC</div><div class="do160-detail">Conducted + radiated emissions (10kHz–18GHz). Susceptibility to RF fields up to 200 V/m for Cat T.</div></div>
+        <div class="do160-card"><div class="do160-icon">🔋</div><div class="do160-label">§16 — Power Input</div><div class="do160-detail">28 VDC transients: undervolt, overvolt, interruption, power-on surge. HIRF pin injection tests.</div></div>
+        <div class="do160-card"><div class="do160-icon">💧</div><div class="do160-label">§10 — Humidity</div><div class="do160-detail">95% RH at 65°C for 24h. Condensation cycling. Salt spray for rotorcraft / maritime categories.</div></div>
+      </div>
 
       <hr class="sep"/>
       <div class="author-bio">
@@ -343,7 +500,8 @@ STATUS: ALL CHECKS PASSED  [ATE-TP-0042 Rev C]</code></pre>
   document.querySelectorAll('.stat-card').forEach((c,i)=>{c.style.transitionDelay=i*0.1+'s';io.observe(c);});
   document.querySelectorAll('.lru-card').forEach((c,i)=>{c.style.transitionDelay=i*0.08+'s';io.observe(c);});
   document.querySelectorAll('.data-table tr').forEach((r,i)=>{r.style.transitionDelay=i*0.06+'s';io.observe(r);});
-  document.querySelectorAll('.more-card').forEach((c,i)=>{c.style.transitionDelay=i*0.1+'s';io.observe(c);});
+  document.querySelectorAll('.illus-wrap').forEach((c,i)=>{c.style.transitionDelay=i*0.1+'s';io.observe(c);});
+  document.querySelectorAll('.do160-card').forEach((c,i)=>{c.style.transitionDelay=i*0.09+'s';io.observe(c);});
   document.querySelectorAll('.article-body li').forEach((l,i)=>{l.classList.add('anim-li');l.style.transitionDelay=(i%6)*0.07+'s';io.observe(l);});
 </script>
 </body>
