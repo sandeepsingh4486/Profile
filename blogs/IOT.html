@@ -80,14 +80,42 @@
     footer a{color:var(--gold);text-decoration:none;} footer p+p{margin-top:0.3rem;}
     .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--gold);color:var(--navy);width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;z-index:99;opacity:0;transform:translateY(10px);transition:all 0.3s;text-decoration:none;}
     .scroll-top.visible{opacity:1;transform:translateY(0);}
-    /* ILLUSTRATION WRAPPER */
+    /* ILLUSTRATION WRAPPERS */
     .illus-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin:1.8rem 0;overflow:hidden;opacity:0;transform:translateY(18px);transition:opacity 0.6s ease,transform 0.6s ease;}
     .illus-wrap.in{opacity:1;transform:translateY(0);}
     .illus-caption{font-size:0.75rem;color:var(--muted);margin-top:0.7rem;line-height:1.6;padding-top:0.6rem;border-top:1px solid var(--border);font-style:italic;}
+    /* PROTOCOL CARDS */
+    .proto-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem 1.6rem;margin:1.6rem 0;opacity:0;transform:translateY(20px);transition:opacity 0.55s ease,transform 0.55s ease;}
+    .proto-card.in{opacity:1;transform:translateY(0);}
+    .proto-card:hover{border-color:rgba(240,165,0,0.25);}
+    .proto-card-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;padding-bottom:0.8rem;border-bottom:1px solid var(--border);}
+    .proto-icon-wrap{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+    .proto-badge{font-size:0.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:4px;margin-left:auto;}
+    .proto-name{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--white);}
+    .proto-tagline{font-size:0.78rem;color:var(--muted);}
+    .proto-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;margin:0.9rem 0;}
+    .pstat{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:0.55rem 0.6rem;text-align:center;}
+    .pstat-val{font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;color:var(--white);line-height:1.2;}
+    .pstat-key{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-top:0.15rem;}
+    .proto-chips{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.7rem;}
+    .pchip{font-size:0.68rem;padding:0.18rem 0.55rem;border-radius:4px;font-family:'Fira Code',monospace;}
+    /* MASTER COMPARISON TABLE */
+    .cmp-table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.8rem;}
+    .cmp-table th{background:rgba(240,165,0,0.08);color:var(--gold);font-family:'Syne',sans-serif;font-weight:700;font-size:0.72rem;letter-spacing:1px;text-transform:uppercase;padding:0.7rem 0.8rem;text-align:left;border-bottom:2px solid rgba(240,165,0,0.2);}
+    .cmp-table td{padding:0.65rem 0.8rem;color:var(--muted);border-bottom:1px solid var(--border);vertical-align:top;}
+    .cmp-table tr:hover td{background:rgba(255,255,255,0.02);}
+    .cmp-table td:first-child{font-family:'Syne',sans-serif;font-weight:700;color:var(--white);}
+    .badge{display:inline-block;font-size:0.62rem;font-weight:700;padding:0.12rem 0.45rem;border-radius:3px;font-family:'Fira Code',monospace;}
+    .b-teal{background:rgba(0,201,167,0.12);color:var(--teal);border:1px solid rgba(0,201,167,0.2);}
+    .b-gold{background:rgba(240,165,0,0.12);color:var(--gold);border:1px solid rgba(240,165,0,0.2);}
+    .b-red{background:rgba(239,68,68,0.12);color:#fca5a5;border:1px solid rgba(239,68,68,0.2);}
+    .b-purple{background:rgba(99,102,241,0.12);color:#a5b4fc;border:1px solid rgba(99,102,241,0.2);}
+    .b-blue{background:rgba(56,189,248,0.12);color:#7dd3fc;border:1px solid rgba(56,189,248,0.2);}
+    .b-gray{background:rgba(136,152,170,0.12);color:var(--muted);border:1px solid rgba(136,152,170,0.2);}
     @keyframes heroGlow{0%,100%{text-shadow:0 0 0 transparent}50%{text-shadow:0 0 30px rgba(240,165,0,0.25)}}
     h1.article-title{animation:heroGlow 4s ease-in-out infinite;}
-    @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.article-wrap{grid-template-columns:1fr;padding-top:5rem;}.toc-sidebar{display:none;}.app-grid{grid-template-columns:repeat(2,1fr);}}
-    @media(max-width:600px){.more-blogs{grid-template-columns:1fr;}.app-grid{grid-template-columns:1fr;}}
+    @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.article-wrap{grid-template-columns:1fr;padding-top:5rem;}.toc-sidebar{display:none;}.app-grid{grid-template-columns:repeat(2,1fr);}.proto-stats{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:600px){.more-blogs{grid-template-columns:1fr;}.app-grid{grid-template-columns:1fr;}.proto-stats{grid-template-columns:1fr 1fr;}.cmp-table{font-size:0.72rem;}}
   
     /* ── SCROLL ANIMATIONS ── */
     @keyframes slideInLeft{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
@@ -187,7 +215,13 @@
       <ul class="toc-list">
         <li><a href="#what">What is IoT?</a></li>
         <li><a href="#components">Key Components</a></li>
-        <li><a href="#protocols">IoT Protocols</a></li>
+        <li><a href="#protocols">IoT Protocols Overview</a></li>
+        <li><a href="#http">HTTP &amp; REST</a></li>
+        <li><a href="#coap">CoAP</a></li>
+        <li><a href="#zigbee">Zigbee</a></li>
+        <li><a href="#lorawan">LoRaWAN</a></li>
+        <li><a href="#fiveg">5G / LTE-M / NB-IoT</a></li>
+        <li><a href="#all-protocols">All Major Protocols</a></li>
         <li><a href="#layers">Architecture Layers</a></li>
         <li><a href="#applications">Applications</a></li>
         <li><a href="#challenges">Challenges</a></li>
@@ -197,7 +231,7 @@
     </div>
     <div class="meta-card">
       <div class="meta-row"><span>📂</span><strong>Category:</strong> IoT</div>
-      <div class="meta-row"><span>⏱</span><strong>Read time:</strong> 8 min</div>
+      <div class="meta-row"><span>⏱</span><strong>Read time:</strong> 18 min</div>
       <div class="meta-row"><span>✍️</span><strong>Author:</strong> Sandeep Singh R</div>
       <div class="meta-row"><span>🏷</span><strong>Level:</strong> Beginner–Intermediate</div>
     </div>
@@ -228,8 +262,7 @@
         <li><strong>Cloud/Backend:</strong> Data storage, analytics, and device management. AWS IoT, Azure IoT Hub, or self-hosted MQTT brokers.</li>
         <li><strong>User Interface:</strong> Mobile apps, web dashboards, or SCADA systems for operators.</li>
       </ul>
-
-      <!-- SVG: IoT End-to-End System Diagram -->
+	  <!-- SVG: IoT End-to-End System Diagram -->
       <div class="illus-wrap" id="svg-iot-arch">
         <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
           <defs>
@@ -305,8 +338,492 @@
         <div class="illus-caption">Fig 1 — IoT end-to-end architecture: sensor devices publish data over Wi-Fi/LoRa to an edge gateway running an MQTT broker. Filtered data travels over TLS HTTPS to the cloud backend (AWS IoT / InfluxDB / ML rules). The operator sees a live Grafana dashboard or mobile app. Animated dots show live data flow.</div>
       </div>
 
-      <h2 id="protocols">IoT Communication Protocols</h2>
-      <ul>
+      <h2 id="protocols">IoT Communication Protocols — Deep Dive</h2>
+      <p>Protocol selection is one of the most consequential decisions in any IoT project. The wrong choice costs you battery life, range, bandwidth, or certification compliance — sometimes all four. This section breaks down every major IoT protocol with specs, diagrams, and real use cases.</p>
+
+      <!-- SVG: Protocol Radar / Selection Map -->
+      <div class="illus-wrap">
+        <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+          <defs>
+            <marker id="ax" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#8898aa"/></marker>
+          </defs>
+          <!-- Axes -->
+          <line x1="350" y1="290" x2="350" y2="20" stroke="#1e2d45" stroke-width="1.5" marker-end="url(#ax)"/>
+          <line x1="50" y1="160" x2="660" y2="160" stroke="#1e2d45" stroke-width="1.5" marker-end="url(#ax)"/>
+          <text x="354" y="16" font-family="DM Sans,sans-serif" font-size="9" fill="#8898aa">HIGH RANGE</text>
+          <text x="354" y="298" font-family="DM Sans,sans-serif" font-size="9" fill="#8898aa">SHORT RANGE</text>
+          <text x="54" y="156" font-family="DM Sans,sans-serif" font-size="9" fill="#8898aa">LOW BANDWIDTH</text>
+          <text x="570" y="156" font-family="DM Sans,sans-serif" font-size="9" fill="#8898aa">HIGH BANDWIDTH</text>
+          <!-- Grid rings -->
+          <circle cx="350" cy="160" r="60" fill="none" stroke="#1e2d45" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+          <circle cx="350" cy="160" r="110" fill="none" stroke="#1e2d45" stroke-width="1" stroke-dasharray="4 4" opacity="0.4"/>
+          <!-- Protocol bubbles -->
+          <!-- LoRaWAN: high range, low bandwidth -->
+          <circle cx="190" cy="65" r="32" fill="rgba(0,201,167,0.12)" stroke="#00c9a7" stroke-width="1.8"/>
+          <text x="190" y="61" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9.5" fill="#00c9a7">LoRaWAN</text>
+          <text x="190" y="74" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">10+ km · 50kbps</text>
+          <!-- 5G/LTE-M: high range, high bandwidth -->
+          <circle cx="520" cy="70" r="34" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1.8"/>
+          <text x="520" y="65" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9.5" fill="#fca5a5">5G / LTE-M</text>
+          <text x="520" y="78" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">km · Gbps</text>
+          <!-- Zigbee: short range, low bandwidth -->
+          <circle cx="175" cy="255" r="30" fill="rgba(240,165,0,0.12)" stroke="#f0a500" stroke-width="1.8"/>
+          <text x="175" y="250" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9.5" fill="#f0a500">Zigbee</text>
+          <text x="175" y="263" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">100m · 250kbps</text>
+          <!-- BLE: short range, medium bandwidth -->
+          <circle cx="350" cy="260" r="26" fill="rgba(99,102,241,0.12)" stroke="#a5b4fc" stroke-width="1.5"/>
+          <text x="350" y="257" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#a5b4fc">BLE</text>
+          <text x="350" y="269" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">50m · 2Mbps</text>
+          <!-- Wi-Fi: short-mid range, high bandwidth -->
+          <circle cx="510" cy="240" r="28" fill="rgba(56,189,248,0.1)" stroke="#7dd3fc" stroke-width="1.5"/>
+          <text x="510" y="237" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#7dd3fc">Wi-Fi</text>
+          <text x="510" y="249" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">50m · 1Gbps</text>
+          <!-- CoAP/MQTT: mid -->
+          <circle cx="350" cy="120" r="28" fill="rgba(16,185,129,0.1)" stroke="#6ee7b7" stroke-width="1.5"/>
+          <text x="350" y="116" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8.5" fill="#6ee7b7">MQTT</text>
+          <text x="350" y="127" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#8898aa">CoAP · HTTP</text>
+          <!-- HTTP: mid-right -->
+          <circle cx="490" cy="130" r="25" fill="rgba(240,165,0,0.08)" stroke="#f0a500" stroke-width="1.5" stroke-dasharray="4 2"/>
+          <text x="490" y="127" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#f0a500">HTTP</text>
+          <text x="490" y="138" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#8898aa">REST / WebSocket</text>
+          <!-- NB-IoT bubble -->
+          <circle cx="215" cy="155" r="22" fill="rgba(0,201,167,0.06)" stroke="#00c9a7" stroke-width="1" stroke-dasharray="3 2" opacity="0.7"/>
+          <text x="215" y="151" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#00c9a7">NB-IoT</text>
+          <text x="215" y="162" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#8898aa">LTE-cat</text>
+          <!-- Z-Wave -->
+          <circle cx="420" cy="265" r="20" fill="rgba(136,152,170,0.08)" stroke="#8898aa" stroke-width="1" opacity="0.7"/>
+          <text x="420" y="261" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8" fill="#8898aa">Z-Wave</text>
+          <text x="420" y="271" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#4b5563">30m mesh</text>
+          <!-- Legend note -->
+          <text x="350" y="310" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#4b5563">Bubble position = range vs bandwidth trade-off · Size = relative ecosystem size</text>
+        </svg>
+        <div class="illus-caption">Protocol selection map — range (vertical) vs bandwidth (horizontal). LoRaWAN and NB-IoT dominate long-range low-power; 5G/LTE-M offers maximum bandwidth at cellular scale; Zigbee and BLE serve short-range mesh; MQTT/CoAP/HTTP are application-layer protocols layered on top of any physical carrier.</div>
+      </div>
+
+      <!-- ══════════════════════════════
+           HTTP / REST
+           ══════════════════════════════ -->
+      <h2 id="http">① HTTP &amp; REST — The Web Foundation</h2>
+
+      <div class="proto-card">
+        <div class="proto-card-header">
+          <div class="proto-icon-wrap" style="background:rgba(240,165,0,0.12);border:1px solid rgba(240,165,0,0.25);">🌐</div>
+          <div>
+            <div class="proto-name">HTTP / HTTPS + REST</div>
+            <div class="proto-tagline">HyperText Transfer Protocol — the backbone of the World Wide Web, now widely used in IoT for device-to-cloud APIs</div>
+          </div>
+          <div class="proto-badge" style="background:rgba(240,165,0,0.12);color:var(--gold);border:1px solid rgba(240,165,0,0.25);">Application Layer</div>
+        </div>
+        <div class="proto-stats">
+          <div class="pstat"><div class="pstat-val">80 kB</div><div class="pstat-key">Min overhead</div></div>
+          <div class="pstat"><div class="pstat-val">TCP</div><div class="pstat-key">Transport</div></div>
+          <div class="pstat"><div class="pstat-val">Unlimited</div><div class="pstat-key">Payload size</div></div>
+          <div class="pstat"><div class="pstat-val">Port 443</div><div class="pstat-key">HTTPS default</div></div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--muted);line-height:1.8;">HTTP is the <strong style="color:var(--text)">request-response protocol</strong> of the web. A client sends a request (GET, POST, PUT, DELETE) and a server responds with data. In IoT, REST APIs over HTTPS are used for device registration, configuration updates, and infrequent data uploads where the overhead of a full TCP connection is acceptable. WebSocket (an HTTP upgrade) enables bi-directional streaming for real-time dashboards.</p>
+        <p style="font-size:0.88rem;color:var(--muted);line-height:1.8;"><strong style="color:var(--text)">When to use:</strong> Cloud APIs, firmware OTA download endpoints, dashboard data fetch, device provisioning, webhook integrations. <strong style="color:var(--text)">Avoid when:</strong> battery-constrained devices, high-frequency telemetry (&gt;1 msg/sec), very low-RAM microcontrollers (&lt;32KB).</p>
+        <div class="proto-chips">
+          <span class="pchip b-gold">GET / POST / PUT / DELETE</span>
+          <span class="pchip b-gold">TLS / HTTPS (port 443)</span>
+          <span class="pchip b-gold">REST · GraphQL · WebSocket</span>
+          <span class="pchip b-gold">JSON / XML payload</span>
+          <span class="pchip b-gray">AWS API Gateway</span>
+          <span class="pchip b-gray">Azure REST API</span>
+        </div>
+      </div>
+
+      <!-- SVG: HTTP Request-Response Flow -->
+      <div class="illus-wrap">
+        <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+          <defs>
+            <marker id="h-arr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#f0a500"/></marker>
+            <marker id="h-arr2" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#00c9a7"/></marker>
+          </defs>
+          <!-- ESP32 Client -->
+          <rect x="20" y="50" width="130" height="80" rx="10" fill="#151d30" stroke="#f0a500" stroke-width="1.8"/>
+          <text x="85" y="78" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="10" fill="#fff">ESP32 / Client</text>
+          <text x="85" y="92" text-anchor="middle" font-family="Fira Code,monospace" font-size="7.5" fill="#f0a500">POST /api/sensor</text>
+          <text x="85" y="105" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">JSON body: temp=24.5</text>
+          <text x="85" y="118" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#4b5563">TLS handshake first</text>
+          <!-- TCP/TLS -->
+          <rect x="240" y="70" width="220" height="40" rx="8" fill="#0d1117" stroke="#1e2d45" stroke-width="1"/>
+          <text x="350" y="86" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#8898aa">TCP Socket + TLS 1.3</text>
+          <text x="350" y="100" text-anchor="middle" font-family="Fira Code,monospace" font-size="7.5" fill="#4b5563">HTTPS · port 443 · cert verify</text>
+          <!-- Request arrow -->
+          <line x1="150" y1="80" x2="238" y2="80" stroke="#f0a500" stroke-width="2" marker-end="url(#h-arr)"/>
+          <text x="194" y="72" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#f0a500">→ REQUEST</text>
+          <!-- Response arrow -->
+          <line x1="238" y1="100" x2="150" y2="100" stroke="#00c9a7" stroke-width="2" marker-end="url(#h-arr2)"/>
+          <text x="194" y="115" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#00c9a7">← 200 OK</text>
+          <!-- Cloud Server -->
+          <rect x="550" y="50" width="130" height="80" rx="10" fill="#151d30" stroke="#00c9a7" stroke-width="1.8"/>
+          <text x="615" y="78" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="10" fill="#fff">Cloud Server</text>
+          <text x="615" y="92" text-anchor="middle" font-family="Fira Code,monospace" font-size="7.5" fill="#00c9a7">HTTP 200 OK</text>
+          <text x="615" y="105" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">{"status":"saved"}</text>
+          <text x="615" y="118" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#4b5563">AWS API Gateway</text>
+          <line x1="460" y1="80" x2="548" y2="80" stroke="#f0a500" stroke-width="2" marker-end="url(#h-arr)"/>
+          <line x1="548" y1="100" x2="460" y2="100" stroke="#00c9a7" stroke-width="2" marker-end="url(#h-arr2)"/>
+          <!-- Animated request packet -->
+          <circle r="5" fill="#f0a500" opacity="0.9">
+            <animateMotion dur="2.5s" repeatCount="indefinite" path="M 85,80 L 350,80 L 615,80"/>
+          </circle>
+          <!-- Animated response -->
+          <circle r="5" fill="#00c9a7" opacity="0.9">
+            <animateMotion dur="2.5s" repeatCount="indefinite" begin="1.25s" path="M 615,100 L 350,100 L 85,100"/>
+          </circle>
+          <!-- Labels -->
+          <text x="350" y="155" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#4b5563">HTTP overhead: ~1–10 KB per request (headers + TLS) · Best for &lt;1 req/min use cases</text>
+          <text x="350" y="168" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#4b5563">vs MQTT: HTTP uses ~100× more bytes per message · but is universally supported</text>
+        </svg>
+        <div class="illus-caption">HTTP request-response cycle: the ESP32 opens a TLS socket, sends a POST with JSON body, and waits synchronously for the server's 200 OK response. Each exchange requires a full TCP+TLS handshake if keep-alive is not used — making HTTP expensive for high-frequency IoT telemetry.</div>
+      </div>
+
+      <!-- ══════════════════════════════
+           CoAP
+           ══════════════════════════════ -->
+      <h2 id="coap">② CoAP — Constrained Application Protocol</h2>
+
+      <div class="proto-card">
+        <div class="proto-card-header">
+          <div class="proto-icon-wrap" style="background:rgba(0,201,167,0.12);border:1px solid rgba(0,201,167,0.25);">⚡</div>
+          <div>
+            <div class="proto-name">CoAP — RFC 7252</div>
+            <div class="proto-tagline">A lightweight REST-like protocol over UDP designed specifically for constrained microcontrollers with &lt;10KB RAM</div>
+          </div>
+          <div class="proto-badge" style="background:rgba(0,201,167,0.12);color:var(--teal);border:1px solid rgba(0,201,167,0.25);">Application Layer · UDP</div>
+        </div>
+        <div class="proto-stats">
+          <div class="pstat"><div class="pstat-val">4 B</div><div class="pstat-key">Header size</div></div>
+          <div class="pstat"><div class="pstat-val">UDP</div><div class="pstat-key">Transport</div></div>
+          <div class="pstat"><div class="pstat-val">Port 5683</div><div class="pstat-key">Default port</div></div>
+          <div class="pstat"><div class="pstat-val">~10 KB</div><div class="pstat-key">Min RAM</div></div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--muted);line-height:1.8;">CoAP is <strong style="color:var(--text)">HTTP for microcontrollers</strong>. It maps REST methods (GET, PUT, POST, DELETE) onto a 4-byte binary header over UDP — slashing the per-message cost from kilobytes to dozens of bytes. It supports <strong style="color:var(--text)">Confirmable (CON)</strong> messages for reliability (ACK required) and <strong style="color:var(--text)">Non-Confirmable (NON)</strong> for best-effort fire-and-forget. The Observe extension lets a server push updates to a client without polling — like a lightweight MQTT subscribe.</p>
+        <p style="font-size:0.88rem;color:var(--muted);line-height:1.8;"><strong style="color:var(--text)">When to use:</strong> Extremely memory-constrained devices (&lt;64KB RAM), 6LoWPAN mesh networks, industrial sensors on Ethernet without a broker, LWM2M device management. <strong style="color:var(--text)">Avoid when:</strong> you need guaranteed ordered delivery (use MQTT QoS 2), or you're behind a NAT (UDP traversal issues).</p>
+        <div class="proto-chips">
+          <span class="pchip b-teal">RFC 7252</span>
+          <span class="pchip b-teal">4-byte binary header</span>
+          <span class="pchip b-teal">CON / NON / ACK / RST</span>
+          <span class="pchip b-teal">Observe (push)</span>
+          <span class="pchip b-teal">DTLS security</span>
+          <span class="pchip b-gray">6LoWPAN · LWM2M</span>
+          <span class="pchip b-gray">Eclipse Californium</span>
+        </div>
+      </div>
+
+      <!-- SVG: CoAP vs HTTP overhead comparison -->
+      <div class="illus-wrap">
+        <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+          <!-- Title -->
+          <text x="350" y="18" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="10" fill="#e2e8f0">CoAP MESSAGE TYPES &amp; OVERHEAD vs HTTP</text>
+          <!-- CoAP CON message structure -->
+          <rect x="20" y="30" width="300" height="90" rx="8" fill="#0d1117" stroke="#00c9a7" stroke-width="1.5"/>
+          <text x="170" y="48" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#00c9a7">CoAP CON Message (28 bytes total)</text>
+          <rect x="30" y="55" width="30" height="22" rx="3" fill="rgba(0,201,167,0.2)" stroke="#00c9a7" stroke-width="1"/>
+          <text x="45" y="70" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#00c9a7">Ver</text>
+          <rect x="62" y="55" width="36" height="22" rx="3" fill="rgba(0,201,167,0.2)" stroke="#00c9a7" stroke-width="1"/>
+          <text x="80" y="70" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#00c9a7">Type</text>
+          <rect x="100" y="55" width="36" height="22" rx="3" fill="rgba(0,201,167,0.2)" stroke="#00c9a7" stroke-width="1"/>
+          <text x="118" y="70" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#00c9a7">TKL</text>
+          <rect x="138" y="55" width="40" height="22" rx="3" fill="rgba(0,201,167,0.3)" stroke="#00c9a7" stroke-width="1"/>
+          <text x="158" y="70" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#fff">Code</text>
+          <rect x="180" y="55" width="50" height="22" rx="3" fill="rgba(0,201,167,0.2)" stroke="#00c9a7" stroke-width="1"/>
+          <text x="205" y="70" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#00c9a7">Msg ID</text>
+          <rect x="232" y="55" width="78" height="22" rx="3" fill="rgba(0,201,167,0.1)" stroke="#00c9a7" stroke-width="1"/>
+          <text x="271" y="70" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#8898aa">Payload</text>
+          <text x="170" y="100" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">4-byte fixed header · token · options · payload</text>
+          <text x="170" y="112" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#00c9a7">→ ACK from server confirms delivery (CON mode)</text>
+          <!-- HTTP comparison -->
+          <rect x="370" y="30" width="310" height="90" rx="8" fill="#0d1117" stroke="#f0a500" stroke-width="1.5"/>
+          <text x="525" y="48" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#f0a500">HTTP POST (800–2000 bytes typical)</text>
+          <rect x="380" y="55" width="290" height="36" rx="3" fill="rgba(240,165,0,0.06)" stroke="rgba(240,165,0,0.2)" stroke-width="1"/>
+          <text x="525" y="68" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#f0a500">POST /api/temp HTTP/1.1</text>
+          <text x="525" y="79" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#8898aa">Host: api.example.com  Content-Type: application/json</text>
+          <text x="525" y="90" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#4b5563">Authorization: Bearer eyJhbGciOiJSUzI1NiJ9...  Accept: */*</text>
+          <text x="525" y="112" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">Text-based headers alone = 500–1500 bytes · plus TLS handshake ~5KB</text>
+          <!-- Overhead comparison bars -->
+          <text x="350" y="145" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9" fill="#e2e8f0">Per-Message Overhead</text>
+          <!-- CoAP bar -->
+          <rect x="30" y="155" width="28" height="16" rx="3" fill="#00c9a7"/>
+          <text x="30" y="152" font-family="Fira Code,monospace" font-size="8" fill="#00c9a7">CoAP: 28B</text>
+          <!-- MQTT bar -->
+          <rect x="30" y="175" width="40" height="16" rx="3" fill="#6ee7b7"/>
+          <text x="30" y="172" font-family="Fira Code,monospace" font-size="8" fill="#6ee7b7">MQTT: 40B</text>
+          <!-- HTTP bar -->
+          <rect x="130" y="165" width="240" height="16" rx="3" fill="#f0a500" opacity="0.7"/>
+          <text x="130" y="162" font-family="Fira Code,monospace" font-size="8" fill="#f0a500">HTTP: ~1500B (headers) + TLS</text>
+          <text x="350" y="196" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#4b5563">CoAP uses ~50× less overhead than HTTP — critical for battery devices sending thousands of messages/day</text>
+        </svg>
+        <div class="illus-caption">CoAP's 4-byte binary header vs HTTP's kilobytes of text headers. For a sensor sending 1 reading every 10 seconds (8,640/day), CoAP saves ~12 MB/day in raw bytes vs HTTP — which on a 250kbps LoRa link is the difference between feasible and impossible.</div>
+      </div>
+
+      <!-- ══════════════════════════════
+           Zigbee
+           ══════════════════════════════ -->
+      <h2 id="zigbee">③ Zigbee — Low-Power Mesh Networking</h2>
+
+      <div class="proto-card">
+        <div class="proto-card-header">
+          <div class="proto-icon-wrap" style="background:rgba(240,165,0,0.12);border:1px solid rgba(240,165,0,0.25);">🕸️</div>
+          <div>
+            <div class="proto-name">Zigbee — IEEE 802.15.4</div>
+            <div class="proto-tagline">Low-power, self-healing mesh protocol for smart home and industrial sensor networks — runs for years on coin cells</div>
+          </div>
+          <div class="proto-badge" style="background:rgba(240,165,0,0.12);color:var(--gold);border:1px solid rgba(240,165,0,0.25);">2.4 GHz Mesh</div>
+        </div>
+        <div class="proto-stats">
+          <div class="pstat"><div class="pstat-val">10–100m</div><div class="pstat-key">Range per hop</div></div>
+          <div class="pstat"><div class="pstat-val">250 kbps</div><div class="pstat-key">Data rate</div></div>
+          <div class="pstat"><div class="pstat-val">65,000</div><div class="pstat-key">Max nodes/net</div></div>
+          <div class="pstat"><div class="pstat-val">~1 μA</div><div class="pstat-key">Sleep current</div></div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--muted);line-height:1.8;">Zigbee operates on the <strong style="color:var(--text)">IEEE 802.15.4 PHY</strong> at 2.4 GHz and builds a self-healing mesh network where every device can act as a router, relaying messages for others. A coordinator (the Zigbee gateway) manages the network and connects to an IP network. End devices can sleep for seconds or minutes between transmissions, waking only to send and receive — enabling <strong style="color:var(--text)">years of battery life</strong> on 2× AA cells. The Zigbee Alliance (now CSA) manages the Zigbee 3.0 and Matter standards.</p>
+        <p style="font-size:0.88rem;color:var(--muted);line-height:1.8;"><strong style="color:var(--text)">When to use:</strong> Smart home lighting, occupancy sensors, smart plugs, building automation (HVAC, access control), industrial sensor meshes in factories where cable runs are impractical. <strong style="color:var(--text)">Avoid when:</strong> you need long range (&gt;200m), high bandwidth (video/audio), or simple 1-hop connectivity (use BLE or Wi-Fi instead).</p>
+        <div class="proto-chips">
+          <span class="pchip b-gold">IEEE 802.15.4</span>
+          <span class="pchip b-gold">Zigbee 3.0</span>
+          <span class="pchip b-gold">Matter (successor)</span>
+          <span class="pchip b-gold">AES-128 security</span>
+          <span class="pchip b-gold">Star / Tree / Mesh</span>
+          <span class="pchip b-gray">Philips Hue · IKEA Trådfri</span>
+          <span class="pchip b-gray">CC2652 · EFR32</span>
+        </div>
+      </div>
+
+      <!-- SVG: Zigbee Mesh Topology -->
+      <div class="illus-wrap">
+        <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+          <defs>
+            <filter id="zg"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <!-- Coordinator -->
+          <circle cx="350" cy="115" r="32" fill="#151d30" stroke="#f0a500" stroke-width="2.5" filter="url(#zg)"/>
+          <text x="350" y="111" text-anchor="middle" font-family="Syne,sans-serif" font-weight="800" font-size="9.5" fill="#f0a500">COORDINATOR</text>
+          <text x="350" y="124" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">Zigbee Gateway</text>
+          <!-- Routers -->
+          <circle cx="185" cy="65" r="24" fill="#151d30" stroke="#00c9a7" stroke-width="2"/>
+          <text x="185" y="62" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8.5" fill="#00c9a7">ROUTER</text>
+          <text x="185" y="73" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#8898aa">Smart plug</text>
+          <circle cx="510" cy="65" r="24" fill="#151d30" stroke="#00c9a7" stroke-width="2"/>
+          <text x="510" y="62" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8.5" fill="#00c9a7">ROUTER</text>
+          <text x="510" y="73" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#8898aa">Light bulb</text>
+          <circle cx="150" cy="170" r="24" fill="#151d30" stroke="#00c9a7" stroke-width="2"/>
+          <text x="150" y="167" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8.5" fill="#00c9a7">ROUTER</text>
+          <text x="150" y="178" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#8898aa">Thermostat</text>
+          <circle cx="550" cy="170" r="24" fill="#151d30" stroke="#00c9a7" stroke-width="2"/>
+          <text x="550" y="167" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8.5" fill="#00c9a7">ROUTER</text>
+          <text x="550" y="178" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#8898aa">Motion sensor</text>
+          <!-- End devices (battery-powered sleepers) -->
+          <rect x="55" y="48" width="70" height="34" rx="7" fill="#0d1117" stroke="#a5b4fc" stroke-width="1.5"/>
+          <text x="90" y="62" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#a5b4fc">END DEV</text>
+          <text x="90" y="74" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#4b5563">Door sensor 🔋</text>
+          <rect x="80" y="155" width="70" height="34" rx="7" fill="#0d1117" stroke="#a5b4fc" stroke-width="1.5"/>
+          <text x="115" y="169" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#a5b4fc">END DEV</text>
+          <text x="115" y="181" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#4b5563">Temp sensor 🔋</text>
+          <rect x="575" y="48" width="70" height="34" rx="7" fill="#0d1117" stroke="#a5b4fc" stroke-width="1.5"/>
+          <text x="610" y="62" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#a5b4fc">END DEV</text>
+          <text x="610" y="74" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#4b5563">Button 🔋</text>
+          <rect x="575" y="155" width="70" height="34" rx="7" fill="#0d1117" stroke="#a5b4fc" stroke-width="1.5"/>
+          <text x="610" y="169" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#a5b4fc">END DEV</text>
+          <text x="610" y="181" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#4b5563">Smoke det. 🔋</text>
+          <!-- Mesh links (coordinator ↔ routers) -->
+          <line x1="322" y1="100" x2="207" y2="78" stroke="#f0a500" stroke-width="1.5" stroke-dasharray="5 3" opacity="0.7"/>
+          <line x1="378" y1="100" x2="488" y2="78" stroke="#f0a500" stroke-width="1.5" stroke-dasharray="5 3" opacity="0.7"/>
+          <line x1="322" y1="132" x2="172" y2="153" stroke="#f0a500" stroke-width="1.5" stroke-dasharray="5 3" opacity="0.7"/>
+          <line x1="378" y1="132" x2="528" y2="153" stroke="#f0a500" stroke-width="1.5" stroke-dasharray="5 3" opacity="0.7"/>
+          <!-- Router ↔ router cross-links (mesh) -->
+          <line x1="207" y1="78" x2="488" y2="78" stroke="#00c9a7" stroke-width="1" stroke-dasharray="3 4" opacity="0.4"/>
+          <line x1="172" y1="153" x2="528" y2="153" stroke="#00c9a7" stroke-width="1" stroke-dasharray="3 4" opacity="0.4"/>
+          <!-- Router → end device links -->
+          <line x1="168" y1="55" x2="125" y2="58" stroke="#a5b4fc" stroke-width="1.5" opacity="0.7"/>
+          <line x1="163" y1="160" x2="150" y2="162" stroke="#a5b4fc" stroke-width="1.5" opacity="0.7"/>
+          <line x1="527" y1="55" x2="575" y2="58" stroke="#a5b4fc" stroke-width="1.5" opacity="0.7"/>
+          <line x1="535" y1="160" x2="575" y2="162" stroke="#a5b4fc" stroke-width="1.5" opacity="0.7"/>
+          <!-- Animated mesh packet -->
+          <circle r="5" fill="#f0a500" opacity="0.85">
+            <animateMotion dur="3.5s" repeatCount="indefinite" path="M 90,65 L 185,65 L 350,115 L 510,65 L 610,65"/>
+          </circle>
+          <circle r="4" fill="#00c9a7" opacity="0.75">
+            <animateMotion dur="3.5s" repeatCount="indefinite" begin="1.75s" path="M 115,170 L 150,170 L 350,115 L 550,170 L 610,170"/>
+          </circle>
+          <!-- Legend -->
+          <rect x="240" y="205" width="220" height="18" rx="5" fill="#0d1117" stroke="#1e2d45"/>
+          <text x="350" y="218" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">🟡 Coord   🟢 Router (always-on)   🔵 End Device (sleeps)</text>
+        </svg>
+        <div class="illus-caption">Zigbee mesh topology: the Coordinator (gateway) manages the network and connects to IP. Routers (always powered — plugs, bulbs) relay messages. End devices sleep between transmissions to save battery. If one router fails, the mesh automatically reroutes — self-healing behaviour at no extra cost.</div>
+      </div>
+
+      <!-- ══════════════════════════════
+           LoRaWAN
+           ══════════════════════════════ -->
+      <h2 id="lorawan">④ LoRaWAN — Long Range, Ultra-Low Power</h2>
+
+      <div class="proto-card">
+        <div class="proto-card-header">
+          <div class="proto-icon-wrap" style="background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.25);">📡</div>
+          <div>
+            <div class="proto-name">LoRaWAN — Long Range WAN</div>
+            <div class="proto-tagline">Sub-GHz LPWAN protocol enabling 10+ km range on a coin cell — the backbone of smart agriculture, smart cities, and industrial IoT</div>
+          </div>
+          <div class="proto-badge" style="background:rgba(0,201,167,0.12);color:var(--teal);border:1px solid rgba(0,201,167,0.25);">LPWAN · Sub-GHz</div>
+        </div>
+        <div class="proto-stats">
+          <div class="pstat"><div class="pstat-val">2–15 km</div><div class="pstat-key">Urban–Rural range</div></div>
+          <div class="pstat"><div class="pstat-val">0.3–50 kbps</div><div class="pstat-key">Data rate</div></div>
+          <div class="pstat"><div class="pstat-val">10+ years</div><div class="pstat-key">Battery life</div></div>
+          <div class="pstat"><div class="pstat-val">51 bytes</div><div class="pstat-key">Max payload</div></div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--muted);line-height:1.8;">LoRa (Long Range) is a <strong style="color:var(--text)">chirp spread spectrum (CSS)</strong> radio modulation technology. LoRaWAN is the network protocol built on top of it. A LoRa radio uses spreading factors (SF7–SF12) to trade data rate for range — SF12 at 868 MHz achieves 15 km range at 250 bps; SF7 achieves 2 km at 11 kbps. The <strong style="color:var(--text)">star-of-stars topology</strong> means end nodes don't communicate with each other — they broadcast to any gateway in range, which forwards to the LoRaWAN Network Server.</p>
+        <p style="font-size:0.88rem;color:var(--muted);line-height:1.8;"><strong style="color:var(--text)">When to use:</strong> Smart agriculture (soil moisture, livestock tracking), smart metering (water/gas/electricity), asset tracking (pallets, vehicles), environmental monitoring (air quality, flood sensors), smart city infrastructure (parking, waste bins). <strong style="color:var(--text)">Avoid when:</strong> you need bidirectional real-time data (&gt;1 msg/hour), video/audio, or latency below 1 second.</p>
+        <div class="proto-chips">
+          <span class="pchip b-teal">CSS modulation</span>
+          <span class="pchip b-teal">SF7–SF12</span>
+          <span class="pchip b-teal">868/915 MHz ISM</span>
+          <span class="pchip b-teal">Class A / B / C</span>
+          <span class="pchip b-teal">AES-128 (AppKey)</span>
+          <span class="pchip b-gray">TTN · Helium · ChirpStack</span>
+          <span class="pchip b-gray">SX1276 · RA-02</span>
+        </div>
+      </div>
+
+      <!-- SVG: LoRaWAN Network Architecture -->
+      <div class="illus-wrap">
+        <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+          <defs>
+            <marker id="la" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#00c9a7"/></marker>
+          </defs>
+          <!-- End nodes -->
+          <rect x="10" y="55" width="90" height="50" rx="8" fill="#151d30" stroke="#00c9a7" stroke-width="1.5"/>
+          <text x="55" y="76" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#e2e8f0">🌾 Soil Node</text>
+          <text x="55" y="89" text-anchor="middle" font-family="Fira Code,monospace" font-size="7.5" fill="#00c9a7">SF10 · 868MHz</text>
+          <text x="55" y="100" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#4b5563">10yr battery</text>
+          <rect x="10" y="130" width="90" height="50" rx="8" fill="#151d30" stroke="#00c9a7" stroke-width="1.5"/>
+          <text x="55" y="151" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#e2e8f0">🐄 Tracker</text>
+          <text x="55" y="164" text-anchor="middle" font-family="Fira Code,monospace" font-size="7.5" fill="#00c9a7">SF12 · 868MHz</text>
+          <text x="55" y="175" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#4b5563">GPS + LoRa</text>
+          <!-- Radio wave arcs from node 1 -->
+          <path d="M 100,72 Q 160,55 210,100" fill="none" stroke="#00c9a7" stroke-width="1.2" stroke-dasharray="5 3" opacity="0.5"/>
+          <path d="M 100,80 Q 170,60 210,105" fill="none" stroke="#00c9a7" stroke-width="0.8" stroke-dasharray="5 3" opacity="0.3"/>
+          <path d="M 100,147 Q 155,130 210,115" fill="none" stroke="#00c9a7" stroke-width="1.2" stroke-dasharray="5 3" opacity="0.5"/>
+          <!-- Gateway -->
+          <rect x="200" y="70" width="110" height="100" rx="10" fill="#151d30" stroke="#f0a500" stroke-width="2"/>
+          <text x="255" y="95" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="10" fill="#f0a500">GATEWAY</text>
+          <text x="255" y="110" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#8898aa">RAK7268 / TTIG</text>
+          <text x="255" y="124" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">SX1302 concentrator</text>
+          <text x="255" y="138" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">8 channels parallel</text>
+          <text x="255" y="152" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#4b5563">→ Ethernet / 4G</text>
+          <!-- LNS arrow -->
+          <line x1="310" y1="120" x2="375" y2="120" stroke="#f0a500" stroke-width="2" marker-end="url(#la)"/>
+          <text x="342" y="113" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#f0a500">IP / TLS</text>
+          <!-- Network server -->
+          <rect x="375" y="75" width="125" height="90" rx="10" fill="#151d30" stroke="#a5b4fc" stroke-width="1.5"/>
+          <text x="437" y="97" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9.5" fill="#a5b4fc">NETWORK SERVER</text>
+          <text x="437" y="112" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#8898aa">TTN · ChirpStack</text>
+          <text x="437" y="126" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">De-dup · ADR · MAC</text>
+          <text x="437" y="140" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">Frame decrypt (NwkKey)</text>
+          <text x="437" y="154" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#4b5563">→ Application Server</text>
+          <!-- App server arrow -->
+          <line x1="500" y1="120" x2="565" y2="120" stroke="#a5b4fc" stroke-width="1.5" marker-end="url(#la)"/>
+          <!-- Application server -->
+          <rect x="565" y="75" width="125" height="90" rx="10" fill="#151d30" stroke="#7dd3fc" stroke-width="1.5"/>
+          <text x="628" y="97" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9.5" fill="#7dd3fc">APP SERVER</text>
+          <text x="628" y="112" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#8898aa">Payload decode</text>
+          <text x="628" y="126" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">Database · Grafana</text>
+          <text x="628" y="140" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">Alert triggers</text>
+          <text x="628" y="154" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#4b5563">MQTT → Dashboard</text>
+          <!-- Spreading factor annotation -->
+          <rect x="10" y="200" width="680" height="32" rx="7" fill="#0d1117" stroke="#1e2d45"/>
+          <text x="350" y="213" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="8.5" fill="#e2e8f0">Spreading Factor Trade-off:</text>
+          <text x="350" y="226" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">SF7: 11kbps · 2km · 64ms airtime/pkt  ←→  SF12: 250bps · 15km · 2s airtime/pkt (duty cycle limited to 1%)</text>
+          <!-- Animated LoRa packet chirp -->
+          <circle r="5" fill="#00c9a7" opacity="0.9">
+            <animateMotion dur="3s" repeatCount="indefinite" path="M 55,80 Q 160,55 255,110 Q 380,110 437,120 Q 500,120 628,120"/>
+          </circle>
+        </svg>
+        <div class="illus-caption">LoRaWAN star-of-stars architecture: end nodes broadcast at sub-GHz to any gateway within range (not to each other). The gateway forwards raw frames to the Network Server over IP. The Network Server handles deduplication, ADR, and frame decryption, then forwards payloads to the Application Server for business logic. The animated packet traces the full data path.</div>
+      </div>
+
+      <!-- ══════════════════════════════
+           5G / LTE-M / NB-IoT
+           ══════════════════════════════ -->
+      <h2 id="fiveg">⑤ 5G, LTE-M &amp; NB-IoT — Cellular IoT</h2>
+
+      <div class="proto-card">
+        <div class="proto-card-header">
+          <div class="proto-icon-wrap" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);">📶</div>
+          <div>
+            <div class="proto-name">5G / LTE-M / NB-IoT</div>
+            <div class="proto-tagline">Cellular IoT technologies — from ultra-low-power NB-IoT for smart meters to 5G mmWave for autonomous vehicles and factory automation</div>
+          </div>
+          <div class="proto-badge" style="background:rgba(239,68,68,0.12);color:#fca5a5;border:1px solid rgba(239,68,68,0.25);">Cellular · Licensed Spectrum</div>
+        </div>
+        <div class="proto-stats">
+          <div class="pstat"><div class="pstat-val">&lt; 1 ms</div><div class="pstat-key">5G latency</div></div>
+          <div class="pstat"><div class="pstat-val">20 Gbps</div><div class="pstat-key">5G peak speed</div></div>
+          <div class="pstat"><div class="pstat-val">10 years</div><div class="pstat-key">NB-IoT battery</div></div>
+          <div class="pstat"><div class="pstat-val">Global</div><div class="pstat-key">Coverage</div></div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--muted);line-height:1.8;">Three standards serve different IoT tiers. <strong style="color:var(--text)">NB-IoT (Narrowband IoT, Cat-NB1/NB2)</strong> is the lowest tier — operates in 200 kHz LTE bands, draws &lt;1mA in data mode, targets devices that send &lt;200 bytes per day (smart meters, parking sensors). <strong style="color:var(--text)">LTE-M (Cat-M1)</strong> offers higher throughput (1 Mbps) and supports voice, firmware OTA, and mobility — ideal for wearables and asset trackers. <strong style="color:var(--text)">5G NR</strong> is the premium tier — sub-ms latency, &gt;10 Gbps in mmWave, network slicing, and massive MIMO — enabling real-time robotics, V2X autonomous driving, and private 5G factory networks.</p>
+        <div class="proto-chips">
+          <span class="pchip b-red">NB-IoT: 250kbps · 10yr battery</span>
+          <span class="pchip b-red">LTE-M: 1Mbps · voice · OTA</span>
+          <span class="pchip b-red">5G NR: &lt;1ms · 20Gbps · URLLC</span>
+          <span class="pchip b-red">Network slicing · MEC</span>
+          <span class="pchip b-gray">SIM7080 · SARA-R4 (NB-IoT)</span>
+          <span class="pchip b-gray">Quectel BG95 (LTE-M)</span>
+        </div>
+      </div>
+
+      <!-- SVG: Cellular IoT tiers diagram -->
+      <div class="illus-wrap">
+        <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+          <!-- Title -->
+          <text x="350" y="16" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="10" fill="#e2e8f0">CELLULAR IoT SPECTRUM — Power vs Throughput</text>
+          <!-- Y axis: power -->
+          <line x1="60" y1="30" x2="60" y2="200" stroke="#1e2d45" stroke-width="1"/>
+          <text x="16" y="116" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#8898aa" transform="rotate(-90,16,116)">POWER (high → low)</text>
+          <!-- X axis: throughput -->
+          <line x1="60" y1="200" x2="680" y2="200" stroke="#1e2d45" stroke-width="1"/>
+          <text x="370" y="218" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#8898aa">THROUGHPUT (low → high)</text>
+          <!-- NB-IoT block -->
+          <rect x="70" y="140" width="150" height="55" rx="8" fill="rgba(0,201,167,0.08)" stroke="#00c9a7" stroke-width="1.8"/>
+          <text x="145" y="163" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="10" fill="#00c9a7">NB-IoT</text>
+          <text x="145" y="177" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">Cat-NB1 · 250 kbps</text>
+          <text x="145" y="188" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#4b5563">Smart meter · Parking</text>
+          <text x="145" y="130" text-anchor="middle" font-family="Fira Code,monospace" font-size="7.5" fill="#00c9a7">10yr battery · &lt;1mA</text>
+          <!-- LTE-M block -->
+          <rect x="250" y="90" width="180" height="105" rx="8" fill="rgba(240,165,0,0.07)" stroke="#f0a500" stroke-width="1.8"/>
+          <text x="340" y="118" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="10.5" fill="#f0a500">LTE-M (Cat-M1)</text>
+          <text x="340" y="133" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">1 Mbps DL · Voice · OTA</text>
+          <text x="340" y="147" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">Mobility · Handover</text>
+          <text x="340" y="161" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#4b5563">Wearables · Asset tracking</text>
+          <text x="340" y="175" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#4b5563">Remote cameras · Vehicles</text>
+          <text x="340" y="188" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#f0a500">~2yr battery typical</text>
+          <!-- 5G block -->
+          <rect x="460" y="38" width="210" height="157" rx="8" fill="rgba(239,68,68,0.07)" stroke="#ef4444" stroke-width="2"/>
+          <text x="565" y="65" text-anchor="middle" font-family="Syne,sans-serif" font-weight="800" font-size="12" fill="#fca5a5">5G NR</text>
+          <text x="565" y="82" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#8898aa">Sub-6GHz + mmWave</text>
+          <text x="565" y="97" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">20 Gbps · &lt;1ms URLLC</text>
+          <text x="565" y="112" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">Massive MIMO · Slicing</text>
+          <text x="565" y="127" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8898aa">MEC edge compute</text>
+          <text x="565" y="145" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#4b5563">Autonomous vehicles</text>
+          <text x="565" y="158" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#4b5563">Industrial robots · V2X</text>
+          <text x="565" y="171" text-anchor="middle" font-family="Fira Code,monospace" font-size="7" fill="#4b5563">Private 5G factories</text>
+          <text x="565" y="187" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#ef4444">High power · SIM required</text>
+          <!-- Animated signal tower pulse -->
+          <circle cx="565" cy="65" r="0" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.6">
+            <animate attributeName="r" from="5" to="40" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" from="0.6" to="0" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="145" cy="163" r="0" fill="none" stroke="#00c9a7" stroke-width="1.2" opacity="0.5">
+            <animate attributeName="r" from="4" to="28" dur="2.5s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" from="0.5" to="0" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+        <div class="illus-caption">Cellular IoT tiers mapped by power consumption vs throughput. NB-IoT (green, bottom-left) maximises battery life for low-data devices. LTE-M (amber, mid) balances power and throughput for mobile devices. 5G NR (red, top-right) targets ultra-low latency and gigabit speeds for real-time applications — at the cost of power. All require a SIM and licensed spectrum fees.</div>
+      </div>
+	  
+	   <ul>
         <li><strong>MQTT:</strong> The IoT standard. Lightweight publish-subscribe protocol. Perfect for low-bandwidth, high-latency networks. ESP32 → MQTT broker → dashboard is the most common pattern.</li>
         <li><strong>HTTP/REST:</strong> Simple, widely supported, but heavier than MQTT. Good for infrequent data reporting.</li>
         <li><strong>CoAP:</strong> MQTT-like but UDP-based, designed for very constrained devices.</li>
@@ -374,6 +891,159 @@
         <div class="illus-caption">Fig 2 — MQTT publish/subscribe model: publishers send data to topic paths on the broker; all subscribed clients receive it independently. This decoupled architecture means adding 100 new subscribers never changes the publisher code.</div>
       </div>
 
+
+      <!-- ══════════════════════════════
+           ALL MAJOR PROTOCOLS TABLE
+           ══════════════════════════════ -->
+      <h2 id="all-protocols">All Major IoT Protocols — Master Reference</h2>
+      <p>Every IoT protocol optimises for a different combination of range, bandwidth, power, latency, cost, and topology. This table covers all 14 major protocols used in production IoT systems today.</p>
+
+      <div style="overflow-x:auto;">
+        <table class="cmp-table">
+          <thead>
+            <tr>
+              <th>Protocol</th>
+              <th>Layer</th>
+              <th>Range</th>
+              <th>Data Rate</th>
+              <th>Power</th>
+              <th>Topology</th>
+              <th>Best For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>MQTT</td>
+              <td><span class="badge b-teal">App</span></td>
+              <td>Internet</td>
+              <td>Unlimited</td>
+              <td><span class="badge b-teal">Very Low</span></td>
+              <td>Star (broker)</td>
+              <td>IoT telemetry, dashboards, real-time feeds</td>
+            </tr>
+            <tr>
+              <td>HTTP / REST</td>
+              <td><span class="badge b-gold">App</span></td>
+              <td>Internet</td>
+              <td>Unlimited</td>
+              <td><span class="badge b-red">High</span></td>
+              <td>Client-Server</td>
+              <td>Cloud APIs, OTA downloads, infrequent reporting</td>
+            </tr>
+            <tr>
+              <td>CoAP</td>
+              <td><span class="badge b-teal">App · UDP</span></td>
+              <td>Internet / LAN</td>
+              <td>Unlimited</td>
+              <td><span class="badge b-teal">Ultra-Low</span></td>
+              <td>Client-Server</td>
+              <td>Constrained MCUs (&lt;64KB RAM), 6LoWPAN, LWM2M</td>
+            </tr>
+            <tr>
+              <td>WebSocket</td>
+              <td><span class="badge b-gold">App</span></td>
+              <td>Internet</td>
+              <td>Unlimited</td>
+              <td><span class="badge b-gold">Medium</span></td>
+              <td>Full-duplex</td>
+              <td>Real-time dashboards, live sensor streaming, remote control</td>
+            </tr>
+            <tr>
+              <td>AMQP</td>
+              <td><span class="badge b-gold">App</span></td>
+              <td>Internet / LAN</td>
+              <td>High</td>
+              <td><span class="badge b-gold">Medium</span></td>
+              <td>Message queue</td>
+              <td>Enterprise IoT, financial systems, RabbitMQ pipelines</td>
+            </tr>
+            <tr>
+              <td>Wi-Fi (802.11)</td>
+              <td><span class="badge b-blue">Physical</span></td>
+              <td>30–100m</td>
+              <td>Up to 10 Gbps</td>
+              <td><span class="badge b-red">High</span></td>
+              <td>Star (AP)</td>
+              <td>High-bandwidth indoor IoT, cameras, NVRs, audio</td>
+            </tr>
+            <tr>
+              <td>Bluetooth / BLE</td>
+              <td><span class="badge b-purple">Physical</span></td>
+              <td>10–100m</td>
+              <td>2 Mbps (BLE5)</td>
+              <td><span class="badge b-teal">Very Low (BLE)</span></td>
+              <td>Star / Mesh</td>
+              <td>Wearables, health monitors, beacons, smart locks</td>
+            </tr>
+            <tr>
+              <td>Zigbee</td>
+              <td><span class="badge b-gold">Physical + Net</span></td>
+              <td>10–100m/hop</td>
+              <td>250 kbps</td>
+              <td><span class="badge b-teal">Ultra-Low</span></td>
+              <td>Mesh</td>
+              <td>Smart home, building automation, 65K node networks</td>
+            </tr>
+            <tr>
+              <td>Z-Wave</td>
+              <td><span class="badge b-gray">Physical + Net</span></td>
+              <td>30m/hop</td>
+              <td>100 kbps</td>
+              <td><span class="badge b-teal">Very Low</span></td>
+              <td>Mesh</td>
+              <td>Smart home (interoperable, 232-node limit)</td>
+            </tr>
+            <tr>
+              <td>LoRaWAN</td>
+              <td><span class="badge b-teal">Physical + Net</span></td>
+              <td>2–15 km</td>
+              <td>0.3–50 kbps</td>
+              <td><span class="badge b-teal">Ultra-Low</span></td>
+              <td>Star-of-stars</td>
+              <td>Agriculture, smart cities, asset tracking, metering</td>
+            </tr>
+            <tr>
+              <td>NB-IoT</td>
+              <td><span class="badge b-red">Cellular</span></td>
+              <td>10–35 km</td>
+              <td>250 kbps</td>
+              <td><span class="badge b-teal">Ultra-Low</span></td>
+              <td>Star (cell tower)</td>
+              <td>Smart meters, parking sensors, remote monitoring</td>
+            </tr>
+            <tr>
+              <td>LTE-M (Cat-M1)</td>
+              <td><span class="badge b-red">Cellular</span></td>
+              <td>35+ km</td>
+              <td>1 Mbps</td>
+              <td><span class="badge b-gold">Low-Medium</span></td>
+              <td>Star (cell tower)</td>
+              <td>Wearables, vehicles, OTA-enabled devices, voice</td>
+            </tr>
+            <tr>
+              <td>5G NR</td>
+              <td><span class="badge b-red">Cellular</span></td>
+              <td>Sub-6GHz / mm</td>
+              <td>Up to 20 Gbps</td>
+              <td><span class="badge b-red">High</span></td>
+              <td>Star (cell tower)</td>
+              <td>Autonomous vehicles, industrial robots, AR/VR, V2X</td>
+            </tr>
+            <tr>
+              <td>Modbus RTU/TCP</td>
+              <td><span class="badge b-gray">App · Serial</span></td>
+              <td>1.2 km (RS485)</td>
+              <td>115 kbps</td>
+              <td><span class="badge b-gray">Wired</span></td>
+              <td>Master-Slave</td>
+              <td>Industrial PLCs, SCADA, inverters, energy meters</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-box"><p>💡 <strong>How to choose:</strong> Ask 4 questions — (1) How far? If &gt;1 km and battery-powered → LoRaWAN / NB-IoT. (2) How much data? If &gt;100 kbps → Wi-Fi / LTE-M / 5G. (3) How long on battery? If &gt;1 year → Zigbee / LoRa / NB-IoT. (4) Is real-time bidirectional needed? If yes → MQTT over Wi-Fi / LTE-M. When in doubt, MQTT + Wi-Fi is the fastest path to a working prototype.</p></div>
+
       <h2 id="layers">IoT Architecture — The 5 Layers</h2>
       <div class="iot-layers">
         <div class="iot-layer"><div class="il-num">5</div><div class="il-icon">📱</div><div><div class="il-name">Application Layer</div><div class="il-desc">User dashboards, mobile apps, SCADA, alerts — what the end user sees</div></div></div>
@@ -404,7 +1074,7 @@
 
       <div class="warn-box"><p>⚠️ <strong>From the field:</strong> The biggest failure mode I've seen in IoT deployments is treating security as an afterthought. Default credentials, unencrypted MQTT, no firmware signing — these aren't acceptable in production systems, especially industrial or safety-adjacent ones.</p></div>
 
-      <h2 id="esp32">IoT with ESP32 — Getting Started</h2>
+            <h2 id="esp32">IoT with ESP32 — Getting Started</h2>
       <p>The <strong>ESP32</strong> is my go-to for IoT prototyping — dual-core 240MHz, built-in Wi-Fi + Bluetooth, 4MB flash, rich peripheral set, and a massive community. I've used it for personal projects from mini vending machines to home sensor networks.</p>
 
       <!-- SVG: ESP32 Pin & Feature Overview -->
@@ -456,8 +1126,6 @@
         </svg>
         <div class="illus-caption">Fig 3 — ESP32 pinout overview: 34 GPIO pins covering ADC, DAC, UART, SPI, I2C, and PWM. The chip integrates Wi-Fi and Bluetooth on the same die, with a deep-sleep mode drawing only 10μA — ideal for battery-powered IoT nodes.</div>
       </div>
-
-      <ul>
         <li><strong>Development:</strong> Arduino IDE, ESP-IDF (native), or PlatformIO</li>
         <li><strong>MQTT library:</strong> PubSubClient (Arduino) or esp-mqtt (ESP-IDF)</li>
         <li><strong>Cloud:</strong> AWS IoT Core, MQTT broker (Mosquitto), or Blynk for rapid prototyping</li>
@@ -511,6 +1179,8 @@
         if(!e.isIntersecting) return;
         const el = e.target;
         el.classList.add('in');
+        // also handle cmp-table rows which use inline style
+        if(el.tagName === 'TR'){el.style.opacity='1';el.style.transform='translateY(0)';}
         io.unobserve(el);
       });
     }, {threshold: 0.12, rootMargin: '0px 0px -40px 0px'});
@@ -570,10 +1240,25 @@
       io.observe(c);
     });
 
+    // protocol deep-dive cards
+    document.querySelectorAll('.proto-card').forEach((c,i) => {
+      c.style.transitionDelay = i * 0.08 + 's';
+      io.observe(c);
+    });
+
     // illustration wrappers
     document.querySelectorAll('.illus-wrap').forEach((c,i) => {
       c.style.transitionDelay = i * 0.1 + 's';
       io.observe(c);
+    });
+
+    // comparison table rows
+    document.querySelectorAll('.cmp-table tbody tr').forEach((r,i) => {
+      r.style.opacity = '0';
+      r.style.transform = 'translateY(8px)';
+      r.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+      r.style.transitionDelay = i * 0.05 + 's';
+      io.observe(r);
     });
 
     // comparison table rows
