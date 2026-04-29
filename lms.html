@@ -603,7 +603,7 @@ const COURSES = [
     icon: '📊',
     level: 'Beginner–Advanced', chapters_count: 7, duration: '~4 hrs',
     chapters: [
-      { id:'m1', title:'What is MATLAB?', duration:'12 min', yt:'',
+      { id:'m1', title:'What is MATLAB?', duration:'12 min', yt:'tFLq0SHPw_Q',
         desc:'Introduction to MATLAB — the environment, workspace, command window, script files, and why engineers use it.',
         quiz:[
           {q:'MATLAB stands for:',opts:['Matrix Laboratory','Machine Analysis Tool','Multi-Algorithm Language','Modular Algorithmic Library'],ans:0},
@@ -613,7 +613,7 @@ const COURSES = [
           {q:'Which of these is NOT a MATLAB workspace panel?',opts:['Command Window','Variable Editor','Debugger','HTML Inspector'],ans:3}
         ]
       },
-      { id:'m2', title:'Matrix Operations', duration:'18 min', yt:'',
+      { id:'m2', title:'Matrix Operations', duration:'18 min', yt:'0f-WC2Vz9hU',
         desc:'Creating matrices, array indexing, transpose, inverse, element-wise operations — the foundational data structure of MATLAB.',
         quiz:[
           {q:'In MATLAB, how do you create a 2×3 matrix A = [1 2 3; 4 5 6]?',opts:['A = [1,2,3,4,5,6]','A = [1 2 3; 4 5 6]','A = matrix(2,3)','A = {1 2 3; 4 5 6}'],ans:1},
@@ -623,7 +623,7 @@ const COURSES = [
           {q:'A = [1 2 3 4 5]; What does A(2:4) return?',opts:['[1 2 3]','[2 3 4]','[3 4 5]','[2 4]'],ans:1}
         ]
       },
-      { id:'m3', title:'Mathematical Operations', duration:'16 min', yt:'',
+      { id:'m3', title:'Mathematical Operations', duration:'16 min', yt:'CTZv-5AtDPk',
         desc:'Built-in math functions, trigonometry, statistics, signal processing operations and their engineering applications.',
         quiz:[
           {q:'Which MATLAB function computes the Fast Fourier Transform?',opts:['dft()','fft()','fourier()','spectrum()'],ans:1},
@@ -633,7 +633,7 @@ const COURSES = [
           {q:'Which function solves the linear system Ax = b?',opts:['A/b','inv(A)*b','A\\b','solve(A,b)'],ans:2}
         ]
       },
-      { id:'m4', title:'Flow Control', duration:'20 min', yt:'',
+      { id:'m4', title:'Flow Control', duration:'20 min', yt:'rnTENrxQ9tc',
         desc:'if/else, for loops, while loops, switch-case — writing logic and control structures in MATLAB scripts.',
         quiz:[
           {q:'How do you write a for loop in MATLAB iterating i from 1 to 10?',opts:['for i = 1:10','for(i=1;i<=10;i++)','foreach i in 1..10','loop i 1 to 10'],ans:0},
@@ -643,7 +643,7 @@ const COURSES = [
           {q:'Which is NOT a valid comparison operator in MATLAB?',opts:['==','~=','!=','>='],ans:2}
         ]
       },
-      { id:'m5', title:'User-Defined Functions', duration:'22 min', yt:'',
+      { id:'m5', title:'User-Defined Functions', duration:'22 min', yt:'gJ3vOlqFEPA',
         desc:'Writing reusable .m function files, input/output arguments, function handles, and modular code structure.',
         quiz:[
           {q:'How do you define a function in MATLAB?',opts:['def myFunc(x)','function y = myFunc(x)','func myFunc(x)','create myFunc(x)'],ans:1},
@@ -653,7 +653,7 @@ const COURSES = [
           {q:'What does "nargin" return inside a MATLAB function?',opts:['Number of output args','Number of input args provided','Total arguments','Function name'],ans:1}
         ]
       },
-      { id:'m6', title:'Plots in MATLAB', duration:'19 min', yt:'',
+      { id:'m6', title:'Plots in MATLAB', duration:'19 min', yt:'2pzjZxWLdBE',
         desc:'2D and 3D plots, subplots, figure formatting, colour maps, and publication-quality visualizations.',
         quiz:[
           {q:'Which function creates a new figure window in MATLAB?',opts:['new()','window()','figure()','plot()'],ans:2},
@@ -663,7 +663,7 @@ const COURSES = [
           {q:'Which function sets the x-axis label?',opts:['xlabel()','xlab()','setxlabel()','labelx()'],ans:0}
         ]
       },
-      { id:'m7', title:'GUI Development', duration:'35 min', yt:'',
+      { id:'m7', title:'GUI Development', duration:'35 min', yt:'kIcky95QOBI',
         desc:'Building interactive GUI applications using App Designer — buttons, sliders, plots, callbacks, and engineering dashboards.',
         quiz:[
           {q:'Which MATLAB tool is the modern replacement for GUIDE?',opts:['AppBuilder','App Designer','GUICreator','uiPanel'],ans:1},
@@ -905,7 +905,7 @@ function renderChapters(){
       <div class="ch-content">
         <div class="video-wrap" style="${ch.yt ? '' : 'background:var(--navy2);display:flex;align-items:center;justify-content:center;'}">
           ${ch.yt
-            ? `<iframe src="https://www.youtube.com/embed/tFLq0SHPw_Q" allowfullscreen loading="lazy" title="${ch.title}"></iframe>`
+            ? `<iframe src="https://www.youtube.com/embed/${ch.yt}" allowfullscreen loading="lazy" title="${ch.title}"></iframe>`
             : `<div style="text-align:center;padding:2rem;"><div style="font-size:2.5rem;margin-bottom:0.8rem;">🎬</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--white);margin-bottom:0.4rem;">Video Coming Soon</div><div style="font-size:0.78rem;color:var(--muted);">Add your YouTube video ID to this chapter.</div></div>`
           }
         </div>
