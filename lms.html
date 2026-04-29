@@ -12,29 +12,17 @@
   import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   // ─────────────────────────────────────────────
-  // 🔥 PASTE YOUR FIREBASE CONFIG HERE
+  // 🔥 FIREBASE CONFIG
   // ─────────────────────────────────────────────
-  // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyARHI2kmY3q-IE5sqeMPV0LkfMl8UvQroA",
-  authDomain: "sandeep-singh-lms.firebaseapp.com",
-  projectId: "sandeep-singh-lms",
-  storageBucket: "sandeep-singh-lms.firebasestorage.app",
-  messagingSenderId: "494842666506",
-  appId: "1:494842666506:web:7ded04df72d9018a7449f3",
-  measurementId: "G-XP4S919FPL"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+  const firebaseConfig = {
+    apiKey: "AIzaSyARHI2kmY3q-IE5sqeMPV0LkfMl8UvQroA",
+    authDomain: "sandeep-singh-lms.firebaseapp.com",
+    projectId: "sandeep-singh-lms",
+    storageBucket: "sandeep-singh-lms.firebasestorage.app",
+    messagingSenderId: "494842666506",
+    appId: "1:494842666506:web:7ded04df72d9018a7449f3",
+    measurementId: "G-XP4S919FPL"
+  };
   // ─────────────────────────────────────────────
 
   const app = initializeApp(firebaseConfig);
@@ -50,6 +38,50 @@ const analytics = getAnalytics(app);
     signInWithEmailAndPassword, createUserWithEmailAndPassword,
     signInWithPopup, signOut, updateProfile,
     doc, getDoc, setDoc
+  };
+
+  // ── Shared STATE object (declared here so it's ready before onAuthStateChanged fires) ──
+  window._STATE = {};
+
+  // ── Auth callbacks (defined here so they exist before onAuthStateChanged fires) ──
+  window._onFirebaseLogin = async function(fbUser) {
+    const name = fbUser.displayName || fbUser.email.split('@')[0];
+    window._currentUser = { uid: fbUser.uid, email: fbUser.email, name };
+
+    // Load progress from Firestore
+    try {
+      const snap = await getDoc(doc(db, 'users', fbUser.uid));
+      window._STATE = snap.exists() ? (snap.data().progress || {}) : {};
+    } catch(e) {
+      console.warn('Firestore read error (check security rules):', e.message);
+      window._STATE = {};
+    }
+
+    // Hide loading & login screens, show app
+    document.getElementById('auth-loading').style.display = 'none';
+    document.getElementById('login-screen').classList.add('hidden');
+    document.body.style.overflow = '';
+
+    // Update nav pill
+    document.getElementById('user-pill').style.display = 'flex';
+    document.getElementById('user-avatar').textContent = name.charAt(0).toUpperCase();
+    document.getElementById('user-name-pill').textContent = name.split(' ')[0];
+
+    if(typeof renderCourses === 'function') renderCourses();
+    if(typeof renderOverall === 'function') renderOverall();
+  };
+
+  window._onFirebaseLogout = function() {
+    document.getElementById('auth-loading').style.display = 'none';
+    document.getElementById('login-screen').classList.remove('hidden');
+    document.getElementById('user-pill').style.display = 'none';
+    document.body.style.overflow = 'hidden';
+    window._currentUser = null;
+    window._STATE = {};
+    ['si-email','si-pass','su-name','su-email','su-pass','su-pass2'].forEach(id=>{
+      const el = document.getElementById(id); if(el) el.value='';
+    });
+    ['si-err','su-err'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent=''; });
   };
 
   // Listen for auth state changes
@@ -298,6 +330,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .auth-loading-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .auth-loading-text{font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;color:var(--muted);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 .fade-up{animation:fadeUp 0.6s ease both;}
 .fade-up-d1{animation-delay:0.1s;}
 .fade-up-d2{animation-delay:0.2s;}
@@ -470,51 +503,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 // ─────────────────────────────────────────────
 // AUTH SYSTEM — Firebase (Email/Password + Google)
 // ─────────────────────────────────────────────
-let currentUser = null; // { uid, email, name }
-
-// Called by Firebase onAuthStateChanged when user is signed in
-window._onFirebaseLogin = async function(fbUser) {
-  const { doc, getDoc } = window._fbFns;
-  const db = window._fbDb;
-  const name = fbUser.displayName || fbUser.email.split('@')[0];
-  currentUser = { uid: fbUser.uid, email: fbUser.email, name };
-
-  // Load progress from Firestore
-  try {
-    const snap = await getDoc(doc(db, 'users', fbUser.uid));
-    STATE = snap.exists() ? (snap.data().progress || {}) : {};
-  } catch(e) {
-    console.warn('Firestore read error (check security rules):', e.message);
-    STATE = {};
-  }
-
-  // Hide loading & login screens, show app
-  document.getElementById('auth-loading').style.display = 'none';
-  document.getElementById('login-screen').classList.add('hidden');
-  document.body.style.overflow = '';
-
-  // Update nav pill
-  document.getElementById('user-pill').style.display = 'flex';
-  document.getElementById('user-avatar').textContent = name.charAt(0).toUpperCase();
-  document.getElementById('user-name-pill').textContent = name.split(' ')[0];
-
-  renderCourses();
-  renderOverall();
-};
-
-// Called by Firebase onAuthStateChanged when signed out
-window._onFirebaseLogout = function() {
-  document.getElementById('auth-loading').style.display = 'none';
-  document.getElementById('login-screen').classList.remove('hidden');
-  document.getElementById('user-pill').style.display = 'none';
-  document.body.style.overflow = 'hidden';
-  currentUser = null;
-  STATE = {};
-  ['si-email','si-pass','su-name','su-email','su-pass','su-pass2'].forEach(id=>{
-    const el = document.getElementById(id); if(el) el.value='';
-  });
-  ['si-err','su-err'].forEach(id => { document.getElementById(id).textContent=''; });
-};
+// currentUser and STATE live on window (set by the module script in <head>)
+Object.defineProperty(window, 'currentUser', { get(){ return window._currentUser; }, set(v){ window._currentUser = v; } });
+Object.defineProperty(window, 'STATE', { get(){ return window._STATE; }, set(v){ window._STATE = v; } });
 
 function switchTab(tab){
   document.getElementById('tab-signin').classList.toggle('active', tab==='signin');
@@ -600,7 +591,6 @@ function _friendlyAuthError(code){
 
 // BOOT: Firebase onAuthStateChanged (in <head> module) handles auto-login.
 // The auth-loading spinner stays visible until Firebase resolves.
-document.body.style.overflow = 'hidden';
 
 const COURSES = [
   {
@@ -750,10 +740,10 @@ const COURSES = [
 ];
 
 // ─────────────────────────────────────────────
-// STATE (localStorage)
+// STATE (Firestore-backed via window._STATE)
 // ─────────────────────────────────────────────
 const LS_KEY = 'sandeep_lms_v2';
-let STATE = {};
+// STATE is a proxy to window._STATE (declared in module script)
 
 function saveState(){ saveStateForUser(); }
 
