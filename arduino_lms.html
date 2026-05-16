@@ -3,67 +3,50 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Embedded System & IOT using Arduino — Tech guru</title>
+<title>Embedded System & IOT using Arduino — Tech guru LMS</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
 
-<!-- Firebase SDK -->
+<!-- Firebase -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyARHI2kmY3q-IE5sqeMPV0LkfMl8UvQroA",
-    authDomain: "sandeep-singh-lms.firebaseapp.com",
-    projectId: "sandeep-singh-lms",
-    storageBucket: "sandeep-singh-lms.firebasestorage.app",
-    messagingSenderId: "494842666506",
-    appId: "1:494842666506:web:7ded04df72d9018a7449f3",
-    measurementId: "G-XP4S919FPL"
-  };
+const app = initializeApp({
+  apiKey:"AIzaSyARHI2kmY3q-IE5sqeMPV0LkfMl8UvQroA",
+  authDomain:"sandeep-singh-lms.firebaseapp.com",
+  projectId:"sandeep-singh-lms",
+  storageBucket:"sandeep-singh-lms.firebasestorage.app",
+  messagingSenderId:"494842666506",
+  appId:"1:494842666506:web:7ded04df72d9018a7449f3"
+});
+const auth = getAuth(app), db = getFirestore(app), gp = new GoogleAuthProvider();
+window._fbAuth=auth; window._fbDb=db; window._fbGP=gp;
+window._fbFns={signInWithEmailAndPassword,createUserWithEmailAndPassword,signInWithPopup,signOut,updateProfile,doc,getDoc,setDoc};
+window._STATE={};
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const googleProvider = new GoogleAuthProvider();
-
-  window._fbAuth = auth;
-  window._fbDb = db;
-  window._fbGoogleProvider = googleProvider;
-  window._fbFns = { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, signOut, updateProfile, doc, getDoc, setDoc };
-  window._STATE = {};
-
-  window._onFirebaseLogin = async function(fbUser) {
-    const name = fbUser.displayName || fbUser.email.split('@')[0];
-    window._currentUser = { uid: fbUser.uid, email: fbUser.email, name };
-    try {
-      const snap = await getDoc(doc(db, 'users_arduino', fbUser.uid));
-      window._STATE = snap.exists() ? (snap.data().progress || {}) : {};
-    } catch(e) { console.warn('Firestore read error:', e.message); window._STATE = {}; }
-    document.getElementById('auth-loading').style.display = 'none';
-    document.getElementById('login-screen').classList.add('hidden');
-    document.body.style.overflow = '';
-    document.getElementById('user-pill').style.display = 'flex';
-    document.getElementById('user-avatar').textContent = name.charAt(0).toUpperCase();
-    document.getElementById('user-name-pill').textContent = name.split(' ')[0];
-    if(typeof renderAll === 'function') renderAll();
-  };
-
-  window._onFirebaseLogout = function() {
-    document.getElementById('auth-loading').style.display = 'none';
-    document.getElementById('login-screen').classList.remove('hidden');
-    document.getElementById('user-pill').style.display = 'none';
-    document.body.style.overflow = 'hidden';
-    window._currentUser = null;
-    window._STATE = {};
-    ['si-email','si-pass','su-name','su-email','su-pass','su-pass2'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-    ['si-err','su-err'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=''; });
-  };
-
-  onAuthStateChanged(auth, async (user) => {
-    if (user) { await window._onFirebaseLogin(user); }
-    else { window._onFirebaseLogout(); }
-  });
+window._onLogin = async function(u){
+  const name = u.displayName||u.email.split('@')[0];
+  window._cu={uid:u.uid,email:u.email,name};
+  try{ const s=await getDoc(doc(db,'users_arduino',u.uid)); window._STATE=s.exists()?(s.data().progress||{}):{};
+  }catch(e){ window._STATE={}; }
+  document.getElementById('al').style.display='none';
+  document.getElementById('ls').classList.add('hidden');
+  document.body.style.overflow='';
+  document.getElementById('up').style.display='flex';
+  document.getElementById('ua').textContent=name[0].toUpperCase();
+  document.getElementById('un').textContent=name.split(' ')[0];
+  if(typeof init==='function') init();
+};
+window._onLogout = function(){
+  document.getElementById('al').style.display='none';
+  document.getElementById('ls').classList.remove('hidden');
+  document.getElementById('up').style.display='none';
+  document.body.style.overflow='hidden';
+  window._cu=null; window._STATE={};
+  ['sie','sip','sun','sue','sup','sup2'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+};
+onAuthStateChanged(auth, async u=>{ if(u) await window._onLogin(u); else window._onLogout(); });
 </script>
 
 <style>
@@ -71,34 +54,694 @@
   --navy:#070d1a;--navy2:#0d1525;--card:#111e35;--card2:#152240;
   --border:#1a2d4a;--border2:#243d5e;
   --orange:#ff6b2b;--orange2:#ff8c4a;
-  --teal:#00c9a7;--teal2:#00e8c0;
-  --gold:#f0a500;
-  --text:#dde6f0;--muted:#6d8aaa;--white:#ffffff;
-  --red:#ef4444;--green:#22c55e;
-  --radius:14px;
+  --teal:#00c9a7;--text:#dde6f0;--muted:#6d8aaa;--white:#fff;
+  --red:#ef4444;--green:#22c55e;--radius:14px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;overflow-x:hidden;min-height:100vh;}
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.5;}
-body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 10% 20%,rgba(255,107,43,0.04) 0%,transparent 40%),radial-gradient(circle at 90% 80%,rgba(0,201,167,0.04) 0%,transparent 40%);pointer-events:none;z-index:0;}
-#rp{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--teal));z-index:300;width:0;transition:width 0.1s;}
+body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.5;}
+#rp{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--teal));z-index:300;width:0;transition:width .1s;}
 
 /* AUTH LOADING */
-#auth-loading{position:fixed;inset:0;background:var(--navy);z-index:1000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;}
-.auth-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--orange);border-radius:50%;animation:spin 0.8s linear infinite;}
+#al{position:fixed;inset:0;background:var(--navy);z-index:1000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;}
+.spinner{width:38px;height:38px;border:3px solid var(--border);border-top-color:var(--orange);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
+#al p{font-family:'Syne',sans-serif;font-size:.75rem;color:var(--muted);letter-spacing:1px;}
 
-/* LOGIN SCREEN */
-#login-screen{position:fixed;inset:0;background:rgba(7,13,26,0.98);z-index:900;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);}
-#login-screen.hidden{display:none;}
-.login-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.5rem 2rem;width:100%;max-width:400px;position:relative;}
-.login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--teal));border-radius:20px 20px 0 0;}
-.login-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--white);text-align:center;margin-bottom:0.25rem;}
-.login-logo span{color:var(--orange);}
-.login-sub{font-size:0.78rem;color:var(--muted);text-align:center;margin-bottom:1.5rem;}
-.login-tabs{display:flex;background:var(--navy2);border-radius:10px;padding:3px;margin-bottom:1.4rem;}
-.login-tab{flex:1;text-align:center;padding:0.48rem;font-family:'Syne',sans-serif;font-weight:700;font-size:0.76rem;border-radius:8px;cursor:pointer;transition:all 0.2s;color:var(--muted);}
-.login-tab.active{background:var(--card2);color:var(--white);}
-.login-field{margin-bottom:0.9rem;}
-.login-field label
+/* LOGIN */
+#ls{position:fixed;inset:0;background:rgba(7,13,26,.98);z-index:900;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);}
+#ls.hidden{display:none;}
+.lcard{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.4rem 2rem;width:100%;max-width:400px;position:relative;}
+.lcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--teal));border-radius:20px 20px 0 0;}
+.ltitle{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--white);text-align:center;margin-bottom:.2rem;}
+.ltitle span{color:var(--orange);}
+.lsub{font-size:.76rem;color:var(--muted);text-align:center;margin-bottom:1.4rem;}
+.ltabs{display:flex;background:var(--navy2);border-radius:10px;padding:3px;margin-bottom:1.3rem;}
+.ltab{flex:1;text-align:center;padding:.45rem;font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;border-radius:8px;cursor:pointer;color:var(--muted);transition:all .2s;}
+.ltab.active{background:var(--card2);color:var(--white);}
+.lf{margin-bottom:.85rem;}
+.lf label{display:block;font-size:.68rem;font-weight:700;color:var(--muted);margin-bottom:.3rem;letter-spacing:.5px;text-transform:uppercase;}
+.lf input{width:100%;background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:.58rem .9rem;color:var(--white);font-family:'DM Sans',sans-serif;font-size:.86rem;outline:none;transition:border-color .2s;}
+.lf input:focus{border-color:var(--orange);}
+.lbtn{width:100%;background:linear-gradient(135deg,var(--orange),var(--orange2));color:var(--navy);font-family:'Syne',sans-serif;font-weight:800;font-size:.86rem;padding:.72rem;border:none;border-radius:10px;cursor:pointer;margin-bottom:.65rem;transition:opacity .2s;}
+.lbtn:hover{opacity:.9;}
+.ldiv{display:flex;align-items:center;gap:.7rem;margin:.4rem 0 .9rem;}
+.ldiv span{flex:1;height:1px;background:var(--border);}
+.ldiv p{font-size:.7rem;color:var(--muted);white-space:nowrap;}
+.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:.6rem;background:#fff;color:#1f1f1f;font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;padding:.68rem;border:1.5px solid #e2e8f0;border-radius:10px;cursor:pointer;transition:box-shadow .2s;}
+.gbtn:hover{box-shadow:0 2px 12px rgba(0,0,0,.18);}
+.gbtn svg{width:18px;height:18px;flex-shrink:0;}
+.lerr{font-size:.73rem;color:#fca5a5;margin-top:.35rem;min-height:1rem;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:.85rem 5%;background:rgba(7,13,26,.95);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--white);text-decoration:none;}
+.nav-logo span{color:var(--orange);}
+.nav-right{display:flex;align-items:center;gap:1.2rem;}
+.nav-link{color:var(--muted);font-size:.8rem;text-decoration:none;transition:color .2s;}
+.nav-link:hover{color:var(--white);}
+.nav-badge{background:linear-gradient(135deg,var(--orange),var(--teal));color:var(--navy);font-family:'Syne',sans-serif;font-weight:700;font-size:.7rem;padding:.28rem .85rem;border-radius:20px;}
+#up{display:none;align-items:center;gap:.45rem;background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:.28rem .75rem .28rem .35rem;}
+#ua{width:25px;height:25px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--teal));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.7rem;color:var(--navy);}
+#un{font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;color:var(--white);}
+#lob{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.78rem;transition:color .2s;}
+#lob:hover{color:var(--white);}
+
+/* PAGE */
+.page{max-width:1100px;margin:0 auto;padding:5.2rem 5% 4rem;position:relative;z-index:1;}
+
+/* HERO */
+.hero{text-align:center;padding:2.5rem 0 3rem;}
+.hcat{display:inline-flex;align-items:center;gap:.5rem;font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:.28rem 1rem;border-radius:20px;background:rgba(255,107,43,.1);color:var(--orange);border:1px solid rgba(255,107,43,.25);margin-bottom:1.1rem;}
+.hero h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.8rem,4.5vw,3rem);color:var(--white);letter-spacing:-1.5px;line-height:1.1;margin-bottom:.8rem;}
+.hero h1 span{background:linear-gradient(90deg,var(--orange),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero p{color:var(--muted);font-size:.95rem;max-width:520px;margin:0 auto 2rem;line-height:1.8;}
+.hstats{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;}
+.hs{text-align:center;}
+.hs-n{font-family:'Syne',sans-serif;font-weight:800;font-size:1.65rem;color:var(--orange);line-height:1;}
+.hs-l{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:.2rem;}
+
+/* OVERALL PROGRESS */
+.overall{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem 1.8rem;margin:0 0 2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;}
+.ol{font-family:'Syne',sans-serif;font-weight:700;font-size:.84rem;color:var(--white);white-space:nowrap;}
+.ob{flex:1;min-width:140px;}
+.obg{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.obf{height:100%;background:linear-gradient(90deg,var(--orange),var(--teal));border-radius:4px;transition:width .8s ease;width:0%;}
+.op{font-family:'Syne',sans-serif;font-weight:700;font-size:.84rem;color:var(--teal);}
+
+/* HOW IT WORKS */
+.how{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.8rem;margin-bottom:2.5rem;}
+.how-t{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--white);margin-bottom:.25rem;}
+.how-s{font-size:.8rem;color:var(--muted);margin-bottom:1.2rem;}
+.how-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:1rem;}
+.how-step{text-align:center;padding:1rem .7rem;background:var(--navy2);border-radius:10px;border:1px solid var(--border);}
+.how-step-i{font-size:1.3rem;margin-bottom:.4rem;}
+.how-step-n{font-family:'Fira Code',monospace;font-size:.6rem;color:var(--orange);letter-spacing:1px;margin-bottom:.2rem;}
+.how-step-t{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;color:var(--white);margin-bottom:.2rem;}
+.how-step-d{font-size:.7rem;color:var(--muted);line-height:1.5;}
+
+/* SECTION */
+.sec-t{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--white);margin-bottom:.3rem;}
+.sec-s{color:var(--muted);font-size:.82rem;margin-bottom:1.3rem;}
+.dline{width:40px;height:3px;background:linear-gradient(90deg,var(--orange),var(--teal));border-radius:2px;margin-bottom:.7rem;}
+
+/* COURSE CARD */
+.ccard{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:2rem;}
+.cbanner{height:6px;background:linear-gradient(90deg,var(--orange),var(--teal));}
+.cbody{padding:1.5rem 1.8rem 1.3rem;}
+.ctag{font-size:.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:.2rem .65rem;border-radius:4px;display:inline-block;margin-bottom:.7rem;background:rgba(255,107,43,.12);color:var(--orange);border:1px solid rgba(255,107,43,.3);}
+.ctitle{font-family:'Syne',sans-serif;font-weight:800;font-size:1.25rem;color:var(--white);margin-bottom:.35rem;}
+.cdesc{font-size:.81rem;color:var(--muted);line-height:1.7;margin-bottom:1.1rem;max-width:640px;}
+.cmeta{display:flex;gap:1.4rem;flex-wrap:wrap;margin-bottom:1.1rem;}
+.cm{font-size:.73rem;color:var(--muted);}
+.cprog{margin-bottom:1.1rem;}
+.cpt{display:flex;justify-content:space-between;margin-bottom:.32rem;}
+.cpl{font-size:.7rem;color:var(--muted);}
+.cpp{font-size:.7rem;font-weight:700;color:var(--teal);}
+.cpbg{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.cpf{height:100%;background:linear-gradient(90deg,var(--orange),var(--teal));border-radius:3px;transition:width .6s ease;}
+.claim-row{display:flex;align-items:center;gap:1rem;}
+#claim-btn{display:none;font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;padding:.58rem 1.3rem;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--orange),var(--teal));color:var(--navy);transition:opacity .2s;}
+#claim-btn:hover{opacity:.9;}
+
+/* CHAPTERS */
+.ch-hdr{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--white);padding:0 1.8rem 1rem;}
+.ch-list{display:flex;flex-direction:column;gap:.55rem;padding:0 1.8rem 1.8rem;}
+.ch-item{background:var(--navy2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s;}
+.ch-item.done{border-color:rgba(0,201,167,.3);}
+.ch-item.active{border-color:rgba(255,107,43,.35);}
+.ch-head{display:flex;align-items:center;gap:.9rem;padding:.9rem 1.1rem;cursor:pointer;user-select:none;}
+.ch-num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.78rem;flex-shrink:0;transition:all .2s;}
+.ch-info{flex:1;min-width:0;}
+.ch-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.86rem;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ch-dur{font-size:.68rem;color:var(--muted);margin-top:.08rem;}
+.ch-st{font-size:.68rem;font-weight:700;flex-shrink:0;white-space:nowrap;}
+.ch-chev{color:var(--muted);font-size:.75rem;transition:transform .25s;flex-shrink:0;}
+.ch-item.expanded .ch-chev{transform:rotate(180deg);}
+.ch-body{display:none;padding:0 1.1rem 1.1rem;}
+.ch-item.expanded .ch-body{display:block;}
+.vwrap{position:relative;padding-top:56.25%;border-radius:10px;overflow:hidden;background:#000;margin-bottom:1rem;}
+.vwrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.ch-desc{font-size:.8rem;color:var(--muted);line-height:1.7;margin-bottom:1rem;}
+.mwbtn{font-family:'Syne',sans-serif;font-weight:700;font-size:.74rem;padding:.45rem 1rem;border-radius:8px;border:1px solid;cursor:pointer;transition:all .2s;margin-bottom:1rem;display:inline-block;}
+
+/* QUIZ */
+.qwrap{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.2rem;}
+.qtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem;}
+.qt{font-family:'Syne',sans-serif;font-weight:700;font-size:.86rem;color:var(--white);}
+.qb{font-size:.63rem;font-weight:700;padding:.17rem .52rem;border-radius:4px;font-family:'Fira Code',monospace;background:rgba(255,107,43,.1);color:var(--orange);}
+.qdots{display:flex;gap:.3rem;margin-bottom:.9rem;}
+.qdot{width:22px;height:5px;border-radius:3px;background:var(--border);transition:background .3s;}
+.qdot.answered{background:var(--orange);}
+.qdot.correct{background:var(--green);}
+.qdot.wrong{background:var(--red);}
+.qnum{font-size:.62rem;font-weight:700;letter-spacing:1px;color:var(--orange);text-transform:uppercase;margin-bottom:.22rem;}
+.qtext{font-size:.84rem;color:var(--white);font-weight:500;margin-bottom:.65rem;line-height:1.6;}
+.opts{display:flex;flex-direction:column;gap:.38rem;margin-bottom:.85rem;}
+.opt{background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:.58rem .88rem;text-align:left;color:var(--text);font-size:.8rem;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:.6rem;width:100%;}
+.opt:hover:not(:disabled){border-color:var(--border2);background:var(--card2);}
+.opt.sel{border-color:var(--orange);background:rgba(255,107,43,.08);color:var(--white);}
+.opt.ok{border-color:var(--green);background:rgba(34,197,94,.1);color:#86efac;}
+.opt.bad{border-color:var(--red);background:rgba(239,68,68,.1);color:#fca5a5;}
+.opt:disabled{cursor:default;}
+.ol{width:20px;height:20px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;flex-shrink:0;font-family:'Syne',sans-serif;}
+.qnav{display:flex;align-items:center;justify-content:space-between;}
+.qnavbtn{font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;padding:.43rem 1rem;border-radius:8px;border:none;cursor:pointer;transition:all .2s;}
+.qnavbtn.p{background:var(--orange);color:var(--navy);}
+.qnavbtn.p:hover{background:var(--orange2);}
+.qnavbtn.s{background:var(--card2);color:var(--text);border:1px solid var(--border);}
+.qnavbtn:disabled{opacity:.35;cursor:not-allowed;}
+.qresult{text-align:center;padding:1.2rem .8rem;}
+.qcirc{width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .85rem;font-family:'Syne',sans-serif;font-weight:800;font-size:1.25rem;border:3px solid;}
+.qrtit{font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;margin-bottom:.32rem;}
+.qrsub{font-size:.78rem;color:var(--muted);margin-bottom:.85rem;}
+.qrretry{font-family:'Syne',sans-serif;font-weight:700;font-size:.73rem;padding:.38rem .88rem;border-radius:7px;border:1px solid var(--border);background:none;color:var(--text);cursor:pointer;}
+
+/* BADGE MODAL */
+.bmodal{position:fixed;inset:0;background:rgba(7,13,26,.98);z-index:600;display:none;align-items:center;justify-content:center;}
+.bmodal.open{display:flex;}
+.bbox{background:var(--card);border:1px solid rgba(255,107,43,.3);border-radius:20px;padding:2.2rem 1.8rem;max-width:440px;width:90%;text-align:center;position:relative;}
+.bbox::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--teal));border-radius:20px 20px 0 0;}
+.bclose{position:absolute;top:.9rem;right:.9rem;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;}
+.bclose:hover{color:var(--white);}
+.bnl{font-size:.68rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:.28rem;}
+#bni{background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:.5rem .9rem;color:var(--white);font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;text-align:center;width:100%;margin-bottom:.85rem;outline:none;transition:border-color .2s;}
+#bni:focus{border-color:var(--orange);}
+.bacts{display:flex;gap:.6rem;justify-content:center;}
+.bbtn{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;padding:.5rem 1.2rem;border-radius:8px;border:none;cursor:pointer;transition:all .2s;}
+.bbtn.p{background:linear-gradient(135deg,var(--orange),var(--orange2));color:var(--navy);}
+.bbtn.s{background:var(--card2);color:var(--text);border:1px solid var(--border);}
+
+/* CONFETTI */
+.cp{position:fixed;top:-10px;pointer-events:none;z-index:700;opacity:0;}
+@keyframes cfall{0%{transform:translateY(-10px) rotate(0deg);opacity:1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
+
+/* ANIMATIONS */
+.fade-up{opacity:0;transform:translateY(18px);animation:fadeUp .6s ease forwards;}
+.d1{animation-delay:.1s;}.d2{animation-delay:.2s;}.d3{animation-delay:.3s;}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+
+@media(max-width:680px){
+  .hero h1{font-size:1.7rem;}
+  .ch-list,.ch-hdr{padding-left:1rem;padding-right:1rem;}
+  .cbody{padding:1.2rem 1rem;}
+  .how-g{grid-template-columns:1fr 1fr;}
+  .hstats{gap:1.2rem;}
+}
+@media(max-width:400px){.how-g{grid-template-columns:1fr;}}
+</style>
+</head>
+<body style="overflow:hidden;">
+
+<!-- AUTH LOADING -->
+<div id="al">
+  <div class="spinner"></div>
+  <p>LOADING</p>
+</div>
+
+<!-- LOGIN SCREEN -->
+<div id="ls">
+  <div class="lcard">
+    <div class="ltitle">Sandeep<span>.</span></div>
+    <div class="lsub">Arduino LMS — Sign in to track your progress &amp; earn badges</div>
+    <div class="ltabs">
+      <div class="ltab active" id="t-si" onclick="stab('si')">Sign In</div>
+      <div class="ltab" id="t-su" onclick="stab('su')">Sign Up</div>
+    </div>
+    <button class="gbtn" onclick="doGoogle()">
+      <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Continue with Google
+    </button>
+    <div class="ldiv"><span></span><p>or use email</p><span></span></div>
+    <div id="f-si">
+      <div class="lf"><label>Email</label><input type="email" id="sie" placeholder="you@example.com"/></div>
+      <div class="lf"><label>Password</label><input type="password" id="sip" placeholder="Your password"/></div>
+      <button class="lbtn" onclick="doSI()">Sign In →</button>
+      <div class="lerr" id="sie-e"></div>
+    </div>
+    <div id="f-su" style="display:none;">
+      <div class="lf"><label>Full Name</label><input type="text" id="sun" placeholder="Your name"/></div>
+      <div class="lf"><label>Email</label><input type="email" id="sue" placeholder="you@example.com"/></div>
+      <div class="lf"><label>Password</label><input type="password" id="sup" placeholder="Min 6 characters"/></div>
+      <div class="lf"><label>Confirm Password</label><input type="password" id="sup2" placeholder="Repeat password"/></div>
+      <button class="lbtn" onclick="doSU()">Create Account →</button>
+      <div class="lerr" id="sue-e"></div>
+    </div>
+  </div>
+</div>
+
+<div id="rp"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="../index.html" class="nav-logo">Sandeep<span>.</span></a>
+  <div class="nav-right">
+    <a href="../lms.html" class="nav-link">📊 MATLAB LMS</a>
+    <a href="../blogs.html" class="nav-link">Blogs</a>
+    <div id="up">
+      <div id="ua">S</div>
+      <span id="un">User</span>
+      <button id="lob" onclick="doLO()">✕</button>
+    </div>
+    <span class="nav-badge">⚡ Arduino LMS</span>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hcat fade-up">📺 YouTube Course — Tech guru</div>
+    <h1 class="fade-up d1">Embedded System &amp; <span>IOT using Arduino</span></h1>
+    <p class="fade-up d2">Watch all 12 videos, pass the chapter quizzes, and earn your completion badge. Progress saved to your account.</p>
+    <div class="hstats fade-up d3">
+      <div class="hs"><div class="hs-n">12</div><div class="hs-l">Videos</div></div>
+      <div class="hs"><div class="hs-n">60</div><div class="hs-l">Quiz Questions</div></div>
+      <div class="hs"><div class="hs-n" id="sw">0</div><div class="hs-l">Watched</div></div>
+      <div class="hs"><div class="hs-n" id="sp">0</div><div class="hs-l">Quizzes Passed</div></div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="overall fade-up">
+    <div class="ol">Course Progress</div>
+    <div class="ob"><div class="obg"><div class="obf" id="ob"></div></div></div>
+    <div class="op" id="op">0%</div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="how fade-up">
+    <div class="how-t">🏅 How to Earn Your Badge</div>
+    <div class="how-s">Complete all 4 steps to unlock &amp; download your personalised badge</div>
+    <div class="how-g">
+      <div class="how-step"><div class="how-step-i">📹</div><div class="how-step-n">Step 01</div><div class="how-step-t">Watch Videos</div><div class="how-step-d">Open each chapter and click "Mark as Watched".</div></div>
+      <div class="how-step"><div class="how-step-i">📝</div><div class="how-step-n">Step 02</div><div class="how-step-t">Pass Quizzes</div><div class="how-step-d">Answer 5 questions per chapter. Score 3/5 to pass.</div></div>
+      <div class="how-step"><div class="how-step-i">✅</div><div class="how-step-n">Step 03</div><div class="how-step-t">Complete All</div><div class="how-step-d">All 12 chapters watched + quizzes passed.</div></div>
+      <div class="how-step"><div class="how-step-i">⬇️</div><div class="how-step-n">Step 04</div><div class="how-step-t">Claim Badge</div><div class="how-step-d">Enter your name and download as SVG.</div></div>
+    </div>
+  </div>
+
+  <!-- COURSE -->
+  <div class="dline"></div>
+  <div class="sec-t">Course Videos</div>
+  <p class="sec-s">12 chapters · Watch each video then pass the quiz to progress</p>
+
+  <div class="ccard fade-up">
+    <div class="cbanner"></div>
+    <div class="cbody">
+      <div class="ctag">⚡ Embedded Systems + IOT</div>
+      <div class="ctitle">Embedded System and IOT using Arduino</div>
+      <div class="cdesc">A complete beginner-to-intermediate course covering embedded systems fundamentals, Arduino IDE, GPIO, LED control, UART, SPI — by Tech guru.</div>
+      <div class="cmeta">
+        <span class="cm">📹 12 videos</span>
+        <span class="cm">🎯 Beginner → Intermediate</span>
+        <span class="cm">📡 Embedded · IOT · Arduino</span>
+      </div>
+      <div class="cprog">
+        <div class="cpt"><span class="cpl">Progress</span><span class="cpp" id="cpct">0%</span></div>
+        <div class="cpbg"><div class="cpf" id="cpf"></div></div>
+      </div>
+      <div class="claim-row">
+        <button id="claim-btn" onclick="openBadge()">🏅 Claim Your Badge</button>
+      </div>
+    </div>
+    <div class="ch-hdr">All Chapters</div>
+    <div class="ch-list" id="chl"></div>
+  </div>
+
+</div>
+
+<!-- BADGE MODAL -->
+<div class="bmodal" id="bm">
+  <div class="bbox">
+    <button class="bclose" onclick="closeBadge()">✕</button>
+    <div id="bsvg" style="margin-bottom:1rem;"></div>
+    <div class="bnl">Your name on the badge</div>
+    <input type="text" id="bni" placeholder="Enter your name" oninput="updateBadge(this.value)"/>
+    <div class="bacts">
+      <button class="bbtn p" onclick="dlBadge()">⬇ Download Badge</button>
+      <button class="bbtn s" onclick="closeBadge()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── AUTH ──
+Object.defineProperty(window,'_cu',{get(){return window.__cu;},set(v){window.__cu=v;}});
+
+function stab(t){
+  document.getElementById('t-si').classList.toggle('active',t==='si');
+  document.getElementById('t-su').classList.toggle('active',t==='su');
+  document.getElementById('f-si').style.display=t==='si'?'block':'none';
+  document.getElementById('f-su').style.display=t==='su'?'block':'none';
+}
+
+async function doSI(){
+  const e=document.getElementById('sie').value.trim(),p=document.getElementById('sip').value,er=document.getElementById('sie-e');
+  er.textContent='';
+  if(!e||!p){er.textContent='Please fill in all fields.';return;}
+  try{await window._fbFns.signInWithEmailAndPassword(window._fbAuth,e,p);}
+  catch(ex){er.textContent=ferr(ex.code);}
+}
+async function doSU(){
+  const n=document.getElementById('sun').value.trim(),e=document.getElementById('sue').value.trim(),
+        p=document.getElementById('sup').value,p2=document.getElementById('sup2').value,er=document.getElementById('sue-e');
+  er.textContent='';
+  if(!n||!e||!p||!p2){er.textContent='Please fill in all fields.';return;}
+  if(p.length<6){er.textContent='Password must be at least 6 characters.';return;}
+  if(p!==p2){er.textContent='Passwords do not match.';return;}
+  try{const c=await window._fbFns.createUserWithEmailAndPassword(window._fbAuth,e,p);await window._fbFns.updateProfile(c.user,{displayName:n});}
+  catch(ex){document.getElementById('sue-e').textContent=ferr(ex.code);}
+}
+async function doGoogle(){
+  try{await window._fbFns.signInWithPopup(window._fbAuth,window._fbGP);}
+  catch(ex){if(ex.code!=='auth/popup-closed-by-user')document.getElementById('sie-e').textContent=ferr(ex.code);}
+}
+async function doLO(){await window._fbFns.signOut(window._fbAuth);}
+
+async function saveState(){
+  if(!window._cu) return;
+  const {doc,setDoc}=window._fbFns;
+  try{await setDoc(doc(window._fbDb,'users_arduino',window._cu.uid),{name:window._cu.name,email:window._cu.email,progress:window._STATE,lastSeen:new Date().toISOString()},{merge:true});}
+  catch(e){console.warn('Firestore write:',e.message);}
+}
+
+function ferr(c){
+  const m={'auth/user-not-found':'No account with this email.','auth/wrong-password':'Incorrect password.','auth/email-already-in-use':'Email already in use.','auth/invalid-email':'Invalid email address.','auth/weak-password':'Password must be 6+ characters.','auth/too-many-requests':'Too many attempts. Wait a moment.','auth/invalid-credential':'Incorrect email or password.'};
+  return m[c]||'Something went wrong. Try again.';
+}
+
+// ── STATE ──
+function gs(id){if(!window._STATE[id])window._STATE[id]={w:false,p:false,s:0};return window._STATE[id];}
+
+// ── DATA ──
+const CHS=[
+  {id:'c0',n:'00',t:'Agenda',d:'6:02',yt:'VXuU5QQ34Ic',
+   desc:'Overview of the full course — what topics will be covered, the learning path from embedded systems basics through Arduino programming to IOT applications.',
+   q:[{q:'What is the main focus of this course?',o:['Mobile app development','Embedded systems and IOT using Arduino','Web development','Database management'],a:1},
+      {q:'Which board is primarily used in this course?',o:['Raspberry Pi','ESP32','Arduino','STM32'],a:2},
+      {q:'IOT stands for:',o:['Internet of Technology','Internet of Things','Interface of Tools','Input Output Terminal'],a:1},
+      {q:'Embedded systems are designed to:',o:['Run a full OS','Perform dedicated tasks within a larger system','Replace desktop computers','Only work with internet'],a:1},
+      {q:'A good starting point before using hardware is to:',o:['Buy expensive equipment','Understand the course agenda first','Skip to advanced projects','Only read textbooks'],a:1}]},
+  {id:'c1',n:'01',t:'What is Embedded Systems',d:'6:22',yt:'lgwDRBp_oSs',
+   desc:'Introduction to embedded systems — definition, characteristics, real-world examples (washing machines, cars), difference between embedded and general-purpose systems.',
+   q:[{q:'An embedded system is best described as:',o:['A general-purpose computer','A dedicated computer built for a specific function','A smartphone','A cloud server'],a:1},
+      {q:'Which is a real-world example of an embedded system?',o:['Microsoft Word','A washing machine controller','Google Chrome','A spreadsheet'],a:1},
+      {q:'Embedded systems typically have:',o:['Unlimited memory','Constrained memory, CPU and power','Full Windows OS','No software'],a:1},
+      {q:'Which is NOT a characteristic of embedded systems?',o:['Real-time operation','Dedicated functionality','Unlimited RAM','Low power consumption'],a:2},
+      {q:'Software in an embedded system is stored in:',o:['Hard disk drive','Flash/ROM memory','CD-ROM','The cloud'],a:1}]},
+  {id:'c2',n:'02',t:'Introduction to Arduino Microcontroller',d:'11:31',yt:'QeQW0znHgm4',
+   desc:'Overview of the Arduino Uno — the ATmega328P chip, digital and analog pins, power pins, USB interface, and understanding the board layout and specifications.',
+   q:[{q:'Arduino Uno is based on which microcontroller?',o:['ATmega2560','ATmega328P','ESP8266','ARM Cortex-M4'],a:1},
+      {q:'How many digital I/O pins does Arduino Uno have?',o:['6','10','14','20'],a:2},
+      {q:'How many analog input pins does Arduino Uno have?',o:['2','4','6','8'],a:2},
+      {q:'Arduino Uno clock speed is:',o:['1 MHz','8 MHz','16 MHz','100 MHz'],a:2},
+      {q:'Arduino Uno can be powered via:',o:['USB only','DC barrel jack only','Both USB and DC barrel jack','Battery only'],a:2}]},
+  {id:'c3',n:'03',t:'Introduction to IDE',d:'11:33',yt:'QUjeLhnXgXw',
+   desc:'Introduction to the Arduino IDE — downloading and installing, understanding the interface, editor, toolbar, serial monitor, writing and uploading your first sketch.',
+   q:[{q:'IDE stands for:',o:['Internal Device Engine','Integrated Development Environment','Internet Data Exchange','Instruction Design Editor'],a:1},
+      {q:'Arduino sketch file extension is:',o:['.cpp','.ino','.hex','.ard'],a:1},
+      {q:'Two mandatory functions in every sketch are:',o:['main() and loop()','begin() and run()','setup() and loop()','init() and execute()'],a:2},
+      {q:'To upload a sketch you press:',o:['Ctrl+S','The Upload (right arrow) button','Ctrl+U only','The Verify button'],a:1},
+      {q:'Serial Monitor is used for:',o:['Drawing circuits','Debugging via serial output','Generating code','Simulating hardware'],a:1}]},
+  {id:'c4',n:'04',t:'More Understanding on IDE',d:'9:18',yt:'SXN9kBbF2AI',
+   desc:'Deeper dive into the Arduino IDE — library manager, board manager, selecting the correct COM port, understanding error messages and configuring IDE preferences.',
+   q:[{q:'To add a library in Arduino IDE go to:',o:['File → New','Sketch → Include Library → Manage Libraries','Edit → Add Library','Tools → Libraries'],a:1},
+      {q:'Wrong COM port selection causes:',o:['Slower upload','Upload failure error','Automatic correction','No effect'],a:1},
+      {q:'Board Manager is used to:',o:['Manage physical connections','Install support for different boards','Update the IDE','Manage sketch files'],a:1},
+      {q:'#include directive is used to:',o:['Comment code','Include a library or header file','Define a variable','Create a function'],a:1},
+      {q:'The Verify button (checkmark) does what?',o:['Uploads code','Compiles and checks for errors without uploading','Opens serial monitor','Saves the file'],a:1}]},
+  {id:'c5',n:'05',t:'What is Schematic and Datasheet',d:'~8 min',yt:'Foq2CXwZkNA',
+   desc:'Understanding schematics and datasheets — how to read component symbols, interpreting a datasheet for electrical specs, voltage ratings and pin descriptions.',
+   q:[{q:'A schematic diagram uses:',o:['Realistic pictures','Standardised symbols for components','3D models','Only text'],a:1},
+      {q:'A datasheet provides:',o:['Source code','Technical specs and electrical characteristics','Marketing info','Assembly instructions'],a:1},
+      {q:'In a schematic a straight line represents:',o:['A resistor','A wire/electrical connection','A capacitor','Ground'],a:1},
+      {q:'VCC in a schematic represents:',o:['Ground (0V)','Positive supply voltage','A clock signal','An analog input'],a:1},
+      {q:'Why read a datasheet?',o:['Not important','To understand operating limits and correct usage','Only for professionals','To get price'],a:1}]},
+  {id:'c6',n:'06',t:'GPIO Working',d:'~9 min',yt:'KITCIUemojM',
+   desc:'Understanding GPIO — configuring pins as inputs/outputs with pinMode(), digital HIGH/LOW states, internal pull-up resistors and GPIO electrical limits.',
+   q:[{q:'GPIO stands for:',o:['General Power I/O','General Purpose Input Output','Ground Pin Interface Output','Global Protocol I/O'],a:1},
+      {q:'pinMode(7, INPUT) configures pin 7 as:',o:['An output','An input','A PWM pin','An analog pin'],a:1},
+      {q:'Digital HIGH on Arduino Uno is approximately:',o:['0V','2.5V','5V','12V'],a:2},
+      {q:'Max current per GPIO pin on Arduino Uno is:',o:['10 mA','40 mA','200 mA','500 mA'],a:1},
+      {q:'INPUT_PULLUP mode activates:',o:['An external resistor','The internal pull-up resistor pulling pin HIGH','PWM mode','Analog read mode'],a:1}]},
+  {id:'c7',n:'07',t:'LED Control Simulation',d:'~10 min',yt:'iRGDFTlD92E',
+   desc:'Simulating LED control virtually — wiring an LED with a current-limiting resistor, writing the blink sketch, and testing without physical hardware.',
+   q:[{q:'Why use a current-limiting resistor with an LED?',o:['Makes it brighter','Prevents excess current burning the LED','Changes colour','Increases voltage'],a:1},
+      {q:'Simulation tools help to:',o:['Replace hardware entirely','Test safely without risking components','Run code faster','Skip learning basics'],a:1},
+      {q:'delay(1000) causes a delay of:',o:['1 microsecond','1 millisecond','1 second','10 seconds'],a:2},
+      {q:'Forward voltage of a standard red LED is approximately:',o:['0.3V','1.8–2.2V','5V','12V'],a:1},
+      {q:'LED directly on 5V without resistor:',o:['Glows safely brighter','May burn out from excess current','Nothing happens','Flashes automatically'],a:1}]},
+  {id:'c8',n:'08',t:'LED Control Hardware',d:'~10 min',yt:'fe15dNueVmE',
+   desc:'Implementing LED control on real Arduino hardware — breadboard wiring, connecting LED and resistor, uploading the blink sketch and troubleshooting issues.',
+   q:[{q:'On a breadboard, electrically connected holes run:',o:['Vertically in component area','Horizontally in component area','Diagonally','Randomly'],a:1},
+      {q:'The longer leg of an LED is the:',o:['Cathode (negative)','Anode (positive)','Ground pin','No difference'],a:1},
+      {q:'If LED does not light up, first check:',o:['Buy new Arduino','Wiring — correct pin, LED orientation, resistor','Reinstall IDE','Use different computer'],a:1},
+      {q:'To turn LED on pin 9 ON use:',o:['analogWrite(9,0)','digitalWrite(9,LOW)','digitalWrite(9,HIGH)','pinMode(9,INPUT)'],a:2},
+      {q:'A breadboard is used for:',o:['Permanent circuits','Temporary solderless prototyping','Measuring voltage','Flashing microcontroller'],a:1}]},
+  {id:'c9',n:'09',t:'Serial UART',d:'~11 min',yt:'3pAsqlmSpEs',
+   desc:'Understanding UART communication — TX/RX pins, baud rate, framing (start bit, data bits, stop bit), and how Arduino communicates with a PC.',
+   q:[{q:'UART stands for:',o:['Universal Analog Receiver Transmitter','Universal Asynchronous Receiver Transmitter','Unified Arduino Runtime Terminal','Universal Access Radio Transmission'],a:1},
+      {q:'UART uses which two signals for data transfer?',o:['SDA and SCL','MOSI and MISO','TX and RX','CLK and CS'],a:2},
+      {q:'Baud rate refers to:',o:['Voltage level','Signal changes (bits) per second','Bytes stored','Oscillator frequency'],a:1},
+      {q:'For two UART devices to communicate, baud rates must be:',o:['Different','The same','Irrelevant','Auto-negotiated'],a:1},
+      {q:'Hardware UART TX on Arduino Uno is:',o:['Pin 0','Pin 1','Pin 2','Pin 13'],a:1}]},
+  {id:'c10',n:'10',t:'Serial Port Example',d:'~9 min',yt:'4oas2yjpwSI',
+   desc:'Hands-on UART/Serial — Serial.begin(), Serial.print(), Serial.println(), Serial.read(), sending data to Serial Monitor and receiving commands from PC.',
+   q:[{q:'Serial.begin(9600) sets baud rate to:',o:['9.6 kHz clock','9600 bits per second','9600 bytes per second','96 MHz'],a:1},
+      {q:'Serial.println() vs Serial.print() difference:',o:['println is faster','println adds newline at end','print sends binary','They are identical'],a:1},
+      {q:'Serial.available() returns:',o:['true or false','Bytes available in serial buffer','Current baud rate','Characters sent'],a:1},
+      {q:'Serial.read() reads:',o:['All bytes at once','One byte from input buffer','A string','Last character only'],a:1},
+      {q:'To open Serial Monitor press:',o:['Ctrl+M','Ctrl+Shift+M or magnifying glass icon','F5','Alt+S'],a:1}]},
+  {id:'c11',n:'11',t:'Serial SPI',d:'~12 min',yt:'UP6ZpQ4Tfms',
+   desc:'Introduction to SPI — master/slave architecture, the four SPI signals (MOSI, MISO, SCK, CS), SPI vs UART vs I2C comparison, and SPI on Arduino.',
+   q:[{q:'SPI stands for:',o:['Serial Parallel Interface','Serial Peripheral Interface','Synchronous Protocol Interface','Serial Port Integrator'],a:1},
+      {q:'SPI uses how many wires for full-duplex (excl. power)?',o:['1','2','3','4 (MOSI, MISO, SCK, CS)'],a:3},
+      {q:'MOSI stands for:',o:['Master Output Slave Input','Master Output Serial Interface','Modular Output Signal','Main Output System'],a:0},
+      {q:'SPI is synchronous because:',o:['It uses a shared clock (SCK)','Both devices share power','Data sent in packets','No acknowledgment needed'],a:0},
+      {q:'SPI SCK pin on Arduino Uno is:',o:['Pin 10','Pin 11','Pin 12','Pin 13'],a:3}]}
+];
+
+// ── PROGRESS ──
+function upd(){
+  let w=0,p=0;
+  CHS.forEach(c=>{const s=gs(c.id);if(s.w)w++;if(s.p)p++;});
+  const total=CHS.length*2,done=w+p,pct=Math.round(done/total*100);
+  document.getElementById('ob').style.width=pct+'%';
+  document.getElementById('op').textContent=pct+'%';
+  document.getElementById('cpf').style.width=pct+'%';
+  document.getElementById('cpct').textContent=pct+'%';
+  document.getElementById('sw').textContent=w;
+  document.getElementById('sp').textContent=p;
+  const all=CHS.every(c=>{const s=gs(c.id);return s.w&&s.p;});
+  document.getElementById('claim-btn').style.display=all?'inline-block':'none';
+}
+
+// ── CHAPTERS ──
+function init(){
+  const list=document.getElementById('chl');
+  list.innerHTML='';
+  CHS.forEach((ch,i)=>{
+    const s=gs(ch.id),done=s.w&&s.p;
+    const el=document.createElement('div');
+    el.className='ch-item'+(done?' done':'');
+    el.id='chi-'+ch.id;
+    const st=done?'<span style="color:#86efac">✅ Complete</span>':s.w?'<span style="color:var(--orange)">📝 Quiz pending</span>':'<span style="color:var(--muted)">Not started</span>';
+    el.innerHTML=`
+      <div class="ch-head" onclick="toggleCh('${ch.id}')">
+        <div class="ch-num" style="background:${done?'rgba(34,197,94,.12)':'rgba(255,107,43,.1)'};color:${done?'#86efac':'var(--orange)'};">${done?'✓':String(i).padStart(2,'0')}</div>
+        <div class="ch-info"><div class="ch-name">${ch.t}</div><div class="ch-dur">⏱ ${ch.d}</div></div>
+        <div class="ch-st">${st}</div>
+        <div class="ch-chev">▼</div>
+      </div>
+      <div class="ch-body">
+        <div class="vwrap"><iframe src="https://www.youtube.com/embed/${ch.yt}?rel=0" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ch-desc">${ch.desc}</p>
+        <button class="mwbtn" id="mw-${ch.id}"
+          style="background:${s.w?'rgba(34,197,94,.1)':'rgba(255,107,43,.1)'};color:${s.w?'#86efac':'var(--orange)'};border-color:${s.w?'rgba(34,197,94,.3)':'rgba(255,107,43,.3)'};"
+          onclick="markW('${ch.id}')">
+          ${s.w?'✅ Watched':'▶ Mark as Watched'}
+        </button>
+        <div id="qz-${ch.id}"></div>
+      </div>`;
+    list.appendChild(el);
+    if(s.w) renderQ(ch);
+  });
+  upd();
+}
+
+function toggleCh(id){
+  const el=document.getElementById('chi-'+id);
+  const wasExp=el.classList.contains('expanded');
+  document.querySelectorAll('.ch-item.expanded').forEach(e=>{if(e.id!=='chi-'+id)e.classList.remove('expanded','active');});
+  el.classList.toggle('expanded',!wasExp);
+  el.classList.toggle('active',!wasExp);
+}
+
+function markW(id){
+  const s=gs(id); s.w=true; saveState();
+  const btn=document.getElementById('mw-'+id);
+  btn.textContent='✅ Watched';
+  btn.style.background='rgba(34,197,94,.1)';
+  btn.style.color='#86efac';
+  btn.style.borderColor='rgba(34,197,94,.3)';
+  const ch=CHS.find(c=>c.id===id);
+  renderQ(ch); upd();
+  // update header
+  const num=document.querySelector('#chi-'+id+' .ch-num');
+  if(num&&!gs(id).p){num.style.background='rgba(255,107,43,.1)';num.style.color='var(--orange)';}
+  document.querySelector('#chi-'+id+' .ch-st').innerHTML='<span style="color:var(--orange)">📝 Quiz pending</span>';
+}
+
+// ── QUIZ ──
+const QST={};
+
+function renderQ(ch){
+  const c=document.getElementById('qz-'+ch.id);
+  if(!c) return;
+  const s=gs(ch.id);
+  if(!s.w){c.innerHTML='';return;}
+  if(s.p){
+    c.innerHTML=`<div class="qwrap"><div class="qresult">
+      <div class="qcirc" style="color:#86efac;border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.1);">${s.s}/${ch.q.length}</div>
+      <div class="qrtit" style="color:#86efac">🎉 Quiz Passed!</div>
+      <div class="qrsub">Chapter complete — great work!</div>
+    </div></div>`;return;
+  }
+  if(!QST[ch.id]) QST[ch.id]={cur:0,ans:Array(ch.q.length).fill(null),sub:false};
+  const qs=QST[ch.id],q=ch.q[qs.cur],L=['A','B','C','D'];
+  const dots=ch.q.map((_,i)=>{
+    let cl='qdot';
+    if(qs.sub) cl+=qs.ans[i]===ch.q[i].a?' correct':' wrong';
+    else if(qs.ans[i]!==null) cl+=' answered';
+    return`<div class="${cl}"></div>`;
+  }).join('');
+  const opts=qs.sub
+    ? q.o.map((o,i)=>`<button class="opt${i===ch.q[qs.cur].a?' ok':qs.ans[qs.cur]===i?' bad':''}" disabled><span class="ol">${L[i]}</span>${o}</button>`).join('')
+    : q.o.map((o,i)=>`<button class="opt${qs.ans[qs.cur]===i?' sel':''}" onclick="selO('${ch.id}',${i})"><span class="ol">${L[i]}</span>${o}</button>`).join('');
+  const isLast=qs.cur===ch.q.length-1;
+  const nav=qs.sub
+    ?(isLast?`<button class="qnavbtn p" onclick="subQ('${ch.id}')">Submit →</button>`:`<button class="qnavbtn p" onclick="nxtQ('${ch.id}')">Next →</button>`)
+    :`<button class="qnavbtn s" onclick="prvQ('${ch.id}')" ${qs.cur===0?'disabled':''}>← Prev</button>
+      <span style="font-family:'Fira Code',monospace;font-size:.72rem;color:var(--muted)">${qs.cur+1}/${ch.q.length}</span>
+      <button class="qnavbtn p" onclick="${isLast?`revQ('${ch.id}')`:`nxtQ('${ch.id}')`}" ${qs.ans[qs.cur]===null?'disabled':''}>
+        ${isLast?'Review →':'Next →'}</button>`;
+  c.innerHTML=`<div class="qwrap">
+    <div class="qtop"><div class="qt">📝 Chapter Quiz</div><div class="qb">5 Questions · Pass 3/5</div></div>
+    <div class="qdots">${dots}</div>
+    <div class="qnum">Question ${qs.cur+1} of ${ch.q.length}</div>
+    <div class="qtext">${q.q}</div>
+    <div class="opts">${opts}</div>
+    <div class="qnav">${nav}</div>
+  </div>`;
+}
+
+function selO(id,i){if(!QST[id])return;QST[id].ans[QST[id].cur]=i;renderQ(CHS.find(c=>c.id===id));}
+function nxtQ(id){if(QST[id])QST[id].cur++;renderQ(CHS.find(c=>c.id===id));}
+function prvQ(id){if(QST[id]&&QST[id].cur>0)QST[id].cur--;renderQ(CHS.find(c=>c.id===id));}
+function revQ(id){if(QST[id]){QST[id].sub=true;QST[id].cur=0;}renderQ(CHS.find(c=>c.id===id));}
+
+function subQ(id){
+  const ch=CHS.find(c=>c.id===id),qs=QST[id];
+  const score=qs.ans.filter((a,i)=>a===ch.q[i].a).length,passed=score>=3;
+  const s=gs(id); s.p=passed; s.s=score; saveState();
+  const c=document.getElementById('qz-'+id);
+  if(passed){
+    c.innerHTML=`<div class="qwrap"><div class="qresult">
+      <div class="qcirc" style="color:#86efac;border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.1);">${score}/${ch.q.length}</div>
+      <div class="qrtit" style="color:#86efac">🎉 Passed!</div>
+      <div class="qrsub">You scored ${score}/${ch.q.length}. Chapter complete!</div>
+    </div></div>`;
+    delete QST[id];
+    // update chapter header to done state
+    const el=document.getElementById('chi-'+id);
+    el.classList.add('done'); el.classList.remove('active');
+    el.querySelector('.ch-num').textContent='✓';
+    el.querySelector('.ch-num').style.background='rgba(34,197,94,.12)';
+    el.querySelector('.ch-num').style.color='#86efac';
+    el.querySelector('.ch-st').innerHTML='<span style="color:#86efac">✅ Complete</span>';
+    upd();
+    if(CHS.every(c=>{const st=gs(c.id);return st.w&&st.p;})) confetti();
+  } else {
+    c.innerHTML=`<div class="qwrap"><div class="qresult">
+      <div class="qcirc" style="color:#fca5a5;border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.1);">${score}/${ch.q.length}</div>
+      <div class="qrtit" style="color:#fca5a5">Try Again</div>
+      <div class="qrsub">You scored ${score}/${ch.q.length}. Need 3+ to pass. Rewatch and retry!</div>
+      <button class="qrretry" onclick="retryQ('${id}')">↺ Retry Quiz</button>
+    </div></div>`;
+  }
+}
+
+function retryQ(id){
+  QST[id]={cur:0,ans:Array(CHS.find(c=>c.id===id).q.length).fill(null),sub:false};
+  const s=gs(id); s.p=false; saveState();
+  renderQ(CHS.find(c=>c.id===id));
+}
+
+// ── BADGE ──
+function openBadge(){
+  document.getElementById('bm').classList.add('open');
+  document.getElementById('bni').value='';
+  renderBadge('Your Name');
+}
+function closeBadge(){document.getElementById('bm').classList.remove('open');}
+function updateBadge(v){renderBadge(v||'Your Name');}
+
+function renderBadge(name){
+  const date=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('bsvg').innerHTML=`
+  <svg id="tbadge" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="240" height="240" style="display:block;margin:0 auto;">
+    <defs>
+      <radialGradient id="bg-g" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#152240"/><stop offset="100%" stop-color="#07101f"/></radialGradient>
+      <linearGradient id="ring-g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="50%" stop-color="#00c9a7"/><stop offset="100%" stop-color="#ff6b2b"/></linearGradient>
+      <linearGradient id="title-g" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="100%" stop-color="#ff8c4a"/></linearGradient>
+      <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <circle cx="200" cy="200" r="196" fill="url(#bg-g)"/>
+    <circle cx="200" cy="200" r="192" fill="none" stroke="url(#ring-g)" stroke-width="4" stroke-dasharray="8 4"/>
+    <circle cx="200" cy="200" r="172" fill="none" stroke="rgba(255,107,43,.12)" stroke-width="1"/>
+    ${[0,30,60,90,120,150,180,210,240,270,300,330].map(a=>{const r1=168,r2=180,x1=200+r1*Math.cos(a*Math.PI/180),y1=200+r1*Math.sin(a*Math.PI/180),x2=200+r2*Math.cos(a*Math.PI/180),y2=200+r2*Math.sin(a*Math.PI/180);return`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(255,107,43,.35)" stroke-width="1.5"/>`;}).join('')}
+    <polygon points="200,108 260,142 260,212 200,246 140,212 140,142" fill="rgba(255,107,43,.07)" stroke="rgba(255,107,43,.3)" stroke-width="2"/>
+    <text x="200" y="197" text-anchor="middle" font-size="40" filter="url(#glow)">⚡</text>
+    <text x="200" y="270" text-anchor="middle" font-family="Syne,sans-serif" font-weight="800" font-size="10" fill="url(#title-g)" letter-spacing="2.5">COMPLETION BADGE</text>
+    <text x="200" y="294" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(255,255,255,.4)" letter-spacing="1">THIS CERTIFIES THAT</text>
+    <text x="200" y="315" text-anchor="middle" font-family="Syne,sans-serif" font-weight="800" font-size="14" fill="#ffffff">${name.substring(0,26)}</text>
+    <text x="200" y="332" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(255,255,255,.45)">completed</text>
+    <text x="200" y="349" text-anchor="middle" font-family="Syne,sans-serif" font-weight="700" font-size="9.5" fill="#ff6b2b">Embedded System &amp; IOT using Arduino</text>
+    <text x="200" y="367" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="rgba(255,255,255,.28)">${date} · Tech guru · Sandeep Singh R</text>
+    <text x="200" y="74" text-anchor="middle" font-family="Syne,sans-serif" font-weight="800" font-size="10" fill="rgba(255,107,43,.65)" letter-spacing="2">TECH GURU</text>
+    <text x="200" y="89" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="rgba(255,255,255,.28)" letter-spacing="1">EMBEDDED SYSTEMS LEARNING HUB</text>
+  </svg>`;
+}
+
+function dlBadge(){
+  const name=document.getElementById('bni').value||'Learner';
+  renderBadge(name);
+  const svg=document.getElementById('tbadge');
+  const blob=new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=`techguru-badge-${name.replace(/\s+/g,'-').toLowerCase()}.svg`;
+  a.click(); URL.revokeObjectURL(a.href);
+}
+
+// ── CONFETTI ──
+function confetti(){
+  const cols=['#ff6b2b','#00c9a7','#ff8c4a','#a5b4fc','#86efac','#fca5a5','#fff'];
+  for(let i=0;i<80;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div'); p.className='cp';
+      p.style.cssText=`left:${Math.random()*100}vw;width:${Math.random()*8+4}px;height:${Math.random()*8+4}px;background:${cols[Math.floor(Math.random()*cols.length)]};border-radius:${Math.random()>.5?'50%':'2px'};animation:cfall ${1.5+Math.random()*2}s ease forwards;`;
+      document.body.appendChild(p); setTimeout(()=>p.remove(),3500);
+    },Math.random()*1200);
+  }
+}
+
+// ── SCROLL ──
+window.addEventListener('scroll',()=>{
+  const s=document.documentElement;
+  document.getElementById('rp').style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%';
+});
+</script>
+</body>
+</html>
