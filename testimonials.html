@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Testimonials — Sandeep Singh R</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#0a0f1e;--navy2:#111827;--card:#151d30;--border:#1e2d45;--gold:#f0a500;--gold2:#ffc73a;--teal:#00c9a7;--text:#e2e8f0;--muted:#8898aa;--white:#ffffff;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 5%;background:rgba(10,15,30,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;color:var(--white);text-decoration:none;}
+    .nav-logo span{color:var(--gold);}
+    .nav-links{display:flex;gap:1.8rem;list-style:none;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color 0.2s;position:relative;}
+    .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--gold);transition:width 0.3s;}
+    .nav-links a:hover{color:var(--white);}
+    .nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+    .nav-links a.active{color:var(--gold);}
+    .nav-cta{background:var(--gold)!important;color:var(--navy)!important;padding:0.45rem 1.1rem;border-radius:6px;font-weight:700!important;}
+    .nav-cta::after{display:none!important;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+    .hamburger span{display:block;width:24px;height:2px;background:var(--white);}
+    .mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:var(--navy2);border-bottom:1px solid var(--border);padding:1.5rem 5%;z-index:99;flex-direction:column;gap:1.2rem;}
+    .mobile-menu a{color:var(--text);text-decoration:none;}
+    .mobile-menu.open{display:flex;}
+
+    /* HERO */
+    .page-hero{padding:7rem 5% 3rem;background:var(--navy2);border-bottom:1px solid var(--border);position:relative;z-index:1;}
+    .page-hero-inner{max-width:1200px;margin:0 auto;}
+    .breadcrumb{font-size:0.78rem;color:var(--muted);margin-bottom:1rem;}
+    .breadcrumb a{color:var(--gold);text-decoration:none;}
+    .breadcrumb span{margin:0 0.4rem;}
+    .page-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--white);letter-spacing:-1px;margin-bottom:0.5rem;}
+    .page-title span{color:var(--gold);}
+    .page-sub{color:var(--muted);font-size:1rem;max-width:520px;}
+
+    section{padding:4rem 5%;position:relative;z-index:1;}
+    .section-inner{max-width:1200px;margin:0 auto;}
+    .divider{width:50px;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:2px;margin-bottom:1.5rem;}
+
+    /* TABS */
+    .tabs{display:flex;gap:0.5rem;margin-bottom:2.5rem;border-bottom:1px solid var(--border);padding-bottom:0;}
+    .tab-btn{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:500;padding:0.6rem 1.2rem;cursor:pointer;transition:all 0.2s;margin-bottom:-1px;}
+    .tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+    .tab-btn:hover:not(.active){color:var(--text);}
+    .tab-panel{display:none;}
+    .tab-panel.active{display:block;}
+
+    /* FORM CARD */
+    .form-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative;overflow:hidden;max-width:680px;}
+    .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));}
+    .form-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--white);margin-bottom:0.3rem;}
+    .form-sub{font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+    .form-group{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem;}
+    .form-group label{font-size:0.78rem;font-weight:600;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;}
+    .form-group input,.form-group textarea,.form-group select{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.9rem;padding:0.75rem 1rem;outline:none;transition:border-color 0.25s;resize:vertical;}
+    .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--gold);}
+    .form-group input::placeholder,.form-group textarea::placeholder{color:var(--muted);opacity:0.6;}
+    .form-group textarea{min-height:120px;}
+    .form-group select option{background:var(--navy2);}
+    .star-row{display:flex;gap:8px;margin:4px 0;}
+    .star{font-size:1.6rem;cursor:pointer;color:var(--border);transition:color 0.15s;user-select:none;}
+    .star.lit{color:var(--gold);}
+    .btn-submit{width:100%;background:var(--gold);color:var(--navy);border:none;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.95rem;padding:0.9rem;border-radius:8px;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.5rem;}
+    .btn-submit:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(240,165,0,0.3);}
+    .btn-submit:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+
+    /* TESTIMONIAL CARDS GRID */
+    .tcard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;}
+    .tcard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;position:relative;transition:border-color 0.25s,transform 0.25s;}
+    .tcard:hover{border-color:rgba(240,165,0,0.3);transform:translateY(-3px);}
+    .tcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:16px 16px 0 0;}
+    .tcard-stars{color:var(--gold);font-size:0.9rem;margin-bottom:0.8rem;letter-spacing:2px;}
+    .tcard-text{font-size:0.9rem;color:var(--text);line-height:1.7;margin-bottom:1.2rem;font-style:italic;}
+    .tcard-text::before{content:'\201C';font-size:2rem;color:var(--gold);opacity:0.4;line-height:0;vertical-align:-0.4rem;margin-right:2px;}
+    .tcard-author{display:flex;align-items:center;gap:0.75rem;}
+    .tcard-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--teal));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:0.85rem;color:var(--navy);flex-shrink:0;}
+    .tcard-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;color:var(--white);}
+    .tcard-role{font-size:0.75rem;color:var(--muted);}
+    .tcard-date{position:absolute;top:1rem;right:1rem;font-size:0.7rem;color:var(--muted);}
+    .tcard-project{display:inline-block;margin-top:0.5rem;font-size:0.72rem;padding:0.15rem 0.6rem;background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.2);color:var(--teal);border-radius:4px;}
+
+    /* ADMIN */
+    .admin-login-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;max-width:400px;margin:0 auto;position:relative;overflow:hidden;}
+    .admin-login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));}
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;}
+    .stat-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem;text-align:center;}
+    .stat-num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--white);}
+    .stat-lbl{font-size:0.75rem;color:var(--muted);margin-top:2px;}
+    .filter-row{display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+    .ftag{background:none;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.8rem;padding:0.3rem 0.9rem;cursor:pointer;transition:all 0.2s;}
+    .ftag.active{background:rgba(240,165,0,0.1);border-color:var(--gold);color:var(--gold);}
+    .admin-tcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin-bottom:1rem;position:relative;}
+    .pending-badge{position:absolute;top:0.9rem;right:0.9rem;font-size:0.68rem;background:rgba(240,165,0,0.12);border:1px solid rgba(240,165,0,0.3);color:var(--gold);padding:0.15rem 0.6rem;border-radius:4px;}
+    .approved-badge{position:absolute;top:0.9rem;right:0.9rem;font-size:0.68rem;background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.25);color:var(--teal);padding:0.15rem 0.6rem;border-radius:4px;}
+    .admin-actions{display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap;}
+    .btn-approve{background:none;border:1px solid rgba(0,201,167,0.4);color:var(--teal);font-family:'DM Sans',sans-serif;font-size:0.8rem;padding:0.35rem 0.9rem;border-radius:6px;cursor:pointer;transition:all 0.2s;}
+    .btn-approve:hover{background:rgba(0,201,167,0.1);}
+    .btn-delete{background:none;border:1px solid rgba(220,50,50,0.4);color:#f87171;font-family:'DM Sans',sans-serif;font-size:0.8rem;padding:0.35rem 0.9rem;border-radius:6px;cursor:pointer;transition:all 0.2s;}
+    .btn-delete:hover{background:rgba(220,50,50,0.1);}
+    .btn-logout{background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.8rem;padding:0.35rem 0.9rem;border-radius:6px;cursor:pointer;transition:all 0.2s;float:right;}
+    .btn-logout:hover{border-color:var(--gold);color:var(--gold);}
+
+    /* ALERTS */
+    .alert{border-radius:8px;padding:0.9rem 1rem;font-size:0.85rem;margin-top:0.8rem;display:none;}
+    .alert.success{background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.3);color:var(--teal);}
+    .alert.error{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);color:#f87171;}
+    .alert.show{display:block;}
+
+    /* EMPTY STATE */
+    .empty-state{text-align:center;padding:3rem;color:var(--muted);}
+    .empty-state .big{font-size:2.5rem;margin-bottom:0.8rem;}
+    .empty-state p{font-size:0.9rem;}
+
+    /* LOADING */
+    .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin:2rem auto;}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* FIREBASE SETUP BANNER */
+    .setup-banner{background:rgba(240,165,0,0.08);border:1px solid rgba(240,165,0,0.25);border-radius:12px;padding:1.2rem 1.5rem;margin-bottom:2rem;font-size:0.85rem;color:var(--muted);line-height:1.8;}
+    .setup-banner strong{color:var(--gold);}
+    .setup-banner code{background:rgba(255,255,255,0.07);border-radius:4px;padding:0.1rem 0.4rem;font-size:0.8rem;color:var(--text);}
+
+    .fade-in{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .fade-in.visible{opacity:1;transform:translateY(0);}
+
+    footer{background:var(--navy);border-top:1px solid var(--border);padding:2rem 5%;text-align:center;color:var(--muted);font-size:0.82rem;position:relative;z-index:1;}
+    footer a{color:var(--gold);text-decoration:none;}
+    .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--gold);color:var(--navy);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;z-index:99;opacity:0;transform:translateY(10px);transition:all 0.3s;text-decoration:none;}
+    .scroll-top.visible{opacity:1;transform:translateY(0);}
+
+    @media(max-width:900px){.form-row{grid-template-columns:1fr;}.nav-links{display:none;}.hamburger{display:flex;}.tcard-grid{grid-template-columns:1fr;}.stats-row{grid-template-columns:repeat(3,1fr);}}
+    @media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr;}}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Sandeep<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="experience.html">Experience</a></li>
+    <li><a href="certificates.html">Education</a></li>
+    <li><a href="papers.html">Publications</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="testimonials.html" class="active">Testimonials</a></li>
+    <li><a href="documents.html" class="nav-cta">📄 Resume</a></li>
+  </ul>
+  <div class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mm">
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="experience.html">Experience</a>
+  <a href="certificates.html">Education</a><a href="papers.html">Publications</a>
+  <a href="contact.html">Contact</a><a href="testimonials.html">Testimonials</a>
+  <a href="documents.html">📄 Resume</a>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span>Testimonials</div>
+    <h1 class="page-title">What People <span>Say</span></h1>
+    <p class="page-sub">Honest feedback from colleagues, clients, and collaborators I've had the privilege of working with.</p>
+  </div>
+</div>
+
+<!-- MAIN SECTION -->
+<section>
+  <div class="section-inner">
+
+    <!-- Firebase Config Banner — fill in your details 
+    <div class="setup-banner" id="setupBanner">
+      ⚙️ <strong>Firebase setup required:</strong> Replace the <code>firebaseConfig</code> object in the &lt;script&gt; at the bottom of this file with your own Firebase project credentials. Then create a Firestore collection called <code>testimonials</code> and enable <strong>Email/Password</strong> authentication in Firebase Console. Admin email: set <code>ADMIN_EMAIL</code> in the script. <a href="#" onclick="document.getElementById('setupBanner').style.display='none';return false;" style="color:var(--teal);margin-left:1rem;">Dismiss</a>
+    </div>-->
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('write',this)">✍️ Write a Testimonial</button>
+      <button class="tab-btn" onclick="switchTab('view',this)">⭐ View Testimonials</button>
+      <button class="tab-btn" onclick="switchTab('admin',this)">🔒 Admin</button>
+    </div>
+
+    <!-- TAB: WRITE -->
+    <div id="tab-write" class="tab-panel active fade-in">
+      <div class="form-card">
+        <div class="form-title">Share your experience</div>
+        <div class="form-sub">Worked with Sandeep? Leave a testimonial that will appear on his profile after review.</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name *</label>
+            <input type="text" id="t-name" placeholder="Priya Sharma"/>
+          </div>
+          <div class="form-group">
+            <label>Role &amp; Company</label>
+            <input type="text" id="t-role" placeholder="CTO at TechCorp"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>LinkedIn Profile URL <span style="color:var(--border);font-weight:400;text-transform:none">(optional)</span></label>
+          <input type="url" id="t-linkedin" placeholder="https://linkedin.com/in/yourprofile"/>
+        </div>
+        <div class="form-group">
+          <label>Your Testimonial *</label>
+          <textarea id="t-text" placeholder="Describe how Sandeep contributed to your project, team, or organisation..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Rating</label>
+          <div class="star-row" id="star-row">
+            <span class="star lit" data-v="1">★</span>
+            <span class="star lit" data-v="2">★</span>
+            <span class="star lit" data-v="3">★</span>
+            <span class="star lit" data-v="4">★</span>
+            <span class="star lit" data-v="5">★</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Context / Project <span style="color:var(--border);font-weight:400;text-transform:none">(optional)</span></label>
+          <input type="text" id="t-project" placeholder="e.g. Embedded firmware project, 2023"/>
+        </div>
+        <button class="btn-submit" id="submitBtn" onclick="submitTestimonial()">✉️ Submit Testimonial</button>
+        <div id="submit-alert" class="alert"></div>
+      </div>
+    </div>
+
+    <!-- TAB: VIEW -->
+    <div id="tab-view" class="tab-panel">
+      <div id="public-list">
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    <!-- TAB: ADMIN -->
+    <div id="tab-admin" class="tab-panel">
+      <!-- Login form -->
+      <div id="admin-login" class="admin-login-card fade-in">
+        <div class="form-title">🔒 Admin Access</div>
+        <div class="form-sub" style="margin-bottom:1.5rem">Only Sandeep can manage testimonials here.</div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="admin-email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')adminLogin()"/>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="admin-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()"/>
+        </div>
+        <button class="btn-submit" onclick="adminLogin()">🔑 Login</button>
+        <div id="login-alert" class="alert"></div>
+      </div>
+
+      <!-- Admin panel (shown after login) -->
+      <div id="admin-panel" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+          <div>
+            <h2 style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:var(--white);">Testimonials Manager</h2>
+            <p style="font-size:0.82rem;color:var(--muted);margin-top:2px;" id="admin-user-label"></p>
+          </div>
+          <button class="btn-logout" onclick="adminLogout()">Logout ↩</button>
+        </div>
+        <div class="stats-row" id="stats-row">
+          <div class="stat-box"><div class="stat-num" id="stat-total">–</div><div class="stat-lbl">Total</div></div>
+          <div class="stat-box"><div class="stat-num" id="stat-pending" style="color:var(--gold)">–</div><div class="stat-lbl">Pending</div></div>
+          <div class="stat-box"><div class="stat-num" id="stat-approved" style="color:var(--teal)">–</div><div class="stat-lbl">Approved</div></div>
+        </div>
+        <div class="filter-row">
+          <button class="ftag active" onclick="filterAdmin('all',this)">All</button>
+          <button class="ftag" onclick="filterAdmin('pending',this)">Pending</button>
+          <button class="ftag" onclick="filterAdmin('approved',this)">Approved</button>
+        </div>
+        <div id="admin-list"><div class="spinner"></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 <a href="index.html">Sandeep Singh R</a> · PMP® Certified Project &amp; Product Manager · Bengaluru, India</p>
+  <p style="margin-top:0.4rem;">📍 Bengaluru, Karnataka | Open to Bengaluru · Pune · Remote · Relocation</p>
+</footer>
+<a href="#" class="scroll-top" id="scrollTop">↑</a>
+
+<!-- ============================================================
+     FIREBASE — Replace with YOUR project config
+     1. Go to https://console.firebase.google.com
+     2. Create a project → Add Web App → copy firebaseConfig
+     3. Enable Firestore Database (start in test mode, then secure)
+     4. Enable Authentication → Email/Password
+     5. Create an admin account: Authentication → Add user → your email
+     6. Set ADMIN_EMAIL below to match that email
+     7. Set Firestore Rules (see comment at bottom)
+     ============================================================ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  /* ── ① REPLACE THIS WITH YOUR FIREBASE CONFIG ────────────── */
+    const firebaseConfig = {
+    apiKey: "AIzaSyARHI2kmY3q-IE5sqeMPV0LkfMl8UvQroA",
+    authDomain: "sandeep-singh-lms.firebaseapp.com",
+    projectId: "sandeep-singh-lms",
+    storageBucket: "sandeep-singh-lms.firebasestorage.app",
+    messagingSenderId: "494842666506",
+    appId: "1:494842666506:web:7ded04df72d9018a7449f3",
+    measurementId: "G-XP4S919FPL"
+  };
+  /* ── ② SET YOUR ADMIN EMAIL (must match Firebase Auth user) ─ */
+  const ADMIN_EMAIL = "sandeepec035@gmail.com";
+  /* ─────────────────────────────────────────────────────────── */
+
+  const app  = initializeApp(firebaseConfig);
+  const db   = getFirestore(app);
+  const auth = getAuth(app);
+  const COL  = "testimonials";
+
+  let currentRating = 5;
+  let adminFilter   = "all";
+  let allAdminDocs  = [];
+
+  /* ── STARS ───────────────────────────────────────────────── */
+  document.querySelectorAll(".star").forEach(s => {
+    s.addEventListener("mouseover", () => hlStars(+s.dataset.v));
+    s.addEventListener("mouseout",  () => hlStars(currentRating));
+    s.addEventListener("click",     () => { currentRating = +s.dataset.v; hlStars(currentRating); });
+  });
+  function hlStars(n) {
+    document.querySelectorAll(".star").forEach(s => s.classList.toggle("lit", +s.dataset.v <= n));
+  }
+
+  /* ── TABS ─────────────────────────────────────────────────── */
+  window.switchTab = function(tab, el) {
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById("tab-" + tab).classList.add("active");
+    el.classList.add("active");
+    if (tab === "view") loadPublic();
+  };
+
+  /* ── SUBMIT TESTIMONIAL ───────────────────────────────────── */
+  window.submitTestimonial = async function() {
+    const name = document.getElementById("t-name").value.trim();
+    const text = document.getElementById("t-text").value.trim();
+    if (!name || !text) { showAlert("submit-alert", "Please fill in your name and testimonial.", "error"); return; }
+    const btn = document.getElementById("submitBtn");
+    btn.disabled = true; btn.textContent = "⏳ Submitting…";
+    try {
+      await addDoc(collection(db, COL), {
+        name,
+        role:     document.getElementById("t-role").value.trim(),
+        linkedin: document.getElementById("t-linkedin").value.trim(),
+        text,
+        rating:   currentRating,
+        project:  document.getElementById("t-project").value.trim(),
+        status:   "pending",
+        createdAt: serverTimestamp()
+      });
+      showAlert("submit-alert", "✅ Thank you! Your testimonial has been submitted and is awaiting review.", "success");
+      ["t-name","t-role","t-linkedin","t-text","t-project"].forEach(id => document.getElementById(id).value = "");
+      currentRating = 5; hlStars(5);
+    } catch(e) {
+      showAlert("submit-alert", "❌ Error saving. Please try again or email Sandeep directly.", "error");
+      console.error(e);
+    }
+    btn.disabled = false; btn.textContent = "✉️ Submit Testimonial";
+  };
+
+  /* ── LOAD PUBLIC TESTIMONIALS ─────────────────────────────── */
+  async function loadPublic() {
+    const el = document.getElementById("public-list");
+    el.innerHTML = '<div class="spinner"></div>';
+    try {
+      const q = query(collection(db, COL), orderBy("createdAt", "desc"));
+      const snap = await getDocs(q);
+      const approved = snap.docs.filter(d => d.data().status === "approved");
+      if (!approved.length) {
+        el.innerHTML = `<div class="empty-state"><div class="big">💬</div><p>No testimonials yet — be the first to write one!</p></div>`;
+        return;
+      }
+      el.innerHTML = `<div class="tcard-grid">${approved.map(d => publicCard(d.id, d.data())).join("")}</div>`;
+    } catch(e) {
+      el.innerHTML = `<div class="empty-state"><div class="big">⚠️</div><p>Could not load testimonials. Firebase may not be configured yet.</p></div>`;
+    }
+  }
+
+  function publicCard(id, t) {
+    const initials = t.name.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase();
+    const stars = "★".repeat(t.rating || 5) + "☆".repeat(5 - (t.rating||5));
+    const dateStr = t.createdAt ? new Date(t.createdAt.toDate()).toLocaleDateString("en-IN",{year:"numeric",month:"short",day:"numeric"}) : "";
+    const liLink = t.linkedin ? `<a href="${t.linkedin}" target="_blank" rel="noopener" style="font-size:0.75rem;color:var(--teal);text-decoration:none;margin-left:6px">🔗 LinkedIn</a>` : "";
+    const proj = t.project ? `<span class="tcard-project">📁 ${t.project}</span>` : "";
+    return `<div class="tcard">
+      <div class="tcard-date">${dateStr}</div>
+      <div class="tcard-stars">${stars}</div>
+      <div class="tcard-text">${t.text}</div>
+      ${proj}
+      <div class="tcard-author" style="margin-top:1rem">
+        <div class="tcard-avatar">${initials}</div>
+        <div>
+          <div class="tcard-name">${t.name}${liLink}</div>
+          <div class="tcard-role">${t.role || ""}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* ── ADMIN AUTH ───────────────────────────────────────────── */
+  window.adminLogin = async function() {
+    const email = document.getElementById("admin-email").value.trim();
+    const pw    = document.getElementById("admin-pw").value;
+    try {
+      await signInWithEmailAndPassword(auth, email, pw);
+    } catch(e) {
+      showAlert("login-alert", "❌ " + friendlyAuthError(e.code), "error");
+    }
+  };
+
+  window.adminLogout = async function() {
+    await signOut(auth);
+  };
+
+  onAuthStateChanged(auth, user => {
+    if (user && user.email === ADMIN_EMAIL) {
+      document.getElementById("admin-login").style.display  = "none";
+      document.getElementById("admin-panel").style.display  = "block";
+      document.getElementById("admin-user-label").textContent = "Logged in as " + user.email;
+      loadAdminList();
+    } else {
+      document.getElementById("admin-login").style.display  = "block";
+      document.getElementById("admin-panel").style.display  = "none";
+    }
+  });
+
+  /* ── ADMIN LIST ───────────────────────────────────────────── */
+  async function loadAdminList() {
+    const el = document.getElementById("admin-list");
+    el.innerHTML = '<div class="spinner"></div>';
+    try {
+      const q = query(collection(db, COL), orderBy("createdAt", "desc"));
+      const snap = await getDocs(q);
+      allAdminDocs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderStats();
+      renderAdminFilter();
+    } catch(e) {
+      el.innerHTML = `<div class="empty-state"><div class="big">⚠️</div><p>Could not load. Check Firebase config.</p></div>`;
+    }
+  }
+
+  function renderStats() {
+    const total    = allAdminDocs.length;
+    const pending  = allAdminDocs.filter(t => t.status === "pending").length;
+    const approved = allAdminDocs.filter(t => t.status === "approved").length;
+    document.getElementById("stat-total").textContent    = total;
+    document.getElementById("stat-pending").textContent  = pending;
+    document.getElementById("stat-approved").textContent = approved;
+  }
+
+  function renderAdminFilter() {
+    const filtered = adminFilter === "all" ? allAdminDocs : allAdminDocs.filter(t => t.status === adminFilter);
+    const el = document.getElementById("admin-list");
+    if (!filtered.length) { el.innerHTML = `<div class="empty-state"><div class="big">📭</div><p>No testimonials in this category.</p></div>`; return; }
+    el.innerHTML = filtered.map(t => adminCard(t)).join("");
+  }
+
+  window.filterAdmin = function(f, el) {
+    adminFilter = f;
+    document.querySelectorAll(".ftag").forEach(b => b.classList.remove("active"));
+    el.classList.add("active");
+    renderAdminFilter();
+  };
+
+  function adminCard(t) {
+    const initials = t.name.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase();
+    const stars = "★".repeat(t.rating||5) + "☆".repeat(5-(t.rating||5));
+    const dateStr = t.createdAt ? new Date(t.createdAt.toDate()).toLocaleDateString("en-IN",{year:"numeric",month:"short",day:"numeric"}) : "—";
+    const badge = t.status === "pending"
+      ? `<span class="pending-badge">⏳ Pending</span>`
+      : `<span class="approved-badge">✅ Approved</span>`;
+    const approveBtn = t.status === "pending"
+      ? `<button class="btn-approve" onclick="approveT('${t.id}')">✅ Approve</button>` : "";
+    const proj = t.project ? `<span style="font-size:0.78rem;color:var(--teal)">📁 ${t.project}</span>  ` : "";
+    return `<div class="admin-tcard" id="atc-${t.id}">
+      ${badge}
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.6rem">
+        <div class="tcard-avatar">${initials}</div>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--white)">${t.name}</div>
+          <div style="font-size:0.75rem;color:var(--muted)">${t.role||""}  ·  ${dateStr}</div>
+        </div>
+        <div style="margin-left:auto;color:var(--gold);font-size:0.85rem">${stars}</div>
+      </div>
+      <p style="font-size:0.88rem;color:var(--text);line-height:1.6;margin-bottom:0.5rem">"${t.text}"</p>
+      ${proj}
+      ${t.linkedin ? `<a href="${t.linkedin}" target="_blank" style="font-size:0.75rem;color:var(--teal);text-decoration:none">🔗 LinkedIn</a>` : ""}
+      <div class="admin-actions">
+        ${approveBtn}
+        <button class="btn-delete" onclick="deleteT('${t.id}')">🗑 Delete</button>
+      </div>
+    </div>`;
+  }
+
+  window.approveT = async function(id) {
+    try {
+      await updateDoc(doc(db, COL, id), { status: "approved" });
+      const idx = allAdminDocs.findIndex(t => t.id === id);
+      if (idx > -1) allAdminDocs[idx].status = "approved";
+      renderStats();
+      renderAdminFilter();
+    } catch(e) { alert("Error approving. Check Firebase rules."); }
+  };
+
+  window.deleteT = async function(id) {
+    if (!confirm("Permanently delete this testimonial?")) return;
+    try {
+      await deleteDoc(doc(db, COL, id));
+      allAdminDocs = allAdminDocs.filter(t => t.id !== id);
+      renderStats();
+      renderAdminFilter();
+    } catch(e) { alert("Error deleting. Check Firebase rules."); }
+  };
+
+  /* ── UTILS ────────────────────────────────────────────────── */
+  function showAlert(id, msg, type) {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = "alert " + type + " show";
+    setTimeout(() => el.className = "alert", 6000);
+  }
+
+  function friendlyAuthError(code) {
+    const map = {
+      "auth/wrong-password":    "Incorrect password.",
+      "auth/user-not-found":    "No account found with that email.",
+      "auth/invalid-email":     "Invalid email address.",
+      "auth/too-many-requests": "Too many attempts. Try again later.",
+      "auth/invalid-credential":"Invalid email or password."
+    };
+    return map[code] || "Login failed. Check credentials.";
+  }
+
+  /* ── SCROLL & FADE ────────────────────────────────────────── */
+  window.addEventListener("scroll", () => {
+    document.getElementById("scrollTop").classList.toggle("visible", scrollY > 400);
+  });
+  const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) { x.target.classList.add("visible"); obs.unobserve(x.target); }}), { threshold: 0.1 });
+  document.querySelectorAll(".fade-in").forEach(el => obs.observe(el));
+</script>
+
+<!--
+  ── FIRESTORE SECURITY RULES (paste in Firebase Console → Firestore → Rules) ──
+
+  rules_version = '2';
+  service cloud.firestore {
+    match /databases/{database}/documents {
+      match /testimonials/{docId} {
+        // Anyone can read approved testimonials
+        allow read: if resource.data.status == "approved";
+        // Anyone can create (submit a new testimonial)
+        allow create: if request.auth == null || request.auth != null;
+        // Only admin can update (approve) or delete
+        allow update, delete: if request.auth != null && request.auth.token.email == "sandeepec035@gmail.com";
+      }
+    }
+  }
+-->
+</body>
+</html>
