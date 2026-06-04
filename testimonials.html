@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Testimonials — Sandeep Singh R</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#070d1a;--navy2:#0d1525;--card:#111e35;--card2:#152240;
+  --border:#1a2d4a;--border2:#243d5e;
+  --gold:#f0a500;--gold2:#ffc93a;
+  --teal:#00c9a7;--teal2:#00e8c0;
+  --text:#dde6f0;--muted:#6d8aaa;--white:#fff;
+  --red:#ef4444;--green:#22c55e;
+  --r:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* noise */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.5;}
+
+/* progress bar */
+#rp{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));z-index:300;width:0;transition:width .1s;}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:.9rem 5%;background:rgba(7,13,26,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;color:var(--white);text-decoration:none;}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:1.6rem;align-items:center;}
+.nav-link{color:var(--muted);font-size:.82rem;text-decoration:none;transition:color .2s;}
+.nav-link:hover,.nav-link.active{color:var(--white);}
+.nav-cta{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;padding:.35rem .9rem;border-radius:20px;text-decoration:none;transition:opacity .2s;}
+.nav-cta:hover{opacity:.85;}
+
+/* page */
+.page{max-width:1100px;margin:0 auto;padding:6rem 5% 5rem;position:relative;z-index:1;}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:2.5rem 0 3rem;position:relative;}
+.hero::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(240,165,0,.08) 0%,transparent 70%);pointer-events:none;}
+.hero-tag{display:inline-flex;align-items:center;gap:.5rem;font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:.28rem .9rem;border-radius:20px;background:rgba(240,165,0,.08);color:var(--gold);border:1px solid rgba(240,165,0,.2);margin-bottom:1rem;}
+.hero h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2rem,5vw,3rem);color:var(--white);letter-spacing:-1.5px;line-height:1.1;margin-bottom:.8rem;}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--gold),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero p{color:var(--muted);font-size:.95rem;max-width:520px;margin:0 auto 2rem;line-height:1.8;}
+.hero-stats{display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;}
+.hs{text-align:center;}
+.hs-num{font-family:'Syne',sans-serif;font-weight:800;font-size:1.9rem;color:var(--gold);line-height:1;}
+.hs-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:.2rem;}
+
+/* ── SUBMIT FORM ── */
+.form-wrap{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem 2.2rem;margin:0 0 3.5rem;position:relative;overflow:hidden;}
+.form-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));}
+.form-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;color:var(--white);margin-bottom:.25rem;}
+.form-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.6rem;line-height:1.6;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.field{display:flex;flex-direction:column;gap:.35rem;}
+.field label{font-size:.7rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);}
+.field input,.field textarea{background:var(--navy2);border:1px solid var(--border);border-radius:9px;padding:.65rem 1rem;color:var(--white);font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s;width:100%;resize:vertical;}
+.field input:focus,.field textarea:focus{border-color:var(--gold);}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted);}
+.field-full{grid-column:1/-1;}
+.char-count{font-size:.68rem;color:var(--muted);text-align:right;margin-top:.2rem;}
+.rating-row{display:flex;gap:.5rem;margin:.2rem 0;}
+.star{font-size:1.4rem;cursor:pointer;filter:grayscale(1);transition:filter .15s,transform .15s;}
+.star.active{filter:none;}
+.star:hover{transform:scale(1.2);}
+.submit-row{display:flex;align-items:center;justify-content:space-between;margin-top:1.2rem;gap:1rem;flex-wrap:wrap;}
+.submit-btn{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;padding:.7rem 2rem;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);transition:opacity .2s;}
+.submit-btn:hover{opacity:.88;}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;}
+.form-note{font-size:.74rem;color:var(--muted);line-height:1.6;}
+.form-msg{font-size:.82rem;font-weight:600;padding:.5rem 1rem;border-radius:8px;display:none;}
+.form-msg.success{background:rgba(34,197,94,.1);color:#86efac;border:1px solid rgba(34,197,94,.25);}
+.form-msg.error{background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.25);}
+
+/* ── FILTERS ── */
+.filter-bar{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.filter-btn{font-family:'Syne',sans-serif;font-weight:700;font-size:.72rem;padding:.3rem .8rem;border-radius:20px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;transition:all .2s;}
+.filter-btn:hover,.filter-btn.active{background:rgba(240,165,0,.1);border-color:rgba(240,165,0,.3);color:var(--gold);}
+.filter-count{font-size:.65rem;background:var(--border);border-radius:10px;padding:.1rem .4rem;margin-left:.3rem;}
+
+/* ── TESTIMONIAL GRID ── */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.3rem;margin-bottom:3rem;}
+.testi-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;position:relative;opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s,border-color .25s;}
+.testi-card.in{opacity:1;transform:translateY(0);}
+.testi-card:hover{border-color:var(--border2);}
+.testi-card::before{content:'"';position:absolute;top:.8rem;right:1.2rem;font-family:'Syne',sans-serif;font-size:4rem;color:rgba(240,165,0,.08);line-height:1;pointer-events:none;}
+/* stars */
+.tc-stars{display:flex;gap:.15rem;margin-bottom:.8rem;}
+.tc-star{font-size:.85rem;}
+/* quote */
+.tc-quote{font-size:.87rem;color:var(--text);line-height:1.75;margin-bottom:1.1rem;font-style:italic;}
+/* person */
+.tc-person{display:flex;align-items:center;gap:.8rem;}
+.tc-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--teal));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.9rem;color:var(--navy);flex-shrink:0;text-transform:uppercase;}
+.tc-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;color:var(--white);}
+.tc-role{font-size:.73rem;color:var(--muted);margin-top:.1rem;}
+.tc-li{display:inline-flex;align-items:center;gap:.3rem;font-size:.68rem;color:var(--teal);text-decoration:none;margin-top:.25rem;transition:color .2s;}
+.tc-li:hover{color:var(--teal2);}
+.tc-date{position:absolute;bottom:.9rem;right:1.1rem;font-size:.65rem;color:var(--border2);font-family:'Fira Code',monospace;}
+
+/* empty state */
+.empty-state{text-align:center;padding:4rem 1rem;color:var(--muted);}
+.empty-state-icon{font-size:3rem;margin-bottom:.8rem;opacity:.5;}
+.empty-state p{font-size:.88rem;line-height:1.7;}
+
+/* loading skeleton */
+.skeleton{background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:200%;animation:skel 1.4s linear infinite;border-radius:6px;}
+@keyframes skel{0%{background-position:200%}100%{background-position:-200%}}
+
+/* pagination */
+.pagination{display:flex;justify-content:center;gap:.5rem;margin-top:2rem;}
+.pg-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:none;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.pg-btn:hover,.pg-btn.active{background:rgba(240,165,0,.1);border-color:rgba(240,165,0,.3);color:var(--gold);}
+
+/* toast */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.3rem;font-size:.83rem;color:var(--white);z-index:500;transform:translateY(80px);opacity:0;transition:all .3s;max-width:320px;box-shadow:0 10px 40px rgba(0,0,0,.4);}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{border-color:rgba(34,197,94,.35);}
+.toast.error{border-color:rgba(239,68,68,.35);}
+
+/* firebase config notice */
+.config-notice{background:rgba(240,165,0,.06);border:1px solid rgba(240,165,0,.2);border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:2rem;display:flex;gap:1rem;align-items:flex-start;}
+.cn-icon{font-size:1.3rem;flex-shrink:0;margin-top:.1rem;}
+.cn-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;color:var(--gold);margin-bottom:.3rem;}
+.cn-text{font-size:.78rem;color:var(--muted);line-height:1.6;}
+.cn-text code{font-family:'Fira Code',monospace;background:rgba(0,201,167,.08);color:var(--teal);padding:.1rem .35rem;border-radius:3px;font-size:.75rem;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fadeUp .6s ease both;}
+.fu1{animation-delay:.1s;}.fu2{animation-delay:.2s;}.fu3{animation-delay:.3s;}
+
+@media(max-width:700px){
+  .form-grid{grid-template-columns:1fr;}
+  .testi-grid{grid-template-columns:1fr;}
+  .nav-links .nav-link{display:none;}
+}
+</style>
+</head>
+<body>
+<div id="rp"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Sandeep<span>.</span></a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="blogs.html" class="nav-link">Blogs</a>
+    <a href="lms.html" class="nav-link">Learning Hub</a>
+    <a href="testimonials.html" class="nav-link active">Testimonials</a>
+    <a href="admin-testimonials.html" class="nav-cta">Admin ⚙</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- CONFIG NOTICE (remove after Firebase is connected) -->
+  <div class="config-notice fu" id="config-notice">
+    <div class="cn-icon">🔧</div>
+    <div>
+      <div class="cn-title">Firebase Setup Required</div>
+      <div class="cn-text">
+        Paste your Firebase config into the <code>FIREBASE_CONFIG</code> object at the top of this file's script section.
+        Until then, the page uses <strong>local demo data</strong> so you can preview the design.
+        See the <a href="firebase-setup-guide.html" style="color:var(--teal);">setup guide →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag fu">💬 Testimonials</div>
+    <h1 class="fu fu1">What people say about<br><em>working with Sandeep</em></h1>
+    <p class="fu fu2">Engineers, managers, and collaborators share their experience working together on embedded systems, safety-critical products, and engineering education.</p>
+    <div class="hero-stats fu fu3">
+      <div class="hs"><div class="hs-num" id="count-total">0</div><div class="hs-label">Testimonials</div></div>
+      <div class="hs"><div class="hs-num" id="count-companies">0</div><div class="hs-label">Companies</div></div>
+      <div class="hs"><div class="hs-num" id="avg-rating">—</div><div class="hs-label">Avg Rating</div></div>
+    </div>
+  </div>
+
+  <!-- SUBMIT FORM -->
+  <div class="form-wrap fu">
+    <div class="form-title">✍️ Write a Testimonial</div>
+    <div class="form-sub">Worked with Sandeep? Share your experience — it takes 2 minutes. Your testimonial will appear here after review.</div>
+    <div class="form-grid">
+      <div class="field">
+        <label>Your Full Name *</label>
+        <input type="text" id="f-name" placeholder="Rajesh Kumar" maxlength="60"/>
+      </div>
+      <div class="field">
+        <label>Company / Organisation *</label>
+        <input type="text" id="f-company" placeholder="Klug Avalon Mechatronics" maxlength="80"/>
+      </div>
+      <div class="field">
+        <label>Your Role *</label>
+        <input type="text" id="f-role" placeholder="Senior Firmware Engineer" maxlength="80"/>
+      </div>
+      <div class="field">
+        <label>LinkedIn Profile URL</label>
+        <input type="url" id="f-linkedin" placeholder="https://linkedin.com/in/yourname"/>
+      </div>
+      <div class="field field-full">
+        <label>Your Message *</label>
+        <textarea id="f-message" rows="4" placeholder="Share your experience working with Sandeep — what did you build together, what stood out, what would you tell others?" maxlength="600" oninput="updateCharCount()"></textarea>
+        <div class="char-count"><span id="char-num">0</span>/600</div>
+      </div>
+      <div class="field field-full">
+        <label>Rating</label>
+        <div class="rating-row" id="rating-row">
+          <span class="star" data-v="1" onclick="setRating(1)">⭐</span>
+          <span class="star" data-v="2" onclick="setRating(2)">⭐</span>
+          <span class="star" data-v="3" onclick="setRating(3)">⭐</span>
+          <span class="star" data-v="4" onclick="setRating(4)">⭐</span>
+          <span class="star" data-v="5" onclick="setRating(5)">⭐</span>
+        </div>
+      </div>
+    </div>
+    <div class="submit-row">
+      <div class="form-note">
+        Your testimonial is reviewed before appearing publicly.<br>
+        No spam — only genuine professional feedback.
+      </div>
+      <div>
+        <div class="form-msg" id="form-msg"></div>
+        <button class="submit-btn" id="submit-btn" onclick="submitTestimonial()">Send Testimonial →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All <span class="filter-count" id="fc-all">0</span></button>
+    <button class="filter-btn" onclick="setFilter('5',this)">⭐⭐⭐⭐⭐ <span class="filter-count" id="fc-5">0</span></button>
+    <button class="filter-btn" onclick="setFilter('4',this)">⭐⭐⭐⭐ <span class="filter-count" id="fc-4">0</span></button>
+    <button class="filter-btn" onclick="setFilter('latest',this)">Latest First</button>
+    <button class="filter-btn" onclick="setFilter('oldest',this)">Oldest First</button>
+  </div>
+
+  <!-- TESTIMONIALS GRID -->
+  <div class="testi-grid" id="testi-grid">
+    <!-- Skeleton loaders -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;">
+      <div class="skeleton" style="height:10px;width:80px;margin-bottom:1rem;"></div>
+      <div class="skeleton" style="height:9px;margin-bottom:.5rem;"></div>
+      <div class="skeleton" style="height:9px;width:85%;margin-bottom:.5rem;"></div>
+      <div class="skeleton" style="height:9px;width:70%;margin-bottom:1.2rem;"></div>
+      <div style="display:flex;gap:.7rem;align-items:center;">
+        <div class="skeleton" style="width:40px;height:40px;border-radius:50%;"></div>
+        <div><div class="skeleton" style="height:9px;width:100px;margin-bottom:.4rem;"></div><div class="skeleton" style="height:8px;width:70px;"></div></div>
+      </div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;">
+      <div class="skeleton" style="height:10px;width:80px;margin-bottom:1rem;"></div>
+      <div class="skeleton" style="height:9px;margin-bottom:.5rem;"></div>
+      <div class="skeleton" style="height:9px;width:90%;margin-bottom:.5rem;"></div>
+      <div class="skeleton" style="height:9px;width:60%;margin-bottom:1.2rem;"></div>
+      <div style="display:flex;gap:.7rem;align-items:center;">
+        <div class="skeleton" style="width:40px;height:40px;border-radius:50%;"></div>
+        <div><div class="skeleton" style="height:9px;width:90px;margin-bottom:.4rem;"></div><div class="skeleton" style="height:8px;width:80px;"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination" id="pagination"></div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════════════════════
+     FIREBASE SDK + APP LOGIC
+     ══════════════════════════════════════════ -->
+<script type="module">
+// ─────────────────────────────────────────────
+// 🔧 PASTE YOUR FIREBASE CONFIG HERE
+// Get it from: Firebase Console → Project Settings → Your Apps → SDK setup
+// ─────────────────────────────────────────────
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyB2dZAO89rRrJZ_ov-YdinQN2uooQA6M18",
+  authDomain: "testimonials-50a50.firebaseapp.com",
+  projectId: "testimonials-50a50",
+  storageBucket: "testimonials-50a50.firebasestorage.app",
+  messagingSenderId: "903460857678",
+  appId: "1:903460857678:web:aae3b54d08566b3f52e01f",
+  measurementId: "G-6QEJYK48YF"            "PASTE_YOUR_appId_HERE"
+};
+// ─────────────────────────────────────────────
+
+import { initializeApp }              from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// Detect if config is filled in
+const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "PASTE_YOUR_apiKey_HERE";
+
+let db = null;
+if(IS_CONFIGURED){
+  const app = initializeApp(FIREBASE_CONFIG);
+  db = getFirestore(app);
+  document.getElementById('config-notice').style.display = 'none';
+}
+
+// ── DEMO DATA (shown when Firebase not yet configured) ──
+const DEMO = [
+  {id:'d1',name:'Arun Menon',company:'Bosch India',role:'Lead Embedded Engineer',linkedin:'https://linkedin.com/in/arunmenon',message:'Sandeep has an exceptional ability to bridge the gap between hardware and software. His work on the HIL test framework saved us weeks of validation time. Highly recommended for any safety-critical project.',rating:5,approved:true,createdAt:{seconds:1700000000}},
+  {id:'d2',name:'Priya Nair',company:'Klug Avalon Mechatronics',role:'Project Manager',linkedin:'',message:'Working with Sandeep on the SLI-2000 rollout was outstanding. He is thorough, communicates clearly, and delivers on time. His technical writing made our certification documentation much stronger.',rating:5,approved:true,createdAt:{seconds:1705000000}},
+  {id:'d3',name:'Mohammed Irfan',company:'DRDO',role:'Systems Engineer',linkedin:'https://linkedin.com/in/irfan',message:'Sandeep\'s understanding of AFCS bus architecture is deep. His blog articles on ARINC 429 and MIL-STD-1553 are the clearest explanations I\'ve found anywhere online — better than most textbooks.',rating:5,approved:true,createdAt:{seconds:1710000000}},
+  {id:'d4',name:'Lakshmi Venkat',company:'HAL',role:'Avionics Engineer',linkedin:'',message:'Collaborated on embedded firmware validation. Sandeep brings a methodical approach to test coverage that is exactly what DAL A software demands. Reliable, knowledgeable, and professional.',rating:4,approved:true,createdAt:{seconds:1715000000}},
+  {id:'d5',name:'Rahul Sharma',company:'TCS Engineering',role:'IoT Solutions Architect',linkedin:'https://linkedin.com/in/rahulsharma',message:'Sandeep\'s LMS and course content on IoT protocols is excellent. As someone who trains engineers professionally, I can say his explanation of LoRaWAN and MQTT is industry-grade quality.',rating:5,approved:true,createdAt:{seconds:1718000000}},
+  {id:'d6',name:'Deepak Krishnan',company:'Wipro Engineering',role:'Firmware Developer',linkedin:'',message:'Clear communicator, strong technical depth, and always willing to help. His MATLAB tutorials helped our team upskill faster than any other resource we tried.',rating:4,approved:true,createdAt:{seconds:1720000000}},
+];
+
+// ── STATE ──
+let allTestimonials = [];
+let currentFilter = 'all';
+let currentPage = 1;
+const PER_PAGE = 6;
+let selectedRating = 5;
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded', ()=>{ loadTestimonials(); });
+
+async function loadTestimonials(){
+  if(IS_CONFIGURED){
+    try{
+      const q = query(collection(db,'testimonials'), where('approved','==',true), orderBy('createdAt','desc'));
+      const snap = await getDocs(q);
+      allTestimonials = snap.docs.map(d=>({id:d.id,...d.data()}));
+    } catch(e){ console.error('Firestore error:',e); allTestimonials = DEMO; }
+  } else {
+    allTestimonials = DEMO;
+  }
+  renderAll();
+}
+
+function renderAll(){
+  updateStats();
+  updateFilterCounts();
+  renderGrid();
+}
+
+function updateStats(){
+  const t = allTestimonials;
+  document.getElementById('count-total').textContent = t.length;
+  const companies = new Set(t.map(x=>x.company)).size;
+  document.getElementById('count-companies').textContent = companies;
+  const avg = t.length ? (t.reduce((a,b)=>a+(b.rating||5),0)/t.length).toFixed(1) : '—';
+  document.getElementById('avg-rating').textContent = avg;
+}
+
+function updateFilterCounts(){
+  document.getElementById('fc-all').textContent = allTestimonials.length;
+  document.getElementById('fc-5').textContent = allTestimonials.filter(t=>t.rating===5).length;
+  document.getElementById('fc-4').textContent = allTestimonials.filter(t=>t.rating===4).length;
+}
+
+window.setFilter = function(f, btn){
+  currentFilter = f; currentPage = 1;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid();
+};
+
+function getFiltered(){
+  let list = [...allTestimonials];
+  if(currentFilter==='5') list = list.filter(t=>t.rating===5);
+  else if(currentFilter==='4') list = list.filter(t=>t.rating===4);
+  else if(currentFilter==='latest') list.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  else if(currentFilter==='oldest') list.sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
+  return list;
+}
+
+function renderGrid(){
+  const filtered = getFiltered();
+  const total = filtered.length;
+  const pages = Math.ceil(total/PER_PAGE);
+  const slice = filtered.slice((currentPage-1)*PER_PAGE, currentPage*PER_PAGE);
+
+  const grid = document.getElementById('testi-grid');
+  if(!total){
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-icon">💬</div><p>No testimonials yet.<br>Be the first to write one!</p></div>`;
+    document.getElementById('pagination').innerHTML='';
+    return;
+  }
+
+  grid.innerHTML = '';
+  slice.forEach((t,i)=>{
+    const card = document.createElement('div');
+    card.className='testi-card';
+    card.style.transitionDelay = (i*0.07)+'s';
+    const stars = '⭐'.repeat(t.rating||5);
+    const initials = t.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+    const dateStr = t.createdAt?.seconds ? new Date(t.createdAt.seconds*1000).toLocaleDateString('en-IN',{month:'short',year:'numeric'}) : '';
+    const liLink = t.linkedin ? `<a class="tc-li" href="${t.linkedin}" target="_blank" rel="noopener">🔗 LinkedIn</a>` : '';
+    card.innerHTML = `
+      <div class="tc-stars">${stars}</div>
+      <p class="tc-quote">${escHtml(t.message)}</p>
+      <div class="tc-person">
+        <div class="tc-avatar">${initials}</div>
+        <div>
+          <div class="tc-name">${escHtml(t.name)}</div>
+          <div class="tc-role">${escHtml(t.role)} · ${escHtml(t.company)}</div>
+          ${liLink}
+        </div>
+      </div>
+      <div class="tc-date">${dateStr}</div>`;
+    grid.appendChild(card);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>card.classList.add('in')));
+  });
+
+  // pagination
+  const pg = document.getElementById('pagination');
+  pg.innerHTML='';
+  if(pages>1){
+    for(let i=1;i<=pages;i++){
+      const btn=document.createElement('button');
+      btn.className='pg-btn'+(i===currentPage?' active':'');
+      btn.textContent=i;
+      btn.onclick=()=>{ currentPage=i; renderGrid(); window.scrollTo({top:document.getElementById('testi-grid').offsetTop-100,behavior:'smooth'}); };
+      pg.appendChild(btn);
+    }
+  }
+}
+
+// ── FORM ──
+window.updateCharCount = function(){
+  const v = document.getElementById('f-message').value.length;
+  document.getElementById('char-num').textContent = v;
+};
+
+window.setRating = function(v){
+  selectedRating = v;
+  document.querySelectorAll('.star').forEach(s=>{
+    s.classList.toggle('active', parseInt(s.dataset.v)<=v);
+  });
+};
+// default 5 stars active
+setRating(5);
+
+window.submitTestimonial = async function(){
+  const name    = document.getElementById('f-name').value.trim();
+  const company = document.getElementById('f-company').value.trim();
+  const role    = document.getElementById('f-role').value.trim();
+  const linkedin= document.getElementById('f-linkedin').value.trim();
+  const message = document.getElementById('f-message').value.trim();
+
+  const msg = document.getElementById('form-msg');
+  msg.style.display='none';
+
+  if(!name||!company||!role||!message){
+    showMsg('error','Please fill in all required fields (*).'); return;
+  }
+  if(message.length<20){ showMsg('error','Message must be at least 20 characters.'); return; }
+  if(linkedin && !linkedin.startsWith('http')){ showMsg('error','LinkedIn URL must start with https://'); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled=true; btn.textContent='Sending…';
+
+  const payload = { name, company, role, linkedin, message, rating:selectedRating, approved:false, createdAt: IS_CONFIGURED ? serverTimestamp() : {seconds:Date.now()/1000} };
+
+  try{
+    if(IS_CONFIGURED){
+      await addDoc(collection(db,'testimonials'), payload);
+    } else {
+      // Demo mode — just simulate
+      await new Promise(r=>setTimeout(r,800));
+    }
+    showMsg('success','🎉 Thank you! Your testimonial has been submitted and will appear after review.');
+    ['f-name','f-company','f-role','f-linkedin','f-message'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('char-num').textContent='0';
+    setRating(5);
+    showToast('Testimonial submitted! Awaiting review.','success');
+  } catch(e){
+    showMsg('error','Something went wrong. Please try again.');
+    console.error(e);
+  }
+  btn.disabled=false; btn.textContent='Send Testimonial →';
+};
+
+function showMsg(type,text){
+  const el = document.getElementById('form-msg');
+  el.className='form-msg '+type;
+  el.textContent=text;
+  el.style.display='block';
+}
+
+// ── TOAST ──
+function showToast(text, type=''){
+  const t=document.getElementById('toast');
+  t.textContent=text; t.className='toast show '+type;
+  setTimeout(()=>t.className='toast',3500);
+}
+window.showToast = showToast;
+
+// ── ESCAPE ──
+function escHtml(s){ const d=document.createElement('div');d.textContent=s;return d.innerHTML; }
+
+// ── SCROLL PROGRESS ──
+window.addEventListener('scroll',()=>{
+  const s=document.documentElement;
+  document.getElementById('rp').style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%';
+});
+
+// ── INTERSECTION OBSERVER ──
+const io = new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.1});
+document.querySelectorAll('.form-wrap,.filter-bar').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

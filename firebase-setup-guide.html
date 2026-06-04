@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Firebase Setup Guide — Sandeep Singh R</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#070d1a;--card:#111e35;--border:#1a2d4a;--gold:#f0a500;--teal:#00c9a7;--text:#dde6f0;--muted:#6d8aaa;--white:#fff;--green:#22c55e;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;padding:2rem 5% 5rem;max-width:860px;margin:0 auto;line-height:1.7;}
+h1{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;color:var(--white);margin-bottom:.5rem;}
+h2{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;color:var(--gold);margin:2rem 0 .7rem;}
+h3{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;color:var(--teal);margin:1.3rem 0 .4rem;}
+p{color:var(--muted);font-size:.9rem;margin-bottom:.8rem;}
+p strong{color:var(--text);}
+.step{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;margin:1rem 0;position:relative;padding-left:3.5rem;}
+.step-num{position:absolute;left:1rem;top:1.1rem;width:28px;height:28px;border-radius:50%;background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.3);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.75rem;color:var(--gold);}
+.step-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;color:var(--white);margin-bottom:.4rem;}
+.step p{margin-bottom:.4rem;}
+pre{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;font-family:'Fira Code',monospace;font-size:.78rem;color:var(--text);overflow-x:auto;margin:.6rem 0;}
+.kw{color:var(--gold);}
+.str{color:#6ee7b7;}
+.cm{color:#4b5563;font-style:italic;}
+.info{background:rgba(0,201,167,.06);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin:.8rem 0;font-size:.83rem;color:var(--text);}
+.warn{background:rgba(240,165,0,.06);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin:.8rem 0;font-size:.83rem;color:var(--text);}
+a{color:var(--teal);}
+code{font-family:'Fira Code',monospace;background:rgba(0,201,167,.08);color:var(--teal);padding:.1rem .35rem;border-radius:3px;font-size:.8rem;}
+.badge{display:inline-block;font-size:.62rem;font-weight:700;padding:.15rem .5rem;border-radius:4px;font-family:'Fira Code',monospace;background:rgba(34,197,94,.1);color:#86efac;border:1px solid rgba(34,197,94,.2);}
+hr{border:none;border-top:1px solid var(--border);margin:2.5rem 0;}
+</style>
+</head>
+<body>
+
+<div style="margin-bottom:2rem;padding-top:1rem;">
+  <a href="testimonials.html" style="font-size:.8rem;color:var(--muted);text-decoration:none;">← Back to Testimonials</a>
+</div>
+
+<h1>🔧 Firebase Setup Guide</h1>
+<p>Follow these steps to connect your testimonials system and admin panel to Firebase. Takes about <strong>15 minutes</strong>. Free forever for your scale.</p>
+
+<hr/>
+
+<h2>Step 1 — Create a Firebase Project</h2>
+
+<div class="step"><div class="step-num">1</div>
+  <div class="step-title">Go to Firebase Console</div>
+  <p>Visit <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> and sign in with your Google account.</p>
+</div>
+
+<div class="step"><div class="step-num">2</div>
+  <div class="step-title">Create New Project</div>
+  <p>Click <strong>"Add project"</strong> → name it (e.g. <code>sandeep-portfolio</code>) → disable Google Analytics if you don't need it → click <strong>Create project</strong>.</p>
+</div>
+
+<div class="step"><div class="step-num">3</div>
+  <div class="step-title">Register a Web App</div>
+  <p>In your project dashboard → click the <strong>&lt;/&gt;</strong> (Web) icon → name it (e.g. <code>portfolio-web</code>) → click <strong>Register app</strong>.</p>
+  <p>Firebase shows you a <code>firebaseConfig</code> object. <strong>Copy it — you'll need it in Step 4.</strong></p>
+<pre><span class="cm">// It looks like this:</span>
+<span class="kw">const</span> firebaseConfig = {
+  apiKey:            <span class="str">"AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXX"</span>,
+  authDomain:        <span class="str">"sandeep-portfolio.firebaseapp.com"</span>,
+  projectId:         <span class="str">"sandeep-portfolio"</span>,
+  storageBucket:     <span class="str">"sandeep-portfolio.appspot.com"</span>,
+  messagingSenderId: <span class="str">"123456789012"</span>,
+  appId:             <span class="str">"1:123456789012:web:abcdef123456"</span>
+};</pre>
+</div>
+
+<hr/>
+
+<h2>Step 2 — Enable Authentication</h2>
+
+<div class="step"><div class="step-num">4</div>
+  <div class="step-title">Enable Email/Password Sign-In</div>
+  <p>In Firebase Console → <strong>Authentication</strong> (left sidebar) → <strong>Sign-in method</strong> tab → click <strong>Email/Password</strong> → Enable → Save.</p>
+</div>
+
+<div class="step"><div class="step-num">5</div>
+  <div class="step-title">Enable Google Sign-In</div>
+  <p>Still on Sign-in method → click <strong>Google</strong> → Enable → add your email as support email → Save.</p>
+</div>
+
+<div class="step"><div class="step-num">6</div>
+  <div class="step-title">Add Your Admin Account</div>
+  <p>Go to Authentication → <strong>Users</strong> tab → click <strong>"Add user"</strong> → enter your email and a strong password. This creates your admin account.</p>
+  <div class="info">💡 The email you add here must match the <code>ADMIN_EMAIL</code> constant in <code>admin-testimonials.html</code>. Only this email gets admin access.</div>
+</div>
+
+<hr/>
+
+<h2>Step 3 — Create Firestore Database</h2>
+
+<div class="step"><div class="step-num">7</div>
+  <div class="step-title">Create Database</div>
+  <p>In Firebase Console → <strong>Firestore Database</strong> → <strong>Create database</strong> → choose <strong>Production mode</strong> → select a region (asia-south1 for India) → Done.</p>
+</div>
+
+<div class="step"><div class="step-num">8</div>
+  <div class="step-title">Set Firestore Security Rules</div>
+  <p>Go to Firestore → <strong>Rules</strong> tab → replace the default rules with these:</p>
+<pre><span class="kw">rules_version</span> = <span class="str">'2'</span>;
+<span class="kw">service</span> cloud.firestore {
+  <span class="kw">match</span> /databases/{database}/documents {
+
+    <span class="cm">// testimonials collection</span>
+    <span class="kw">match</span> /testimonials/{docId} {
+
+      <span class="cm">// Anyone can READ approved testimonials</span>
+      <span class="kw">allow read</span>: <span class="kw">if</span> resource.data.approved == true;
+
+      <span class="cm">// Anyone can SUBMIT (write approved:false only)</span>
+      <span class="kw">allow create</span>: <span class="kw">if</span>
+        request.resource.data.approved == false
+        && request.resource.data.message.size() >= 20
+        && request.resource.data.message.size() <= 600
+        && request.resource.data.name.size() > 0;
+
+      <span class="cm">// Only authenticated admin can approve / delete</span>
+      <span class="kw">allow update, delete</span>: <span class="kw">if</span>
+        request.auth != null
+        && request.auth.token.email == <span class="str">"YOUR_ADMIN_EMAIL_HERE"</span>;
+
+      <span class="cm">// Admin can read ALL (including pending)</span>
+      <span class="kw">allow read</span>: <span class="kw">if</span>
+        request.auth != null
+        && request.auth.token.email == <span class="str">"YOUR_ADMIN_EMAIL_HERE"</span>;
+    }
+  }
+}</pre>
+  <div class="warn">⚠️ Replace <code>"YOUR_ADMIN_EMAIL_HERE"</code> with your actual email in the rules above before publishing.</div>
+  <p>Click <strong>Publish</strong>.</p>
+</div>
+
+<hr/>
+
+<h2>Step 4 — Paste Config into Your Files</h2>
+
+<div class="step"><div class="step-num">9</div>
+  <div class="step-title">Update testimonials.html</div>
+  <p>Open <code>testimonials.html</code> → find the <code>FIREBASE_CONFIG</code> object near the top of the <code>&lt;script type="module"&gt;</code> block → paste your config values from Step 3.</p>
+<pre><span class="cm">// BEFORE (placeholder):</span>
+<span class="kw">const</span> FIREBASE_CONFIG = {
+  apiKey: <span class="str">"PASTE_YOUR_apiKey_HERE"</span>,
+  ...
+};
+
+<span class="cm">// AFTER (your real values):</span>
+<span class="kw">const</span> FIREBASE_CONFIG = {
+  apiKey:            <span class="str">"AIzaSyXXXXXXXX"</span>,
+  authDomain:        <span class="str">"sandeep-portfolio.firebaseapp.com"</span>,
+  projectId:         <span class="str">"sandeep-portfolio"</span>,
+  storageBucket:     <span class="str">"sandeep-portfolio.appspot.com"</span>,
+  messagingSenderId: <span class="str">"123456789012"</span>,
+  appId:             <span class="str">"1:123456789012:web:abcdef"</span>
+};</pre>
+</div>
+
+<div class="step"><div class="step-num">10</div>
+  <div class="step-title">Update admin-testimonials.html</div>
+  <p>Open <code>admin-testimonials.html</code> → paste the same <code>FIREBASE_CONFIG</code> → also set your admin email:</p>
+<pre><span class="kw">const</span> ADMIN_EMAIL = <span class="str">"your.email@gmail.com"</span>; <span class="cm">// ← your real email</span></pre>
+</div>
+
+<hr/>
+
+<h2>Step 5 — Add Authorised Domain</h2>
+
+<div class="step"><div class="step-num">11</div>
+  <div class="step-title">Whitelist Your Domain</div>
+  <p>In Firebase Console → Authentication → <strong>Settings</strong> tab → <strong>Authorised domains</strong> → click <strong>Add domain</strong> → add your domain (e.g. <code>sandeepsinghr.com</code> or <code>yourdomain.github.io</code>).</p>
+  <div class="info">💡 For local testing, <code>localhost</code> is already whitelisted by default.</div>
+</div>
+
+<hr/>
+
+<h2>Step 6 — Add Homepage Section</h2>
+
+<div class="step"><div class="step-num">12</div>
+  <div class="step-title">Embed Testimonials Preview on index.html</div>
+  <p>Paste this snippet into your <code>index.html</code> where you want the testimonials preview section to appear:</p>
+<pre><span class="cm">&lt;!-- TESTIMONIALS PREVIEW SECTION --&gt;
+&lt;!-- Add same Firebase config and script as testimonials.html --&gt;</span>
+&lt;<span class="kw">section</span> id=<span class="str">"testimonials"</span> style=<span class="str">"padding:4rem 5%;max-width:1100px;margin:0 auto;"</span>&gt;
+  &lt;<span class="kw">div</span> style=<span class="str">"text-align:center;margin-bottom:2rem;"</span>&gt;
+    &lt;<span class="kw">h2</span> style=<span class="str">"font-family:Syne;font-weight:800;font-size:1.8rem;color:#fff;margin-bottom:.5rem;"</span>&gt;
+      What People Say
+    &lt;/<span class="kw">h2</span>&gt;
+    &lt;<span class="kw">p</span> style=<span class="str">"color:#6d8aaa;font-size:.9rem;"</span>&gt;
+      From colleagues and collaborators
+    &lt;/<span class="kw">p</span>&gt;
+  &lt;/<span class="kw">div</span>&gt;
+  &lt;<span class="kw">div</span> id=<span class="str">"home-testi-grid"</span> style=<span class="str">"display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem;"</span>&gt;
+    <span class="cm">&lt;!-- Populated by JS --&gt;</span>
+  &lt;/<span class="kw">div</span>&gt;
+  &lt;<span class="kw">div</span> style=<span class="str">"text-align:center;margin-top:1.8rem;"</span>&gt;
+    &lt;<span class="kw">a</span> href=<span class="str">"testimonials.html"</span>
+       style=<span class="str">"font-family:Syne;font-weight:700;font-size:.85rem;padding:.6rem 1.5rem;border-radius:10px;border:1px solid rgba(240,165,0,.3);background:rgba(240,165,0,.08);color:#f0a500;text-decoration:none;"</span>&gt;
+      View All Testimonials →
+    &lt;/<span class="kw">a</span>&gt;
+  &lt;/<span class="kw">div</span>&gt;
+&lt;/<span class="kw">section</span>&gt;</pre>
+  <p>See <code>homepage-testimonials-snippet.html</code> for the complete self-contained JS loader.</p>
+</div>
+
+<hr/>
+
+<h2>How to See Who Has Signed Up / Logged In</h2>
+
+<div class="step"><div class="step-num">👁</div>
+  <div class="step-title">Firebase Console → Authentication → Users</div>
+  <p>Every person who creates an account or signs in with Google appears here with:</p>
+  <ul style="padding-left:1.4rem;margin:.5rem 0;color:var(--muted);font-size:.85rem;line-height:1.8;">
+    <li><strong style="color:var(--text);">Display Name</strong> — from Google or what they entered</li>
+    <li><strong style="color:var(--text);">Email</strong> — their email address</li>
+    <li><strong style="color:var(--text);">Providers</strong> — Google / Email-Password</li>
+    <li><strong style="color:var(--text);">Created</strong> — account creation date and time</li>
+    <li><strong style="color:var(--text);">Last Sign-In</strong> — most recent login</li>
+    <li><strong style="color:var(--text);">UID</strong> — unique user ID for querying their data</li>
+  </ul>
+  <p>You can <strong>disable</strong>, <strong>delete</strong>, or <strong>reset password</strong> for any user from this panel.</p>
+</div>
+
+<div class="step"><div class="step-num">📊</div>
+  <div class="step-title">Firestore → testimonials collection</div>
+  <p>Go to Firestore Database → browse the <code>testimonials</code> collection to see every submission with all fields. You can manually edit, approve, or delete documents here too.</p>
+  <div class="info">💡 For your LMS, user progress is saved in localStorage (per browser) since you haven't connected it to Firebase yet. Once you're ready to sync LMS progress to Firebase too, add a <code>users</code> collection and save progress on each quiz completion.</div>
+</div>
+
+<hr/>
+
+<h2>✅ Checklist</h2>
+<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.5rem;">
+  <p style="font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;color:var(--white);margin-bottom:.8rem;">Before going live:</p>
+  <ul style="padding-left:1.4rem;color:var(--muted);font-size:.83rem;line-height:2;">
+    <li>☐ Firebase project created</li>
+    <li>☐ Email/Password + Google auth enabled</li>
+    <li>☐ Admin user created in Authentication → Users</li>
+    <li>☐ Firestore database created with security rules published</li>
+    <li>☐ <code>FIREBASE_CONFIG</code> pasted into testimonials.html and admin-testimonials.html</li>
+    <li>☐ <code>ADMIN_EMAIL</code> set in admin-testimonials.html</li>
+    <li>☐ Your domain added to Authorised Domains</li>
+    <li>☐ Tested on localhost — submitted a test testimonial, approved it in admin</li>
+    <li>☐ Removed or hidden the config notice banner in testimonials.html</li>
+  </ul>
+</div>
+
+</body>
+</html>
