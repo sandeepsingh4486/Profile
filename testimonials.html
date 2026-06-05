@@ -279,14 +279,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 // 🔧 PASTE YOUR FIREBASE CONFIG HERE
 // Get it from: Firebase Console → Project Settings → Your Apps → SDK setup
 // ─────────────────────────────────────────────
-const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyB2dZAO89rRrJZ_ov-YdinQN2uooQA6M18",
-  authDomain: "testimonials-50a50.firebaseapp.com",
-  projectId: "testimonials-50a50",
-  storageBucket: "testimonials-50a50.firebasestorage.app",
-  messagingSenderId: "903460857678",
-  appId: "1:903460857678:web:aae3b54d08566b3f52e01f",
-  measurementId: "G-6QEJYK48YF"            "PASTE_YOUR_appId_HERE"
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBhVnA88w6m8IuTdMHwiU4a8dAokZYe5yI",
+  authDomain: "testimonial-36c85.firebaseapp.com",
+  projectId: "testimonial-36c85",
+  storageBucket: "testimonial-36c85.firebasestorage.app",
+  messagingSenderId: "306963770913",
+  appId: "1:306963770913:web:a0ce3e5882116e91ef7d60",
+  measurementId: "G-T471Y2FCHF"
 };
 // ─────────────────────────────────────────────
 
@@ -295,7 +300,7 @@ import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, serve
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // Detect if config is filled in
-const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "PASTE_YOUR_apiKey_HERE";
+const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "AIzaSyBhVnA88w6m8IuTdMHwiU4a8dAokZYe5yI";
 
 let db = null;
 if(IS_CONFIGURED){
