@@ -293,8 +293,7 @@ var FB_CONFIG = {
 var LS_KEY = 'sandeep_testimonials_v1';
 
 // ── DEMO DATA (localStorage fallback) ──
-  <!--
-
+var DEMO = [];
 
 // ── STATE ──
 var selectedRating = 5;
@@ -349,18 +348,18 @@ function submitTestimonial(){
   var entry = {
     name:name, company:company, role:role,
     linkedin:linkedin, message:message,
-    rating:selectedRating, approved:true,
+    rating:selectedRating, approved:false,
     ts: Math.floor(Date.now()/1000)
   };
 
   function onSuccess(){
-    showMsg('success','🎉 Thank you! Your testimonial is now live on the page!');
+    showMsg('success','🎉 Thank you! Your testimonial has been submitted and will appear after review.');
     ['f-name','f-company','f-role','f-linkedin','f-message'].forEach(function(id){
       document.getElementById(id).value='';
     });
     document.getElementById('char-num').textContent='0';
     setRating(5);
-    showToast('✅ Testimonial published live!','ok');
+    showToast('✅ Submitted! It will appear after admin approval.','ok');
     btn.disabled=false; btn.textContent='Send Testimonial →';
     // Reload testimonials so new one appears immediately
     setTimeout(function(){
