@@ -349,19 +349,40 @@ function submitTestimonial(){
   var entry = {
     name:name, company:company, role:role,
     linkedin:linkedin, message:message,
-    rating:selectedRating, approved:false,
+    rating:selectedRating, approved:true,
     ts: Math.floor(Date.now()/1000)
   };
 
   function onSuccess(){
-    showMsg('success','🎉 Thank you! Your testimonial has been submitted and will appear after review.');
+    showMsg('success','🎉 Thank you! Your testimonial is now live on the page!');
     ['f-name','f-company','f-role','f-linkedin','f-message'].forEach(function(id){
       document.getElementById(id).value='';
     });
     document.getElementById('char-num').textContent='0';
     setRating(5);
-    showToast('Testimonial submitted! Awaiting review.','ok');
+    showToast('✅ Testimonial published live!','ok');
     btn.disabled=false; btn.textContent='Send Testimonial →';
+    // Reload testimonials so new one appears immediately
+    setTimeout(function(){
+      if(isFirebaseLive && firestoreDb){
+        firestoreDb.collection('testimonials')
+          .where('approved','==',true)
+          .orderBy('createdAt','desc')
+          .get()
+          .then(function(snap){
+            allTestimonials = snap.docs.map(function(d){
+              var data=d.data();
+              return Object.assign({id:d.id},data,{ts:data.createdAt?data.createdAt.seconds:0});
+            });
+            renderAll();
+          });
+      } else {
+        // localStorage: mark the new local entry as approved:true
+        var arr = loadLocal();
+        allTestimonials = arr.filter(function(t){ return t.approved; });
+        renderAll();
+      }
+    }, 800);
   }
   function onError(e){
     showMsg('error','Something went wrong. Please try again.');

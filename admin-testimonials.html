@@ -162,6 +162,33 @@ body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;m
   </div>
 
   <div class="admin-main">
+  <!-- ── SETUP GUIDE BANNER (remove after setup) ── -->
+  <div id="setup-guide" style="background:rgba(240,165,0,0.08);border:1px solid rgba(240,165,0,0.3);border-radius:12px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;display:none;">
+    <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--gold);font-size:0.9rem;margin-bottom:0.8rem;">⚙️ One-Time Firebase Setup Required</div>
+    <ol style="color:var(--muted);font-size:0.83rem;line-height:1.9;padding-left:1.3rem;">
+      <li>Go to <a href="https://console.firebase.google.com" target="_blank" style="color:var(--teal)">console.firebase.google.com</a> → your project <strong style="color:var(--text)">testimonial-36c85</strong></li>
+      <li><strong style="color:var(--text)">Enable Authentication:</strong> Build → Authentication → Sign-in method → Enable <strong>Email/Password</strong></li>
+      <li><strong style="color:var(--text)">Create admin user:</strong> Authentication → Users → Add user → Email: <code style="color:var(--teal)">sandeepec035@gmail.com</code> → set a strong password</li>
+      <li><strong style="color:var(--text)">Update Firestore Rules:</strong> Firestore → Rules → paste the rules below → Publish</li>
+      <li>Come back and sign in with <strong style="color:var(--text)">sandeepec035@gmail.com</strong> and the password you set</li>
+    </ol>
+    <div style="margin-top:1rem;background:#0d1117;border-radius:8px;padding:1rem;font-family:'Fira Code',monospace;font-size:0.78rem;color:#e6edf3;">
+      <div style="color:var(--teal);margin-bottom:0.5rem;">// Paste this in Firestore → Rules → Publish</div>
+      rules_version = '2';<br>
+      service cloud.firestore {<br>
+      &nbsp;&nbsp;match /databases/{database}/documents {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;match /testimonials/{docId} {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--muted)">// Public: read approved only, create new</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow read: if resource.data.approved == true;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow create: if true;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--muted)">// Admin: full access when signed in</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow read, update, delete: if request.auth != null<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;&amp; request.auth.token.email == 'sandeepec035@gmail.com';<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+      &nbsp;&nbsp;}<br>
+      }
+    </div>
+  </div>
 
     <!-- STATS -->
     <div class="admin-stats">
@@ -181,6 +208,7 @@ body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;m
     <!-- TOOLBAR -->
     <div class="admin-toolbar">
       <input class="admin-search" type="text" id="admin-search" placeholder="Search by name, company, message…" oninput="renderTable()"/>
+      <button onclick="loadAll()" style="background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:.55rem 1rem;cursor:pointer;font-size:.82rem;" title="Refresh from Firestore">🔄 Refresh</button>
       <select class="admin-sort" id="admin-sort" onchange="renderTable()">
         <option value="newest">Newest First</option>
         <option value="oldest">Oldest First</option>
@@ -269,7 +297,7 @@ if(IS_CONFIGURED){
       showAdminShell(user);
     } else if(user){
       signOut(auth);
-      showErr('Access denied. Not an admin account.');
+      showErr('Access denied. Only sandeepec035@gmail.com can access this panel.');
     } else {
       document.getElementById('login-gate').classList.remove('hidden');
       document.getElementById('admin-shell').classList.remove('show');
@@ -319,7 +347,10 @@ function showAdminShell(user){
 function showAdminShellDemo(){
   document.getElementById('login-gate').classList.add('hidden');
   document.getElementById('admin-shell').classList.add('show');
-  document.getElementById('ab-user-email').textContent = 'demo@admin.com (demo mode)';
+  document.getElementById('ab-user-email').textContent = 'DEMO MODE — Firebase not configured yet';
+  // Show setup guide
+  var guide = document.getElementById('setup-guide');
+  if(guide) guide.style.display = 'block';
   allDocs = DEMO_DOCS;
   renderAll();
 }
@@ -339,7 +370,23 @@ async function loadAll(){
     const q = query(collection(db,'testimonials'), orderBy('createdAt','desc'));
     const snap = await getDocs(q);
     allDocs = snap.docs.map(d=>({id:d.id,...d.data()}));
-  } catch(e){ console.error(e); allDocs=[]; }
+    if(allDocs.length === 0){
+      showToast('No testimonials found yet. Submit one from the public page!','');
+    }
+  } catch(e){
+    console.error('Firestore read error:', e);
+    // Common errors:
+    if(e.code === 'permission-denied'){
+      showToast('⚠ Permission denied — update your Firestore Security Rules (see setup guide)','error');
+      var guide = document.getElementById('setup-guide');
+      if(guide) guide.style.display = 'block';
+    } else if(e.code === 'failed-precondition'){
+      showToast('⚠ Firestore index needed — check Firebase console for index creation link','error');
+    } else {
+      showToast('Error loading: ' + e.message,'error');
+    }
+    allDocs=[];
+  }
   renderAll();
 }
 
