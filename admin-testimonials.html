@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin — Testimonials</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#070d1a;--navy2:#0d1525;--card:#111e35;--card2:#152240;
+  --border:#1a2d4a;--border2:#243d5e;
+  --gold:#f0a500;--gold2:#ffc93a;--teal:#00c9a7;
+  --text:#dde6f0;--muted:#6d8aaa;--white:#fff;
+  --red:#ef4444;--green:#22c55e;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+
+/* ── LOGIN GATE ── */
+#login-gate{position:fixed;inset:0;background:var(--navy);z-index:900;display:flex;align-items:center;justify-content:center;padding:1.5rem;}
+#login-gate.hidden{display:none;}
+.lg-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.5rem 2.2rem;max-width:400px;width:100%;text-align:center;position:relative;overflow:hidden;}
+.lg-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));}
+.lg-icon{font-size:2rem;margin-bottom:.6rem;}
+.lg-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:var(--white);margin-bottom:.3rem;}
+.lg-sub{font-size:.8rem;color:var(--muted);margin-bottom:1.8rem;line-height:1.6;}
+.lg-field{margin-bottom:1rem;text-align:left;}
+.lg-field label{display:block;font-size:.68rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem;}
+.lg-field input{width:100%;background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:.65rem 1rem;color:var(--white);font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s;}
+.lg-field input:focus{border-color:var(--gold);}
+.lg-btn{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;padding:.75rem;border:none;border-radius:10px;cursor:pointer;transition:opacity .2s;margin-bottom:.8rem;}
+.lg-btn:hover{opacity:.88;}
+.lg-divider{display:flex;align-items:center;gap:.8rem;margin:.8rem 0;color:var(--muted);font-size:.72rem;}
+.lg-divider::before,.lg-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.lg-google{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:.7rem;color:var(--white);font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:border-color .2s;display:flex;align-items:center;justify-content:center;gap:.6rem;}
+.lg-google:hover{border-color:var(--border2);}
+.lg-err{font-size:.75rem;color:#fca5a5;min-height:1.2em;margin-top:.5rem;}
+.lg-note{font-size:.72rem;color:var(--muted);margin-top:.8rem;line-height:1.5;}
+
+/* ── ADMIN SHELL ── */
+#admin-shell{display:none;}
+#admin-shell.show{display:block;}
+
+/* top bar */
+.admin-bar{background:var(--card);border-bottom:1px solid var(--border);padding:.75rem 5%;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.ab-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--white);display:flex;align-items:center;gap:.6rem;}
+.ab-badge{font-size:.62rem;background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.25);padding:.15rem .5rem;border-radius:4px;font-weight:700;letter-spacing:1px;}
+.ab-right{display:flex;align-items:center;gap:1rem;}
+.ab-user{font-size:.78rem;color:var(--muted);}
+.ab-logout{font-family:'Syne',sans-serif;font-weight:700;font-size:.72rem;padding:.3rem .8rem;border-radius:7px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;transition:all .2s;}
+.ab-logout:hover{border-color:var(--red);color:#fca5a5;}
+
+/* main */
+.admin-main{max-width:1100px;margin:0 auto;padding:2rem 5%;}
+
+/* stats row */
+.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+.as-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.3rem;}
+.as-num{font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem;line-height:1;margin-bottom:.2rem;}
+.as-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
+
+/* tabs */
+.admin-tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;border-bottom:1px solid var(--border);padding-bottom:0;}
+.atab{font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;padding:.55rem 1.1rem;border-radius:8px 8px 0 0;cursor:pointer;border:1px solid transparent;border-bottom:none;color:var(--muted);transition:all .2s;position:relative;top:1px;}
+.atab:hover{color:var(--white);}
+.atab.active{background:var(--card);border-color:var(--border);color:var(--white);}
+.atab .atab-count{font-size:.65rem;background:var(--border);border-radius:10px;padding:.1rem .4rem;margin-left:.3rem;}
+.atab.active .atab-count.pending{background:rgba(240,165,0,.2);color:var(--gold);}
+
+/* search / filter */
+.admin-toolbar{display:flex;gap:.8rem;margin-bottom:1.2rem;flex-wrap:wrap;align-items:center;}
+.admin-search{flex:1;min-width:180px;background:var(--card);border:1px solid var(--border);border-radius:9px;padding:.55rem 1rem;color:var(--white);font-family:'DM Sans',sans-serif;font-size:.83rem;outline:none;}
+.admin-search:focus{border-color:var(--border2);}
+.admin-search::placeholder{color:var(--muted);}
+.admin-sort{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:.55rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.83rem;outline:none;cursor:pointer;}
+
+/* table */
+.admin-table-wrap{overflow-x:auto;}
+.admin-table{width:100%;border-collapse:collapse;font-size:.82rem;}
+.admin-table th{background:rgba(240,165,0,.06);color:var(--gold);font-family:'Syne',sans-serif;font-weight:700;font-size:.68rem;letter-spacing:1px;text-transform:uppercase;padding:.65rem .9rem;text-align:left;border-bottom:2px solid rgba(240,165,0,.15);white-space:nowrap;}
+.admin-table td{padding:.75rem .9rem;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text);}
+.admin-table tr:hover td{background:rgba(255,255,255,.015);}
+.admin-table tr.pending-row td{border-left:2px solid var(--gold);}
+/* name cell */
+.td-person{display:flex;align-items:center;gap:.65rem;}
+.td-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--teal));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.72rem;color:var(--navy);flex-shrink:0;}
+.td-name{font-weight:600;color:var(--white);font-size:.83rem;}
+.td-role{font-size:.71rem;color:var(--muted);}
+/* status badge */
+.status-badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.65rem;font-weight:700;padding:.18rem .55rem;border-radius:4px;font-family:'Syne',sans-serif;}
+.sb-pending{background:rgba(240,165,0,.12);color:var(--gold);border:1px solid rgba(240,165,0,.25);}
+.sb-approved{background:rgba(34,197,94,.1);color:#86efac;border:1px solid rgba(34,197,94,.25);}
+/* quote cell */
+.td-quote{font-size:.8rem;color:var(--muted);line-height:1.6;max-width:320px;}
+.td-quote-full{max-width:none;}
+/* action buttons */
+.action-btns{display:flex;gap:.4rem;flex-wrap:nowrap;}
+.act-btn{font-family:'Syne',sans-serif;font-weight:700;font-size:.68rem;padding:.3rem .7rem;border-radius:6px;border:none;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.act-approve{background:rgba(34,197,94,.12);color:#86efac;border:1px solid rgba(34,197,94,.25);}
+.act-approve:hover{background:rgba(34,197,94,.22);}
+.act-delete{background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.2);}
+.act-delete:hover{background:rgba(239,68,68,.2);}
+.act-view{background:var(--card2);color:var(--muted);border:1px solid var(--border);}
+.act-view:hover{color:var(--white);}
+
+/* modal for full view */
+.modal-overlay{position:fixed;inset:0;background:rgba(7,13,26,.96);z-index:500;display:none;align-items:center;justify-content:center;padding:1rem;}
+.modal-overlay.open{display:flex;}
+.modal-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;max-width:520px;width:100%;position:relative;}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;}
+.modal-quote{font-size:.92rem;color:var(--text);line-height:1.8;font-style:italic;margin-bottom:1.2rem;border-left:3px solid var(--gold);padding-left:1rem;}
+.modal-meta p{font-size:.8rem;color:var(--muted);margin-bottom:.3rem;}
+.modal-meta strong{color:var(--text);}
+.modal-actions{display:flex;gap:.6rem;margin-top:1.3rem;}
+
+/* empty */
+.admin-empty{text-align:center;padding:3rem 1rem;color:var(--muted);}
+.admin-empty-icon{font-size:2.5rem;margin-bottom:.7rem;opacity:.5;}
+
+/* toast */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.8rem 1.2rem;font-size:.82rem;color:var(--white);z-index:600;transform:translateY(60px);opacity:0;transition:all .3s;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{border-color:rgba(34,197,94,.35);}
+.toast.error{border-color:rgba(239,68,68,.35);}
+
+@media(max-width:700px){
+  .admin-stats{grid-template-columns:1fr 1fr;}
+  .admin-table th:nth-child(3),.admin-table td:nth-child(3){display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN GATE ── -->
+<div id="login-gate">
+  <div class="lg-card">
+    <div class="lg-icon">⚙️</div>
+    <div class="lg-title">Admin Panel</div>
+    <div class="lg-sub">Sign in with your admin account to manage testimonials.</div>
+    <div class="lg-field"><label>Email</label><input type="email" id="lg-email" placeholder="your@email.com"/></div>
+    <div class="lg-field"><label>Password</label><input type="password" id="lg-pass" placeholder="Password"/></div>
+    <button class="lg-btn" onclick="adminEmailLogin()">Sign In →</button>
+    <div class="lg-divider">or</div>
+    <button class="lg-google" onclick="adminGoogleLogin()">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.6 2.5 30.1 0 24 0 14.7 0 6.7 5.4 2.7 13.3l7.9 6.1C12.5 13.3 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.5 2.9-2.2 5.4-4.7 7l7.3 5.7c4.3-4 6.8-9.9 6.8-16.7z"/><path fill="#FBBC05" d="M10.6 28.6A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l8-6.2z"/><path fill="#34A853" d="M24 48c6.1 0 11.3-2 15-5.4l-7.3-5.7c-2 1.4-4.6 2.2-7.7 2.2-6.2 0-11.5-4.2-13.4-9.8l-8 6.2C6.7 42.6 14.7 48 24 48z"/></svg>
+      Continue with Google
+    </button>
+    <div class="lg-err" id="lg-err"></div>
+    <div class="lg-note">Only authorised admin accounts can access this panel.</div>
+  </div>
+</div>
+
+<!-- ── ADMIN SHELL ── -->
+<div id="admin-shell">
+  <div class="admin-bar">
+    <div class="ab-title">⚙️ Testimonials Admin <span class="ab-badge">ADMIN</span></div>
+    <div class="ab-right">
+      <span class="ab-user" id="ab-user-email"></span>
+      <a href="testimonials.html" style="font-size:.75rem;color:var(--teal);text-decoration:none;">← View Public Page</a>
+      <button class="ab-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="admin-main">
+  <!-- ── SETUP GUIDE BANNER (remove after setup) ── -->
+  <div id="setup-guide" style="background:rgba(240,165,0,0.08);border:1px solid rgba(240,165,0,0.3);border-radius:12px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;display:none;">
+    <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--gold);font-size:0.9rem;margin-bottom:0.8rem;">⚙️ One-Time Firebase Setup Required</div>
+    <ol style="color:var(--muted);font-size:0.83rem;line-height:1.9;padding-left:1.3rem;">
+      <li>Go to <a href="https://console.firebase.google.com" target="_blank" style="color:var(--teal)">console.firebase.google.com</a> → your project <strong style="color:var(--text)">testimonial-36c85</strong></li>
+      <li><strong style="color:var(--text)">Enable Authentication:</strong> Build → Authentication → Sign-in method → Enable <strong>Email/Password</strong></li>
+      <li><strong style="color:var(--text)">Create admin user:</strong> Authentication → Users → Add user → Email: <code style="color:var(--teal)">sandeepec035@gmail.com</code> → set a strong password</li>
+      <li><strong style="color:var(--text)">Update Firestore Rules:</strong> Firestore → Rules → paste the rules below → Publish</li>
+      <li>Come back and sign in with <strong style="color:var(--text)">sandeepec035@gmail.com</strong> and the password you set</li>
+    </ol>
+    <div style="margin-top:1rem;background:#0d1117;border-radius:8px;padding:1rem;font-family:'Fira Code',monospace;font-size:0.78rem;color:#e6edf3;">
+      <div style="color:var(--teal);margin-bottom:0.5rem;">// Paste this in Firestore → Rules → Publish</div>
+      rules_version = '2';<br>
+      service cloud.firestore {<br>
+      &nbsp;&nbsp;match /databases/{database}/documents {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;match /testimonials/{docId} {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--muted)">// Public: read approved only, create new</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow read: if resource.data.approved == true;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow create: if true;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--muted)">// Admin: full access when signed in</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow read, update, delete: if request.auth != null<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;&amp; request.auth.token.email == 'sandeepec035@gmail.com';<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+      &nbsp;&nbsp;}<br>
+      }
+    </div>
+  </div>
+
+    <!-- STATS -->
+    <div class="admin-stats">
+      <div class="as-card"><div class="as-num" id="as-total" style="color:var(--gold)">0</div><div class="as-label">Total</div></div>
+      <div class="as-card"><div class="as-num" id="as-pending" style="color:var(--gold)">0</div><div class="as-label">Pending Review</div></div>
+      <div class="as-card"><div class="as-num" id="as-approved" style="color:var(--teal)">0</div><div class="as-label">Approved</div></div>
+      <div class="as-card"><div class="as-num" id="as-avg" style="color:var(--teal)">—</div><div class="as-label">Avg Rating</div></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="admin-tabs">
+      <div class="atab active" id="tab-pending" onclick="switchTab('pending')">Pending Review <span class="atab-count pending" id="tc-pending">0</span></div>
+      <div class="atab" id="tab-approved" onclick="switchTab('approved')">Approved <span class="atab-count" id="tc-approved">0</span></div>
+      <div class="atab" id="tab-all" onclick="switchTab('all')">All <span class="atab-count" id="tc-all">0</span></div>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="admin-toolbar">
+      <input class="admin-search" type="text" id="admin-search" placeholder="Search by name, company, message…" oninput="renderTable()"/>
+      <button onclick="loadAll()" style="background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:.55rem 1rem;cursor:pointer;font-size:.82rem;" title="Refresh from Firestore">🔄 Refresh</button>
+      <select class="admin-sort" id="admin-sort" onchange="renderTable()">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="rating-high">Rating High→Low</option>
+        <option value="rating-low">Rating Low→High</option>
+      </select>
+    </div>
+
+    <!-- TABLE -->
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Person</th>
+            <th>Message</th>
+            <th>Rating</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="admin-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="admin-empty" id="admin-empty" style="display:none;">
+      <div class="admin-empty-icon">📭</div>
+      <p>No testimonials in this category.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- VIEW MODAL -->
+<div class="modal-overlay" id="view-modal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-content"></div>
+    <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════════════════════
+     FIREBASE ADMIN LOGIC
+     ══════════════════════════════════════════ -->
+<script type="module">
+// ─────────────────────────────────────────────
+// 🔧 PASTE YOUR FIREBASE CONFIG HERE
+// Same config as testimonials.html
+// ─────────────────────────────────────────────
+const FIREBASE_CONFIG = {
+apiKey: "AIzaSyBhVnA88w6m8IuTdMHwiU4a8dAokZYe5yI",
+  authDomain: "testimonial-36c85.firebaseapp.com",
+  projectId: "testimonial-36c85",
+  storageBucket: "testimonial-36c85.firebasestorage.app",
+  messagingSenderId: "306963770913",
+  appId: "1:306963770913:web:a0ce3e5882116e91ef7d60",
+  measurementId: "G-T471Y2FCHF"    
+};
+// ─────────────────────────────────────────────
+// 🔒 YOUR ADMIN EMAIL — only this email can access
+const ADMIN_EMAIL = "sandeepec035@gmail.com";
+// e.g. const ADMIN_EMAIL = "singhsandeep.ravindranath@gmail.com";
+// ─────────────────────────────────────────────
+
+import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc as firestoreDeleteDoc, orderBy, query, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "PASTE_YOUR_apiKey_HERE";
+
+let app, auth, db, allDocs = [], activeTab = 'pending';
+
+if(IS_CONFIGURED){
+  app  = initializeApp(FIREBASE_CONFIG);
+  auth = getAuth(app);
+  db   = getFirestore(app);
+
+  onAuthStateChanged(auth, user=>{
+    if(user && (user.email===ADMIN_EMAIL)){
+      showAdminShell(user);
+    } else if(user){
+      signOut(auth);
+      showErr('Access denied. Only sandeepec035@gmail.com can access this panel.');
+    } else {
+      document.getElementById('login-gate').classList.remove('hidden');
+      document.getElementById('admin-shell').classList.remove('show');
+    }
+  });
+} else {
+  // Demo mode — show mock data without Firebase
+  showAdminShellDemo();
+}
+
+// ── AUTH ──
+window.adminEmailLogin = async function(){
+  if(!IS_CONFIGURED){showAdminShellDemo();return;}
+  const email = document.getElementById('lg-email').value.trim();
+  const pass  = document.getElementById('lg-pass').value;
+  if(!email||!pass){showErr('Please fill in both fields.');return;}
+  try{ await signInWithEmailAndPassword(auth,email,pass); }
+  catch(e){ showErr(friendlyError(e.code)); }
+};
+
+window.adminGoogleLogin = async function(){
+  if(!IS_CONFIGURED){showAdminShellDemo();return;}
+  try{ await signInWithPopup(auth, new GoogleAuthProvider()); }
+  catch(e){ showErr(friendlyError(e.code)); }
+};
+
+window.doLogout = async function(){
+  if(IS_CONFIGURED) await signOut(auth);
+  else { document.getElementById('login-gate').classList.remove('hidden'); document.getElementById('admin-shell').classList.remove('show'); }
+};
+
+function showErr(msg){ document.getElementById('lg-err').textContent=msg; }
+
+function friendlyError(code){
+  const m={'auth/user-not-found':'No account found.','auth/wrong-password':'Incorrect password.','auth/invalid-email':'Invalid email.','auth/too-many-requests':'Too many attempts. Try later.'};
+  return m[code]||'Sign in failed. Check your credentials.';
+}
+
+// ── SHOW ADMIN ──
+function showAdminShell(user){
+  document.getElementById('login-gate').classList.add('hidden');
+  document.getElementById('admin-shell').classList.add('show');
+  document.getElementById('ab-user-email').textContent = user.email;
+  loadAll();
+}
+
+function showAdminShellDemo(){
+  document.getElementById('login-gate').classList.add('hidden');
+  document.getElementById('admin-shell').classList.add('show');
+  document.getElementById('ab-user-email').textContent = 'DEMO MODE — Firebase not configured yet';
+  // Show setup guide
+  var guide = document.getElementById('setup-guide');
+  if(guide) guide.style.display = 'block';
+  allDocs = DEMO_DOCS;
+  renderAll();
+}
+
+// ── DEMO DATA ──
+const DEMO_DOCS = [];
+
+// ── LOAD ALL ──
+async function loadAll(){
+  try{
+    const q = query(collection(db,'testimonials'), orderBy('createdAt','desc'));
+    const snap = await getDocs(q);
+    allDocs = snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(allDocs.length === 0){
+      showToast('No testimonials found yet. Submit one from the public page!','');
+    }
+  } catch(e){
+    console.error('Firestore read error:', e);
+    // Common errors:
+    if(e.code === 'permission-denied'){
+      showToast('⚠ Permission denied — update your Firestore Security Rules (see setup guide)','error');
+      var guide = document.getElementById('setup-guide');
+      if(guide) guide.style.display = 'block';
+    } else if(e.code === 'failed-precondition'){
+      showToast('⚠ Firestore index needed — check Firebase console for index creation link','error');
+    } else {
+      showToast('Error loading: ' + e.message,'error');
+    }
+    allDocs=[];
+  }
+  renderAll();
+}
+
+function renderAll(){
+  updateStats();
+  renderTable();
+}
+
+function updateStats(){
+  const total    = allDocs.length;
+  const pending  = allDocs.filter(d=>!d.approved).length;
+  const approved = allDocs.filter(d=>d.approved).length;
+  const avg      = total ? (allDocs.reduce((a,b)=>a+(b.rating||5),0)/total).toFixed(1) : '—';
+  document.getElementById('as-total').textContent   = total;
+  document.getElementById('as-pending').textContent = pending;
+  document.getElementById('as-approved').textContent= approved;
+  document.getElementById('as-avg').textContent     = avg;
+  document.getElementById('tc-pending').textContent = pending;
+  document.getElementById('tc-approved').textContent= approved;
+  document.getElementById('tc-all').textContent     = total;
+}
+
+window.switchTab = function(tab){
+  activeTab = tab;
+  ['pending','approved','all'].forEach(t=>{
+    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
+  });
+  renderTable();
+};
+
+window.renderTable = function(){
+  const search = document.getElementById('admin-search').value.toLowerCase();
+  const sort   = document.getElementById('admin-sort').value;
+
+  let list = [...allDocs];
+  // tab filter
+  if(activeTab==='pending')  list = list.filter(d=>!d.approved);
+  else if(activeTab==='approved') list = list.filter(d=>d.approved);
+  // search
+  if(search) list = list.filter(d=>
+    d.name?.toLowerCase().includes(search)||
+    d.company?.toLowerCase().includes(search)||
+    d.message?.toLowerCase().includes(search)
+  );
+  // sort
+  if(sort==='newest')      list.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  else if(sort==='oldest') list.sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
+  else if(sort==='rating-high') list.sort((a,b)=>(b.rating||5)-(a.rating||5));
+  else if(sort==='rating-low')  list.sort((a,b)=>(a.rating||5)-(b.rating||5));
+
+  const tbody = document.getElementById('admin-tbody');
+  const empty = document.getElementById('admin-empty');
+
+  if(!list.length){
+    tbody.innerHTML='';
+    empty.style.display='block';
+    return;
+  }
+  empty.style.display='none';
+  tbody.innerHTML = list.map(d=>{
+    const initials = d.name?.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase()||'?';
+    const stars = '⭐'.repeat(d.rating||5);
+    const date  = d.createdAt?.seconds ? new Date(d.createdAt.seconds*1000).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : '—';
+    const statusBadge = d.approved
+      ? `<span class="status-badge sb-approved">✅ Approved</span>`
+      : `<span class="status-badge sb-pending">⏳ Pending</span>`;
+    const approveBtn = !d.approved
+      ? `<button class="act-btn act-approve" onclick="approveTestimonial('${d.id}')">✓ Approve</button>` : '';
+    const msgShort = d.message?.length>80 ? d.message.substring(0,80)+'…' : d.message;
+    return `<tr class="${!d.approved?'pending-row':''}">
+      <td>
+        <div class="td-person">
+          <div class="td-avatar">${esc(initials)}</div>
+          <div>
+            <div class="td-name">${esc(d.name||'')}</div>
+            <div class="td-role">${esc(d.role||'')} · ${esc(d.company||'')}</div>
+          </div>
+        </div>
+      </td>
+      <td><div class="td-quote">${esc(msgShort)}</div></td>
+      <td style="font-size:.8rem;">${stars}</td>
+      <td style="font-size:.72rem;color:var(--muted);white-space:nowrap;">${date}</td>
+      <td>${statusBadge}</td>
+      <td>
+        <div class="action-btns">
+          <button class="act-btn act-view" onclick="viewDoc('${d.id}')">👁 View</button>
+          ${approveBtn}
+          <button class="act-btn act-delete" onclick="deleteTestimonial('${d.id}')">🗑 Delete</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+};
+
+// ── APPROVE ──
+window.approveTestimonial = async function(id){
+  if(IS_CONFIGURED){
+    try{ await updateDoc(doc(db,'testimonials',id),{approved:true}); }
+    catch(e){ showToast('Error: '+e.message,'error'); return; }
+  }
+  const d = allDocs.find(x=>x.id===id);
+  if(d){ d.approved=true; }
+  renderAll();
+  showToast('✅ Testimonial approved — now visible publicly.','success');
+  closeModal();
+};
+
+// ── DELETE ──
+window.deleteTestimonial = async function(id){
+  if(!confirm('Delete this testimonial permanently? This cannot be undone.')) return;
+  if(IS_CONFIGURED){
+    try{ await firestoreDeleteDoc(doc(db,'testimonials',id)); }
+    catch(e){ showToast('Error: '+e.message,'error'); return; }
+  }
+  allDocs = allDocs.filter(x=>x.id!==id);
+  renderAll();
+  showToast('🗑 Testimonial deleted.','error');
+  closeModal();
+};
+
+// ── VIEW MODAL ──
+window.viewDoc = function(id){
+  const d = allDocs.find(x=>x.id===id);
+  if(!d) return;
+  const stars = '⭐'.repeat(d.rating||5);
+  const date  = d.createdAt?.seconds ? new Date(d.createdAt.seconds*1000).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}) : '—';
+  document.getElementById('modal-content').innerHTML = `
+    <div style="font-size:.72rem;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:.8rem;">${stars}</div>
+    <div class="modal-quote">${esc(d.message)}</div>
+    <div class="modal-meta">
+      <p><strong>${esc(d.name)}</strong> · ${esc(d.role)} at ${esc(d.company)}</p>
+      ${d.linkedin?`<p><a href="${esc(d.linkedin)}" target="_blank" style="color:var(--teal);font-size:.78rem;">🔗 ${esc(d.linkedin)}</a></p>`:''}
+      <p style="margin-top:.4rem;">Submitted: ${date} · Status: ${d.approved?'<span style="color:#86efac">Approved</span>':'<span style="color:var(--gold)">Pending</span>'}</p>
+    </div>`;
+  const actions = document.getElementById('modal-actions');
+  actions.innerHTML = '';
+  if(!d.approved){
+    const ab = document.createElement('button');
+    ab.className='act-btn act-approve'; ab.textContent='✓ Approve';
+    ab.onclick=()=>approveTestimonial(id); actions.appendChild(ab);
+  }
+  const db2 = document.createElement('button');
+  db2.className='act-btn act-delete'; db2.textContent='🗑 Delete';
+  db2.onclick=()=>deleteTestimonial(id); actions.appendChild(db2);
+  const cb = document.createElement('button');
+  cb.className='act-btn act-view'; cb.textContent='Close';
+  cb.onclick=closeModal; actions.appendChild(cb);
+  document.getElementById('view-modal').classList.add('open');
+};
+
+window.closeModal = function(){
+  document.getElementById('view-modal').classList.remove('open');
+};
+
+// ── TOAST ──
+function showToast(text,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=text; t.className='toast show '+type;
+  setTimeout(()=>t.className='toast',3500);
+}
+
+function esc(s){ const d=document.createElement('div');d.textContent=s||'';return d.innerHTML; }
+</script>
+</body>
+</html>
