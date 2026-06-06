@@ -64,9 +64,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .field-full{grid-column:1/-1;}
 .char-count{font-size:.68rem;color:var(--muted);text-align:right;margin-top:.2rem;}
 .rating-row{display:flex;gap:.5rem;margin:.2rem 0;}
-.star{font-size:1.4rem;cursor:pointer;filter:grayscale(1);transition:filter .15s,transform .15s;}
-.star.active{filter:none;}
-.star:hover{transform:scale(1.2);}
+.star{font-size:1.8rem;cursor:pointer;color:#253a58;transition:color .12s,transform .12s;user-select:none;-webkit-user-select:none;touch-action:manipulation;line-height:1;}
+.star.active{color:var(--gold);}
+.star:hover{color:var(--gold);transform:scale(1.15);}
+.rating-row{display:flex;align-items:center;gap:.3rem;margin:.2rem 0;}
+.star-lbl{font-size:.78rem;color:var(--muted);margin-left:.4rem;}
 .submit-row{display:flex;align-items:center;justify-content:space-between;margin-top:1.2rem;gap:1rem;flex-wrap:wrap;}
 .submit-btn{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;padding:.7rem 2rem;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);transition:opacity .2s;}
 .submit-btn:hover{opacity:.88;}
@@ -210,11 +212,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
       <div class="field field-full">
         <label>Rating</label>
         <div class="rating-row" id="rating-row">
-          <span class="star" data-v="1" onclick="setRating(1)">⭐</span>
-          <span class="star" data-v="2" onclick="setRating(2)">⭐</span>
-          <span class="star" data-v="3" onclick="setRating(3)">⭐</span>
-          <span class="star" data-v="4" onclick="setRating(4)">⭐</span>
-          <span class="star" data-v="5" onclick="setRating(5)">⭐</span>
+        <div class="rating-row" id="rating-row">
+          <span class="star active" data-v="1" onclick="setRating(1)" onmouseover="hoverStar(1)" onmouseout="hoverStar(0)">★</span>
+          <span class="star active" data-v="2" onclick="setRating(2)" onmouseover="hoverStar(2)" onmouseout="hoverStar(0)">★</span>
+          <span class="star active" data-v="3" onclick="setRating(3)" onmouseover="hoverStar(3)" onmouseout="hoverStar(0)">★</span>
+          <span class="star active" data-v="4" onclick="setRating(4)" onmouseover="hoverStar(4)" onmouseout="hoverStar(0)">★</span>
+          <span class="star active" data-v="5" onclick="setRating(5)" onmouseover="hoverStar(5)" onmouseout="hoverStar(0)">★</span>
+          <span class="star-lbl" id="star-lbl">5 / 5</span>
+        </div>
         </div>
       </div>
     </div>
@@ -274,187 +279,69 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 <!-- ══════════════════════════════════════════
      FIREBASE SDK + APP LOGIC
      ══════════════════════════════════════════ -->
-<script type="module">
-// ─────────────────────────────────────────────
-// 🔧 PASTE YOUR FIREBASE CONFIG HERE
-// Get it from: Firebase Console → Project Settings → Your Apps → SDK setup
-// ─────────────────────────────────────────────
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBhVnA88w6m8IuTdMHwiU4a8dAokZYe5yI",
-  authDomain: "testimonial-36c85.firebaseapp.com",
-  projectId: "testimonial-36c85",
-  storageBucket: "testimonial-36c85.firebasestorage.app",
+<script>
+// ── FIREBASE CONFIG (your real project) ──
+var FB_CONFIG = {
+  apiKey:            "AIzaSyBhVnA88w6m8IuTdMHwiU4a8dAokZYe5yI",
+  authDomain:        "testimonial-36c85.firebaseapp.com",
+  projectId:         "testimonial-36c85",
+  storageBucket:     "testimonial-36c85.firebasestorage.app",
   messagingSenderId: "306963770913",
-  appId: "1:306963770913:web:a0ce3e5882116e91ef7d60",
-  measurementId: "G-T471Y2FCHF"
+  appId:             "1:306963770913:web:a0ce3e5882116e91ef7d60"
 };
-// ─────────────────────────────────────────────
 
-import { initializeApp }              from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, serverTimestamp }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+var LS_KEY = 'sandeep_testimonials_v1';
 
-// Detect if config is filled in
-const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "AIzaSyBhVnA88w6m8IuTdMHwiU4a8dAokZYe5yI";
-
-let db = null;
-if(IS_CONFIGURED){
-  const app = initializeApp(FIREBASE_CONFIG);
-  db = getFirestore(app);
-  document.getElementById('config-notice').style.display = 'none';
-}
-
-// ── DEMO DATA (shown when Firebase not yet configured) ──
-const DEMO = [
-  {id:'d1',name:'Arun Menon',company:'Bosch India',role:'Lead Embedded Engineer',linkedin:'https://linkedin.com/in/arunmenon',message:'Sandeep has an exceptional ability to bridge the gap between hardware and software. His work on the HIL test framework saved us weeks of validation time. Highly recommended for any safety-critical project.',rating:5,approved:true,createdAt:{seconds:1700000000}},
-  {id:'d2',name:'Priya Nair',company:'Klug Avalon Mechatronics',role:'Project Manager',linkedin:'',message:'Working with Sandeep on the SLI-2000 rollout was outstanding. He is thorough, communicates clearly, and delivers on time. His technical writing made our certification documentation much stronger.',rating:5,approved:true,createdAt:{seconds:1705000000}},
-  {id:'d3',name:'Mohammed Irfan',company:'DRDO',role:'Systems Engineer',linkedin:'https://linkedin.com/in/irfan',message:'Sandeep\'s understanding of AFCS bus architecture is deep. His blog articles on ARINC 429 and MIL-STD-1553 are the clearest explanations I\'ve found anywhere online — better than most textbooks.',rating:5,approved:true,createdAt:{seconds:1710000000}},
-  {id:'d4',name:'Lakshmi Venkat',company:'HAL',role:'Avionics Engineer',linkedin:'',message:'Collaborated on embedded firmware validation. Sandeep brings a methodical approach to test coverage that is exactly what DAL A software demands. Reliable, knowledgeable, and professional.',rating:4,approved:true,createdAt:{seconds:1715000000}},
-  {id:'d5',name:'Rahul Sharma',company:'TCS Engineering',role:'IoT Solutions Architect',linkedin:'https://linkedin.com/in/rahulsharma',message:'Sandeep\'s LMS and course content on IoT protocols is excellent. As someone who trains engineers professionally, I can say his explanation of LoRaWAN and MQTT is industry-grade quality.',rating:5,approved:true,createdAt:{seconds:1718000000}},
-  {id:'d6',name:'Deepak Krishnan',company:'Wipro Engineering',role:'Firmware Developer',linkedin:'',message:'Clear communicator, strong technical depth, and always willing to help. His MATLAB tutorials helped our team upskill faster than any other resource we tried.',rating:4,approved:true,createdAt:{seconds:1720000000}},
+// ── DEMO DATA (localStorage fallback) ──
+var DEMO = [
+  {id:'d1',name:'Arun Menon',company:'Bosch India',role:'Lead Embedded Engineer',linkedin:'https://linkedin.com/in/arunmenon',message:'Sandeep has an exceptional ability to bridge the gap between hardware and software. His work on the HIL test framework saved us weeks of validation time. Highly recommended for any safety-critical project.',rating:5,approved:true,ts:1700000000},
+  {id:'d2',name:'Priya Nair',company:'Klug Avalon Mechatronics',role:'Project Manager',linkedin:'',message:'Working with Sandeep on the SLI-2000 rollout was outstanding. He is thorough, communicates clearly, and delivers on time. His technical writing made our certification documentation much stronger.',rating:5,approved:true,ts:1705000000},
+  {id:'d3',name:'Mohammed Irfan',company:'DRDO',role:'Systems Engineer',linkedin:'https://linkedin.com/in/irfan',message:"Sandeep's blog articles on ARINC 429 and MIL-STD-1553 are the clearest explanations I've found anywhere online — better than most textbooks.",rating:5,approved:true,ts:1710000000},
+  {id:'d4',name:'Lakshmi Venkat',company:'HAL',role:'Avionics Engineer',linkedin:'',message:'Collaborated on embedded firmware validation. Sandeep brings a methodical approach to test coverage. Reliable, knowledgeable, and professional.',rating:4,approved:true,ts:1715000000},
+  {id:'d5',name:'Rahul Sharma',company:'TCS Engineering',role:'IoT Solutions Architect',linkedin:'',message:"Sandeep's LMS and course content on IoT protocols is excellent. His explanation of LoRaWAN and MQTT is industry-grade quality.",rating:5,approved:true,ts:1718000000},
+  {id:'d6',name:'Deepak Krishnan',company:'Wipro Engineering',role:'Firmware Developer',linkedin:'',message:'Clear communicator, strong technical depth, and always willing to help. His MATLAB tutorials helped our team upskill faster than any other resource we tried.',rating:4,approved:true,ts:1720000000}
 ];
 
 // ── STATE ──
-let allTestimonials = [];
-let currentFilter = 'all';
-let currentPage = 1;
-const PER_PAGE = 6;
-let selectedRating = 5;
+var selectedRating = 5;
+var currentFilter  = 'all';
+var currentPage    = 1;
+var PER_PAGE       = 6;
+var allTestimonials = [];
+var firestoreDb    = null;
+var isFirebaseLive = false;
 
-// ── INIT ──
-window.addEventListener('DOMContentLoaded', ()=>{ loadTestimonials(); });
-
-async function loadTestimonials(){
-  if(IS_CONFIGURED){
-    try{
-      const q = query(collection(db,'testimonials'), where('approved','==',true), orderBy('createdAt','desc'));
-      const snap = await getDocs(q);
-      allTestimonials = snap.docs.map(d=>({id:d.id,...d.data()}));
-    } catch(e){ console.error('Firestore error:',e); allTestimonials = DEMO; }
-  } else {
-    allTestimonials = DEMO;
-  }
-  renderAll();
-}
-
-function renderAll(){
-  updateStats();
-  updateFilterCounts();
-  renderGrid();
-}
-
-function updateStats(){
-  const t = allTestimonials;
-  document.getElementById('count-total').textContent = t.length;
-  const companies = new Set(t.map(x=>x.company)).size;
-  document.getElementById('count-companies').textContent = companies;
-  const avg = t.length ? (t.reduce((a,b)=>a+(b.rating||5),0)/t.length).toFixed(1) : '—';
-  document.getElementById('avg-rating').textContent = avg;
-}
-
-function updateFilterCounts(){
-  document.getElementById('fc-all').textContent = allTestimonials.length;
-  document.getElementById('fc-5').textContent = allTestimonials.filter(t=>t.rating===5).length;
-  document.getElementById('fc-4').textContent = allTestimonials.filter(t=>t.rating===4).length;
-}
-
-window.setFilter = function(f, btn){
-  currentFilter = f; currentPage = 1;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderGrid();
-};
-
-function getFiltered(){
-  let list = [...allTestimonials];
-  if(currentFilter==='5') list = list.filter(t=>t.rating===5);
-  else if(currentFilter==='4') list = list.filter(t=>t.rating===4);
-  else if(currentFilter==='latest') list.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-  else if(currentFilter==='oldest') list.sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
-  return list;
-}
-
-function renderGrid(){
-  const filtered = getFiltered();
-  const total = filtered.length;
-  const pages = Math.ceil(total/PER_PAGE);
-  const slice = filtered.slice((currentPage-1)*PER_PAGE, currentPage*PER_PAGE);
-
-  const grid = document.getElementById('testi-grid');
-  if(!total){
-    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-icon">💬</div><p>No testimonials yet.<br>Be the first to write one!</p></div>`;
-    document.getElementById('pagination').innerHTML='';
-    return;
-  }
-
-  grid.innerHTML = '';
-  slice.forEach((t,i)=>{
-    const card = document.createElement('div');
-    card.className='testi-card';
-    card.style.transitionDelay = (i*0.07)+'s';
-    const stars = '⭐'.repeat(t.rating||5);
-    const initials = t.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-    const dateStr = t.createdAt?.seconds ? new Date(t.createdAt.seconds*1000).toLocaleDateString('en-IN',{month:'short',year:'numeric'}) : '';
-    const liLink = t.linkedin ? `<a class="tc-li" href="${t.linkedin}" target="_blank" rel="noopener">🔗 LinkedIn</a>` : '';
-    card.innerHTML = `
-      <div class="tc-stars">${stars}</div>
-      <p class="tc-quote">${escHtml(t.message)}</p>
-      <div class="tc-person">
-        <div class="tc-avatar">${initials}</div>
-        <div>
-          <div class="tc-name">${escHtml(t.name)}</div>
-          <div class="tc-role">${escHtml(t.role)} · ${escHtml(t.company)}</div>
-          ${liLink}
-        </div>
-      </div>
-      <div class="tc-date">${dateStr}</div>`;
-    grid.appendChild(card);
-    requestAnimationFrame(()=>requestAnimationFrame(()=>card.classList.add('in')));
-  });
-
-  // pagination
-  const pg = document.getElementById('pagination');
-  pg.innerHTML='';
-  if(pages>1){
-    for(let i=1;i<=pages;i++){
-      const btn=document.createElement('button');
-      btn.className='pg-btn'+(i===currentPage?' active':'');
-      btn.textContent=i;
-      btn.onclick=()=>{ currentPage=i; renderGrid(); window.scrollTo({top:document.getElementById('testi-grid').offsetTop-100,behavior:'smooth'}); };
-      pg.appendChild(btn);
-    }
-  }
-}
-
-// ── FORM ──
-window.updateCharCount = function(){
-  const v = document.getElementById('f-message').value.length;
-  document.getElementById('char-num').textContent = v;
-};
-
-window.setRating = function(v){
+// ── STAR RATING ──
+function setRating(v){
   selectedRating = v;
-  document.querySelectorAll('.star').forEach(s=>{
-    s.classList.toggle('active', parseInt(s.dataset.v)<=v);
+  document.querySelectorAll('#rating-row .star').forEach(function(s){
+    s.classList.toggle('active', parseInt(s.getAttribute('data-v')) <= v);
   });
-};
-// default 5 stars active
-setRating(5);
+  var lbl = document.getElementById('star-lbl');
+  if(lbl) lbl.textContent = v + ' / 5';
+}
+function hoverStar(v){
+  var target = v > 0 ? v : selectedRating;
+  document.querySelectorAll('#rating-row .star').forEach(function(s){
+    s.classList.toggle('active', parseInt(s.getAttribute('data-v')) <= target);
+  });
+}
 
-window.submitTestimonial = async function(){
-  const name    = document.getElementById('f-name').value.trim();
-  const company = document.getElementById('f-company').value.trim();
-  const role    = document.getElementById('f-role').value.trim();
-  const linkedin= document.getElementById('f-linkedin').value.trim();
-  const message = document.getElementById('f-message').value.trim();
+// ── CHAR COUNT ──
+function updateCharCount(){
+  var v = (document.getElementById('f-message').value||'').length;
+  document.getElementById('char-num').textContent = v;
+}
 
-  const msg = document.getElementById('form-msg');
-  msg.style.display='none';
+// ── SUBMIT ──
+function submitTestimonial(){
+  var name     = (document.getElementById('f-name').value||'').trim();
+  var company  = (document.getElementById('f-company').value||'').trim();
+  var role     = (document.getElementById('f-role').value||'').trim();
+  var linkedin = (document.getElementById('f-linkedin').value||'').trim();
+  var message  = (document.getElementById('f-message').value||'').trim();
+  var msg      = document.getElementById('form-msg');
+  msg.style.display = 'none';
 
   if(!name||!company||!role||!message){
     showMsg('error','Please fill in all required fields (*).'); return;
@@ -462,57 +349,223 @@ window.submitTestimonial = async function(){
   if(message.length<20){ showMsg('error','Message must be at least 20 characters.'); return; }
   if(linkedin && !linkedin.startsWith('http')){ showMsg('error','LinkedIn URL must start with https://'); return; }
 
-  const btn = document.getElementById('submit-btn');
+  var btn = document.getElementById('submit-btn');
   btn.disabled=true; btn.textContent='Sending…';
 
-  const payload = { name, company, role, linkedin, message, rating:selectedRating, approved:false, createdAt: IS_CONFIGURED ? serverTimestamp() : {seconds:Date.now()/1000} };
+  var entry = {
+    name:name, company:company, role:role,
+    linkedin:linkedin, message:message,
+    rating:selectedRating, approved:false,
+    ts: Math.floor(Date.now()/1000)
+  };
 
-  try{
-    if(IS_CONFIGURED){
-      await addDoc(collection(db,'testimonials'), payload);
-    } else {
-      // Demo mode — just simulate
-      await new Promise(r=>setTimeout(r,800));
-    }
+  function onSuccess(){
     showMsg('success','🎉 Thank you! Your testimonial has been submitted and will appear after review.');
-    ['f-name','f-company','f-role','f-linkedin','f-message'].forEach(id=>document.getElementById(id).value='');
+    ['f-name','f-company','f-role','f-linkedin','f-message'].forEach(function(id){
+      document.getElementById(id).value='';
+    });
     document.getElementById('char-num').textContent='0';
     setRating(5);
-    showToast('Testimonial submitted! Awaiting review.','success');
-  } catch(e){
+    showToast('Testimonial submitted! Awaiting review.','ok');
+    btn.disabled=false; btn.textContent='Send Testimonial →';
+  }
+  function onError(e){
     showMsg('error','Something went wrong. Please try again.');
     console.error(e);
+    btn.disabled=false; btn.textContent='Send Testimonial →';
   }
-  btn.disabled=false; btn.textContent='Send Testimonial →';
-};
+
+  if(isFirebaseLive && firestoreDb){
+    // Save to Firestore
+    firestoreDb.collection('testimonials').add(
+      Object.assign({}, entry, { createdAt: firebase.firestore.FieldValue.serverTimestamp() })
+    ).then(onSuccess).catch(onError);
+  } else {
+    // Save to localStorage
+    var local = entry;
+    local.id = 'u'+Date.now();
+    var arr = loadLocal();
+    arr.unshift(local);
+    saveLocal(arr);
+    onSuccess();
+  }
+}
 
 function showMsg(type,text){
-  const el = document.getElementById('form-msg');
+  var el=document.getElementById('form-msg');
   el.className='form-msg '+type;
   el.textContent=text;
   el.style.display='block';
 }
 
-// ── TOAST ──
-function showToast(text, type=''){
-  const t=document.getElementById('toast');
-  t.textContent=text; t.className='toast show '+type;
-  setTimeout(()=>t.className='toast',3500);
+// ── FILTER ──
+function setFilter(f,btn){
+  currentFilter=f; currentPage=1;
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderGrid();
 }
-window.showToast = showToast;
 
-// ── ESCAPE ──
-function escHtml(s){ const d=document.createElement('div');d.textContent=s;return d.innerHTML; }
+function getFiltered(){
+  var list = allTestimonials.slice();
+  if(currentFilter==='5') list=list.filter(function(t){ return t.rating===5; });
+  else if(currentFilter==='4') list=list.filter(function(t){ return t.rating===4; });
+  if(currentFilter==='oldest') list.sort(function(a,b){ return (a.ts||0)-(b.ts||0); });
+  else list.sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
+  return list;
+}
+
+// ── RENDER ──
+function renderAll(){
+  var approved = allTestimonials.filter(function(t){ return t.approved; });
+  document.getElementById('count-total').textContent = approved.length;
+  var companies = {};
+  approved.forEach(function(t){ if(t.company) companies[t.company]=1; });
+  document.getElementById('count-companies').textContent = Object.keys(companies).length;
+  var avg = approved.length ? (approved.reduce(function(a,b){ return a+(b.rating||5); },0)/approved.length).toFixed(1) : '—';
+  document.getElementById('avg-rating').textContent = avg;
+  document.getElementById('fc-all').textContent = approved.length;
+  document.getElementById('fc-5').textContent   = approved.filter(function(t){ return t.rating===5; }).length;
+  document.getElementById('fc-4').textContent   = approved.filter(function(t){ return t.rating===4; }).length;
+  renderGrid();
+}
+
+function renderGrid(){
+  var filtered = getFiltered().filter(function(t){ return t.approved; });
+  var total    = filtered.length;
+  var pages    = Math.ceil(total/PER_PAGE);
+  var slice    = filtered.slice((currentPage-1)*PER_PAGE, currentPage*PER_PAGE);
+  var grid     = document.getElementById('testi-grid');
+
+  if(!total){
+    grid.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="empty-state-icon">💬</div><p>No testimonials yet.<br>Be the first to write one!</p></div>';
+    document.getElementById('pagination').innerHTML='';
+    return;
+  }
+
+  grid.innerHTML='';
+  slice.forEach(function(t,i){
+    var card=document.createElement('div');
+    card.className='testi-card';
+    card.style.transitionDelay=(i*0.07)+'s';
+    var stars='<span style="color:var(--gold)">'+'★'.repeat(t.rating||5)+'</span>'+'<span style="color:var(--border2)">'+'★'.repeat(5-(t.rating||5))+'</span>';
+    var init=(t.name||'?').split(' ').map(function(w){ return w[0]; }).join('').substring(0,2).toUpperCase();
+    var ts = t.ts || (t.createdAt && t.createdAt.seconds ? t.createdAt.seconds : 0);
+    var date=ts ? new Date(ts*1000).toLocaleDateString('en-IN',{month:'short',year:'numeric'}) : '';
+    var liHtml=t.linkedin ? '<a class="tc-li" href="'+esc(t.linkedin)+'" target="_blank" rel="noopener">🔗 LinkedIn</a>' : '';
+    card.innerHTML=
+      '<div class="tc-stars">'+stars+'</div>'+
+      '<p class="tc-quote">'+esc(t.message)+'</p>'+
+      '<div class="tc-person">'+
+        '<div class="tc-avatar">'+init+'</div>'+
+        '<div>'+
+          '<div class="tc-name">'+esc(t.name)+'</div>'+
+          '<div class="tc-role">'+esc(t.role)+' · '+esc(t.company)+'</div>'+
+          liHtml+
+        '</div>'+
+      '</div>'+
+      '<div class="tc-date">'+date+'</div>';
+    grid.appendChild(card);
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ card.classList.add('in'); }); });
+  });
+
+  var pg=document.getElementById('pagination');
+  pg.innerHTML='';
+  if(pages>1){
+    for(var i=1;i<=pages;i++){
+      (function(p){
+        var b=document.createElement('button');
+        b.className='pg-btn'+(p===currentPage?' active':'');
+        b.textContent=p;
+        b.onclick=function(){ currentPage=p; renderGrid(); window.scrollTo({top:document.getElementById('testi-grid').offsetTop-100,behavior:'smooth'}); };
+        pg.appendChild(b);
+      })(i);
+    }
+  }
+}
+
+// ── TOAST ──
+function showToast(text,type){
+  var el=document.getElementById('toast');
+  el.textContent=text; el.className='toast show '+(type||'');
+  setTimeout(function(){ el.className='toast'; },3200);
+}
+
+// ── LOCAL STORAGE ──
+function loadLocal(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); }catch(e){ return []; } }
+function saveLocal(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
+
+function esc(s){ var d=document.createElement('div');d.textContent=s||'';return d.innerHTML; }
 
 // ── SCROLL PROGRESS ──
-window.addEventListener('scroll',()=>{
-  const s=document.documentElement;
+window.addEventListener('scroll',function(){
+  var s=document.documentElement;
   document.getElementById('rp').style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%';
 });
 
-// ── INTERSECTION OBSERVER ──
-const io = new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.1});
-document.querySelectorAll('.form-wrap,.filter-bar').forEach(el=>io.observe(el));
+// ── FIREBASE BOOT ──
+function loadFirebaseAndBoot(){
+  var sdks = [
+    'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js',
+    'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js'
+  ];
+  var loaded=0;
+  sdks.forEach(function(src){
+    var s=document.createElement('script');
+    s.src=src;
+    s.onload=function(){
+      loaded++;
+      if(loaded===sdks.length){
+        try{
+          firebase.initializeApp(FB_CONFIG);
+          firestoreDb = firebase.firestore();
+          isFirebaseLive = true;
+          // Load approved testimonials from Firestore
+          firestoreDb.collection('testimonials')
+            .where('approved','==',true)
+            .orderBy('createdAt','desc')
+            .get()
+            .then(function(snap){
+              allTestimonials = snap.docs.map(function(d){
+                var data=d.data();
+                return Object.assign({id:d.id},data,{
+                  ts: data.createdAt ? data.createdAt.seconds : 0
+                });
+              });
+              renderAll();
+            })
+            .catch(function(e){
+              console.warn('Firestore load failed, using localStorage:',e.message);
+              bootLocal();
+            });
+        } catch(e){
+          console.warn('Firebase init failed:',e.message);
+          bootLocal();
+        }
+      }
+    };
+    s.onerror=function(){ bootLocal(); };
+    document.head.appendChild(s);
+  });
+}
+
+function bootLocal(){
+  isFirebaseLive=false;
+  var local=loadLocal();
+  if(local.length===0){
+    saveLocal(DEMO);
+    allTestimonials=DEMO;
+  } else {
+    allTestimonials=local;
+  }
+  renderAll();
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded',function(){
+  setRating(5);
+  loadFirebaseAndBoot();
+});
 </script>
 </body>
 </html>
