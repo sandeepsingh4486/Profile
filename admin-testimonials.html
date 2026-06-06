@@ -280,7 +280,7 @@ const ADMIN_EMAIL = "sandeepec035@gmail.com";
 import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, orderBy, query, serverTimestamp }
+import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc as firestoreDeleteDoc, orderBy, query, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "PASTE_YOUR_apiKey_HERE";
@@ -454,7 +454,7 @@ window.renderTable = function(){
       ? `<span class="status-badge sb-approved">✅ Approved</span>`
       : `<span class="status-badge sb-pending">⏳ Pending</span>`;
     const approveBtn = !d.approved
-      ? `<button class="act-btn act-approve" onclick="approveDoc('${d.id}')">✓ Approve</button>` : '';
+      ? `<button class="act-btn act-approve" onclick="approveTestimonial('${d.id}')">✓ Approve</button>` : '';
     const msgShort = d.message?.length>80 ? d.message.substring(0,80)+'…' : d.message;
     return `<tr class="${!d.approved?'pending-row':''}">
       <td>
@@ -474,7 +474,7 @@ window.renderTable = function(){
         <div class="action-btns">
           <button class="act-btn act-view" onclick="viewDoc('${d.id}')">👁 View</button>
           ${approveBtn}
-          <button class="act-btn act-delete" onclick="deleteDoc('${d.id}')">🗑 Delete</button>
+          <button class="act-btn act-delete" onclick="deleteTestimonial('${d.id}')">🗑 Delete</button>
         </div>
       </td>
     </tr>`;
@@ -482,7 +482,7 @@ window.renderTable = function(){
 };
 
 // ── APPROVE ──
-window.approveDoc = async function(id){
+window.approveTestimonial = async function(id){
   if(IS_CONFIGURED){
     try{ await updateDoc(doc(db,'testimonials',id),{approved:true}); }
     catch(e){ showToast('Error: '+e.message,'error'); return; }
@@ -495,10 +495,10 @@ window.approveDoc = async function(id){
 };
 
 // ── DELETE ──
-window.deleteDoc = async function(id){
+window.deleteTestimonial = async function(id){
   if(!confirm('Delete this testimonial permanently? This cannot be undone.')) return;
   if(IS_CONFIGURED){
-    try{ await deleteDoc(doc(db,'testimonials',id)); }
+    try{ await firestoreDeleteDoc(doc(db,'testimonials',id)); }
     catch(e){ showToast('Error: '+e.message,'error'); return; }
   }
   allDocs = allDocs.filter(x=>x.id!==id);
@@ -526,11 +526,11 @@ window.viewDoc = function(id){
   if(!d.approved){
     const ab = document.createElement('button');
     ab.className='act-btn act-approve'; ab.textContent='✓ Approve';
-    ab.onclick=()=>approveDoc(id); actions.appendChild(ab);
+    ab.onclick=()=>approveTestimonial(id); actions.appendChild(ab);
   }
   const db2 = document.createElement('button');
   db2.className='act-btn act-delete'; db2.textContent='🗑 Delete';
-  db2.onclick=()=>deleteDoc(id); actions.appendChild(db2);
+  db2.onclick=()=>deleteTestimonial(id); actions.appendChild(db2);
   const cb = document.createElement('button');
   cb.className='act-btn act-view'; cb.textContent='Close';
   cb.onclick=closeModal; actions.appendChild(cb);
