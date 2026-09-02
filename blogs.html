@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Technical Blogs — Sandeep Singh R</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>:root{--navy:#0a0f1e;--navy2:#111827;--card:#151d30;--border:#1e2d45;--gold:#f0a500;--gold2:#ffc73a;--teal:#00c9a7;--text:#e2e8f0;--muted:#8898aa;--white:#ffffff;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;} html{scroll-behavior:smooth;}
+body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 5%;background:rgba(10,15,30,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);transition:padding 0.3s;}
+nav.scrolled{padding:0.7rem 5%;}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;color:var(--white);text-decoration:none;} .nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:1.8rem;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color 0.2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--gold);transition:width 0.3s;}
+.nav-links a:hover{color:var(--white);} .nav-links a:hover::after,.nav-links a.active::after{width:100%;} .nav-links a.active{color:var(--gold);}
+.nav-cta{background:var(--gold)!important;color:var(--navy)!important;padding:0.45rem 1.1rem;border-radius:6px;font-weight:700!important;} .nav-cta::after{display:none!important;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;} .hamburger span{display:block;width:24px;height:2px;background:var(--white);}
+.mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:var(--navy2);border-bottom:1px solid var(--border);padding:1.5rem 5%;z-index:99;flex-direction:column;gap:1.2rem;}
+.mobile-menu a{color:var(--text);text-decoration:none;font-size:1rem;font-weight:500;} .mobile-menu.open{display:flex;}
+.page-hero{padding:7rem 5% 3rem;background:var(--navy2);border-bottom:1px solid var(--border);position:relative;z-index:1;}
+.page-hero-inner{max-width:1200px;margin:0 auto;}
+.breadcrumb{font-size:0.78rem;color:var(--muted);margin-bottom:1rem;} .breadcrumb a{color:var(--gold);text-decoration:none;} .breadcrumb span{margin:0 0.4rem;}
+.page-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--white);letter-spacing:-1px;margin-bottom:0.5rem;} .page-title span{color:var(--gold);}
+.page-sub{color:var(--muted);font-size:1rem;max-width:540px;}
+section{padding:4rem 5%;position:relative;z-index:1;} .section-inner{max-width:1200px;margin:0 auto;}
+.section-tag{font-size:0.75rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:var(--white);letter-spacing:-0.5px;margin-bottom:0.5rem;}
+.section-sub{color:var(--muted);font-size:0.95rem;margin-bottom:2rem;}
+.divider{width:50px;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:2px;margin-bottom:1.5rem;}
+.btn-primary{display:inline-flex;align-items:center;gap:0.5rem;background:var(--gold);color:var(--navy);font-weight:700;font-size:0.95rem;padding:0.85rem 1.8rem;border-radius:8px;text-decoration:none;transition:all 0.25s;}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(240,165,0,0.3);}
+.btn-secondary{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;color:var(--text);font-weight:600;font-size:0.95rem;padding:0.85rem 1.8rem;border-radius:8px;text-decoration:none;border:1px solid var(--border);transition:all 0.25s;}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;} .fade-in.visible{opacity:1;transform:translateY(0);}
+footer{background:var(--navy);border-top:1px solid var(--border);padding:2rem 5%;text-align:center;color:var(--muted);font-size:0.82rem;position:relative;z-index:1;} footer a{color:var(--gold);text-decoration:none;} footer p+p{margin-top:0.4rem;}
+.scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--gold);color:var(--navy);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;z-index:99;opacity:0;transform:translateY(10px);transition:all 0.3s;text-decoration:none;} .scroll-top.visible{opacity:1;transform:translateY(0);}
+@media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}}
+.blogs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.8rem;}
+.blog-card{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:all 0.3s;display:flex;flex-direction:column;text-decoration:none;color:inherit;}
+.blog-card:hover{transform:translateY(-5px);border-color:rgba(240,165,0,0.3);box-shadow:0 20px 40px rgba(0,0,0,0.3);}
+.blog-banner{height:150px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;overflow:hidden;position:relative;} .blog-banner svg{width:100%;height:100%;} .blog-card:hover .blog-banner svg{transform:scale(1.04);transition:transform 0.4s ease;}
+.blog-banner.emb{background:linear-gradient(135deg,rgba(240,165,0,0.15),rgba(240,165,0,0.05));}
+.blog-banner.pro{background:linear-gradient(135deg,rgba(0,201,167,0.15),rgba(0,201,167,0.05));}
+.blog-banner.iot{background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(99,102,241,0.05));}
+.blog-banner.mat{background:linear-gradient(135deg,rgba(239,68,68,0.12),rgba(239,68,68,0.04));}
+.blog-body{padding:1.5rem;flex:1;display:flex;flex-direction:column;}
+.blog-meta{display:flex;gap:0.6rem;align-items:center;margin-bottom:0.8rem;flex-wrap:wrap;}
+.bcat{font-size:0.7rem;padding:0.15rem 0.6rem;border-radius:4px;font-weight:700;}
+.bcat.emb{background:rgba(240,165,0,0.1);color:var(--gold);border:1px solid rgba(240,165,0,0.2);}
+.bcat.pro{background:rgba(0,201,167,0.1);color:var(--teal);border:1px solid rgba(0,201,167,0.2);}
+.bcat.iot{background:rgba(99,102,241,0.1);color:#a5b4fc;border:1px solid rgba(99,102,241,0.2);}
+.bcat.mat{background:rgba(239,68,68,0.1);color:#fca5a5;border:1px solid rgba(239,68,68,0.2);}
+.btime{font-size:0.72rem;color:var(--muted);}
+.blog-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;color:var(--white);margin-bottom:0.6rem;line-height:1.3;}
+.blog-desc{font-size:0.85rem;color:var(--muted);line-height:1.7;flex:1;}
+.blog-footer{display:flex;justify-content:space-between;align-items:center;margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border);}
+.btags{display:flex;gap:0.4rem;flex-wrap:wrap;}
+.btag{font-size:0.68rem;padding:0.1rem 0.5rem;background:rgba(255,255,255,0.05);border-radius:4px;color:var(--muted);}
+.blog-link{font-size:0.8rem;color:var(--gold);text-decoration:none;font-weight:600;white-space:nowrap;}
+.topics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+.topic-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;transition:all 0.25s;}
+.topic-item:hover{border-color:var(--gold);transform:translateY(-2px);}
+.topic-icon{font-size:1.5rem;margin-bottom:0.4rem;}
+.topic-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.8rem;color:var(--white);}
+.blog-cta{background:var(--card);border:1px solid rgba(240,165,0,0.2);border-radius:20px;padding:2.5rem;text-align:center;position:relative;overflow:hidden;}
+.blog-cta::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));}
+.blog-cta h3{font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;color:var(--white);margin-bottom:0.7rem;}
+.blog-cta p{color:var(--muted);margin-bottom:1.5rem;}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+@media(max-width:900px){.blogs-grid{grid-template-columns:1fr;}.topics-grid{grid-template-columns:repeat(2,1fr);}}
+.blog-banner.lin{background:linear-gradient(135deg,#0a1628,#0d1f3c);}
+.bcat.lin{background:rgba(10,102,194,0.12);color:#7eb3f5;border:1px solid rgba(10,102,194,0.25);}</style>
+</head>
+<body>
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">Sandeep<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="experience.html">Experience</a></li>
+    <li><a href="certificates.html">Education</a></li>
+    <li><a href="papers.html">Publications</a></li>
+    <li><a href="blogs.html">Blogs</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="documents.html" class="nav-cta">📄 Resume</a></li>
+  </ul>
+  <div class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mm">
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="experience.html">Experience</a>
+  <a href="certificates.html">Education</a><a href="papers.html">Publications</a>
+  <a href="blogs.html">Blogs</a><a href="contact.html">Contact</a><a href="documents.html">📄 Resume</a>
+</div>
+<div class="page-hero"><div class="page-hero-inner">
+  <div class="breadcrumb"><a href="index.html">Home</a><span>›</span>Blogs</div>
+  <h1 class="page-title">Technical <span>Blogs</span></h1>
+  <p class="page-sub">Practical guides and engineering insights from 10+ years in embedded systems and project management.</p>
+</div></div>
+
+<section id="linkedin-articles" style="background:var(--navy2)"><div class="section-inner">
+  <div class="section-tag">LinkedIn Articles</div><div class="divider"></div>
+  <h2 class="section-title">Articles on <span style="color:var(--gold)">LinkedIn</span></h2>
+  <p class="section-sub">19 published articles on embedded engineering, safety-critical systems, AI, and project management.</p>
+  <div class="blogs-grid fade-in">
+    <a href="https://www.linkedin.com/pulse/engineering-behind-multi-factor-embedded-access-gsm-otp-singh-r-pmp--nfyyc" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <circle cx="300" cy="75" r="55" fill="none" stroke="#1a3a6e" stroke-width="2"/>
+  <circle cx="300" cy="75" r="42" fill="none" stroke="#0a66c2" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <rect x="270" y="52" width="60" height="46" rx="8" fill="#0d2040" stroke="#0a66c2" stroke-width="2"/>
+  <path d="M285 70 Q300 58 315 70 L315 78 Q300 72 285 78Z" fill="#0a66c2"/>
+  <rect x="292" y="70" width="16" height="20" rx="3" fill="#0a66c2"/>
+  <circle cx="300" cy="82" r="3" fill="#7eb3f5"/>
+  <circle cx="150" cy="40" r="4" fill="#0a66c2" opacity="0.6"/>
+  <circle cx="450" cy="110" r="4" fill="#0a66c2" opacity="0.6"/>
+  <circle cx="480" cy="35" r="3" fill="#7eb3f5" opacity="0.4"/>
+  <circle cx="120" cy="115" r="3" fill="#7eb3f5" opacity="0.4"/>
+  <line x1="150" y1="40" x2="258" y2="68" stroke="#0a66c2" stroke-width="1" opacity="0.4"/>
+  <line x1="450" y1="110" x2="342" y2="90" stroke="#0a66c2" stroke-width="1" opacity="0.4"/>
+  <text x="300" y="138" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">GSM · OTP · FINGERPRINT</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">Embedded Security</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">The Engineering Behind Multi-Factor Embedded Access Control: GSM OTP + Fingerprint + Local Authentication</div>
+        <div class="blog-desc">Security architecture combining GSM OTP, fingerprint, and local authentication — beyond just a password on a keypad.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">GSM</span><span class="btag">OTP</span><span class="btag">Fingerprint</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/from-block-diagram-product-how-i-approach-sandeep-singh-r-pmp--bv9ic" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <rect x="30" y="55" width="80" height="40" rx="4" fill="#0d2040" stroke="#f0a500" stroke-width="1.5"/>
+  <text x="70" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#f0a500">SENSOR</text>
+  <rect x="170" y="45" width="80" height="60" rx="4" fill="#0d2040" stroke="#0a66c2" stroke-width="1.5"/>
+  <text x="210" y="78" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5">MCU</text>
+  <rect x="310" y="50" width="80" height="50" rx="4" fill="#0d2040" stroke="#00c9a7" stroke-width="1.5"/>
+  <text x="350" y="78" text-anchor="middle" font-family="monospace" font-size="9" fill="#00c9a7">DRIVER</text>
+  <rect x="450" y="55" width="80" height="40" rx="4" fill="#0d2040" stroke="#f0a500" stroke-width="1.5"/>
+  <text x="490" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#f0a500">DISPLAY</text>
+  <line x1="110" y1="75" x2="170" y2="75" stroke="#f0a500" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="250" y1="75" x2="310" y2="75" stroke="#0a66c2" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="390" y1="75" x2="450" y2="75" stroke="#00c9a7" stroke-width="1.5" marker-end="url(#arr)"/>
+  <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6Z" fill="#7eb3f5"/></marker></defs>
+  <text x="300" y="138" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">BLOCK DIAGRAM → PRODUCT</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">System Architecture</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">From Block Diagram to Product: How I Approach Embedded-System Architecture</div>
+        <div class="blog-desc">From a simple sketch to a shipped product — the system-level thinking that bridges engineering and product leadership.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">Architecture</span><span class="btag">MCU</span><span class="btag">Product Dev</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/designing-sensor-failure-what-embedded-engineers-path-singh-r-pmp--wworc" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <polyline points="30,90 80,90 110,40 140,90 170,90 200,60 230,90 260,90 290,20 320,120 350,90 380,90" fill="none" stroke="#00c9a7" stroke-width="2"/>
+  <circle cx="290" cy="20" r="8" fill="none" stroke="#ef4444" stroke-width="2"/>
+  <line x1="286" y1="16" x2="294" y2="24" stroke="#ef4444" stroke-width="2"/>
+  <line x1="294" y1="16" x2="286" y2="24" stroke="#ef4444" stroke-width="2"/>
+  <polyline points="380,90 410,90 440,70 470,90 540,90" fill="none" stroke="#00c9a7" stroke-width="2" opacity="0.4" stroke-dasharray="5 4"/>
+  <rect x="250" y="100" width="100" height="28" rx="4" fill="#1a0a0a" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="300" y="118" text-anchor="middle" font-family="monospace" font-size="9" fill="#ef4444">FAULT DETECTED</text>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">SENSOR DIAGNOSTICS · FAULT HANDLING</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">Reliability &amp; Safety</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">Designing for Sensor Failure: What Embedded Engineers Should Consider Before Writing the Happy Path</div>
+        <div class="blog-desc">Fault detection, diagnostics, and failure handling — what to design before you write a single line of happy-path code.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">Sensors</span><span class="btag">Fault Detection</span><span class="btag">Firmware</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/edge-ai-vs-cloud-where-should-intelligence-live-sandeep-singh-r-pmp--wrric" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <rect x="40" y="35" width="140" height="80" rx="8" fill="#0d2040" stroke="#0a66c2" stroke-width="1.5"/>
+  <text x="110" y="60" text-anchor="middle" font-family="monospace" font-size="8" fill="#7eb3f5">EDGE DEVICE</text>
+  <circle cx="80" cy="82" r="12" fill="#0a66c2" opacity="0.3"/>
+  <circle cx="110" cy="82" r="12" fill="#0a66c2" opacity="0.5"/>
+  <circle cx="140" cy="82" r="12" fill="#0a66c2" opacity="0.7"/>
+  <text x="110" y="86" text-anchor="middle" font-family="monospace" font-size="7" fill="#fff">AI</text>
+  <rect x="420" y="20" width="140" height="110" rx="8" fill="#0d2040" stroke="#00c9a7" stroke-width="1.5"/>
+  <text x="490" y="45" text-anchor="middle" font-family="monospace" font-size="8" fill="#00c9a7">CLOUD</text>
+  <circle cx="455" cy="75" r="8" fill="#00c9a7" opacity="0.2"/>
+  <circle cx="475" cy="68" r="10" fill="#00c9a7" opacity="0.3"/>
+  <circle cx="500" cy="72" r="13" fill="#00c9a7" opacity="0.4"/>
+  <circle cx="525" cy="66" r="9" fill="#00c9a7" opacity="0.3"/>
+  <text x="490" y="100" text-anchor="middle" font-family="monospace" font-size="7" fill="#00c9a7">AI INFERENCE</text>
+  <line x1="185" y1="65" x2="415" y2="55" stroke="#f0a500" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <line x1="185" y1="85" x2="415" y2="95" stroke="#f0a500" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="300" y="77" text-anchor="middle" font-family="monospace" font-size="9" fill="#f0a500">VS</text>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">WHERE SHOULD INTELLIGENCE LIVE?</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">Edge AI</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">Edge AI vs Cloud AI: Where Should Intelligence Live in an Embedded Product?</div>
+        <div class="blog-desc">A practical framework for deciding where AI inference belongs — on the device, in the cloud, or split between both.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">Edge AI</span><span class="btag">Cloud AI</span><span class="btag">IoT</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/building-users-unlike-yourself-what-sign-language-me-singh-r-pmp--mfosc" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <circle cx="200" cy="60" r="22" fill="#0d2040" stroke="#0a66c2" stroke-width="2"/>
+  <circle cx="200" cy="52" r="10" fill="#0a66c2" opacity="0.6"/>
+  <path d="M175 80 Q200 95 225 80" fill="none" stroke="#0a66c2" stroke-width="2"/>
+  <circle cx="400" cy="60" r="22" fill="#0d2040" stroke="#00c9a7" stroke-width="2"/>
+  <circle cx="400" cy="52" r="10" fill="#00c9a7" opacity="0.6"/>
+  <path d="M375 80 Q400 95 425 80" fill="none" stroke="#00c9a7" stroke-width="2"/>
+  <path d="M230 62 Q300 30 370 62" fill="none" stroke="#f0a500" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <rect x="260" y="90" width="80" height="28" rx="4" fill="#0d2040" stroke="#f0a500" stroke-width="1.5"/>
+  <text x="300" y="108" text-anchor="middle" font-family="monospace" font-size="8" fill="#f0a500">EMPATHY</text>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">SIGN-LANGUAGE RECOGNITION · ACCESSIBILITY</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">User-Centric Design</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">Building for Users Unlike Yourself: What a Sign-Language Recognition Project Taught Me</div>
+        <div class="blog-desc">Lessons from co-authoring a real-time communication system for the deaf and mute — empathy as an engineering discipline.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">Accessibility</span><span class="btag">Embedded</span><span class="btag">PM</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/iot-lock-i-designed-before-buzzword-sandeep-singh-r-pmp--mjcfc" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <rect x="240" y="45" width="120" height="85" rx="8" fill="#0d2040" stroke="#0a66c2" stroke-width="2"/>
+  <path d="M268 65 Q300 40 332 65 L332 78 Q300 68 268 78Z" fill="#0a66c2"/>
+  <rect x="280" y="70" width="40" height="42" rx="4" fill="#0a66c2"/>
+  <circle cx="300" cy="95" r="5" fill="#0a1628"/>
+  <circle cx="100" cy="75" r="5" fill="#00c9a7" opacity="0.8"/>
+  <circle cx="160" cy="45" r="4" fill="#00c9a7" opacity="0.5"/>
+  <circle cx="160" cy="105" r="4" fill="#00c9a7" opacity="0.5"/>
+  <circle cx="500" cy="75" r="5" fill="#00c9a7" opacity="0.8"/>
+  <circle cx="440" cy="45" r="4" fill="#00c9a7" opacity="0.5"/>
+  <circle cx="440" cy="105" r="4" fill="#00c9a7" opacity="0.5"/>
+  <line x1="105" y1="75" x2="238" y2="75" stroke="#00c9a7" stroke-width="1" stroke-dasharray="4 3" opacity="0.6"/>
+  <line x1="362" y1="75" x2="495" y2="75" stroke="#00c9a7" stroke-width="1" stroke-dasharray="4 3" opacity="0.6"/>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">IoT ELECTRONIC LOCK · GSM TRACKING</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">IoT Innovation</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">The IoT Lock I Designed Before "IoT" Was a Buzzword</div>
+        <div class="blog-desc">In 2014, a paper on tracking cargo container pilferage using an electronic lock — practical IoT before the term existed.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">IoT</span><span class="btag">GSM</span><span class="btag">Innovation</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/hidden-engineering-behind-every-safe-crane-lift-sandeep-singh-r-pmp--tgxvc" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <rect x="160" y="110" width="20" height="30" fill="#1a3a6e"/>
+  <rect x="160" y="40" width="8" height="72" fill="#0a66c2"/>
+  <line x1="164" y1="40" x2="400" y2="40" stroke="#0a66c2" stroke-width="4"/>
+  <line x1="164" y1="40" x2="164" y2="30" stroke="#0a66c2" stroke-width="3"/>
+  <line x1="400" y1="40" x2="400" y2="80" stroke="#7eb3f5" stroke-width="2" stroke-dasharray="3 2"/>
+  <rect x="370" y="80" width="60" height="30" rx="3" fill="#0d2040" stroke="#f0a500" stroke-width="1.5"/>
+  <text x="400" y="99" text-anchor="middle" font-family="monospace" font-size="8" fill="#f0a500">2.4T</text>
+  <line x1="200" y1="40" x2="164" y2="110" stroke="#1a3a6e" stroke-width="1.5"/>
+  <line x1="280" y1="40" x2="164" y2="110" stroke="#1a3a6e" stroke-width="1.5"/>
+  <rect x="430" y="60" width="90" height="38" rx="4" fill="#0d2040" stroke="#00c9a7" stroke-width="1.5"/>
+  <text x="475" y="76" text-anchor="middle" font-family="monospace" font-size="7" fill="#00c9a7">SLI ACTIVE</text>
+  <text x="475" y="90" text-anchor="middle" font-family="monospace" font-size="7" fill="#f0a500">80% RLC</text>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">SAFE LOAD INDICATOR · LMI · CRANE SAFETY</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">Crane Safety</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">The Hidden Engineering Behind Every Safe Crane Lift</div>
+        <div class="blog-desc">The one number that decides if a lift is safe — how SLI/LMI systems work and the engineering behind every rated capacity decision.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">SLI</span><span class="btag">LMI</span><span class="btag">Crane Safety</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/from-firmware-engineer-pmp-what-decade-embedded-me-singh-r-pmp--sybqc" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <rect x="40" y="80" width="60" height="40" rx="4" fill="#0d2040" stroke="#0a66c2" stroke-width="1.5"/>
+  <text x="70" y="98" text-anchor="middle" font-family="monospace" font-size="7" fill="#7eb3f5">FIRMWARE</text>
+  <text x="70" y="110" text-anchor="middle" font-family="monospace" font-size="7" fill="#7eb3f5">ENGINEER</text>
+  <rect x="170" y="60" width="60" height="40" rx="4" fill="#0d2040" stroke="#00c9a7" stroke-width="1.5"/>
+  <text x="200" y="78" text-anchor="middle" font-family="monospace" font-size="7" fill="#00c9a7">TECH LEAD</text>
+  <text x="200" y="90" text-anchor="middle" font-family="monospace" font-size="7" fill="#00c9a7">/ MENTOR</text>
+  <rect x="300" y="40" width="60" height="40" rx="4" fill="#0d2040" stroke="#f0a500" stroke-width="1.5"/>
+  <text x="330" y="58" text-anchor="middle" font-family="monospace" font-size="7" fill="#f0a500">PRODUCT</text>
+  <text x="330" y="70" text-anchor="middle" font-family="monospace" font-size="7" fill="#f0a500">OWNER</text>
+  <rect x="430" y="20" width="60" height="40" rx="4" fill="#0d2040" stroke="#f0a500" stroke-width="2"/>
+  <text x="460" y="38" text-anchor="middle" font-family="monospace" font-size="7" fill="#f0a500">PMP®</text>
+  <text x="460" y="50" text-anchor="middle" font-family="monospace" font-size="7" fill="#f0a500">Sr. PM</text>
+  <polyline points="100,100 170,80 300,60 430,40" fill="none" stroke="#f0a500" stroke-width="2" stroke-dasharray="6 3"/>
+  <polygon points="430,36 442,40 430,44" fill="#f0a500"/>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">FIRMWARE ENGINEER → PMP® JOURNEY</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">Career &amp; Leadership</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">From Firmware Engineer to PMP®: What a Decade in Embedded Systems Taught Me About Building Products</div>
+        <div class="blog-desc">Six years writing firmware, then a shift to product leadership — what embedded engineering teaches you about building things that matter.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">PMP</span><span class="btag">Leadership</span><span class="btag">Product</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/where-ai-actually-helps-embedded-systems-development-yet-sandeep-ejrwc" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <rect x="220" y="30" width="160" height="90" rx="8" fill="#0d2040" stroke="#0a66c2" stroke-width="1.5"/>
+  <circle cx="260" cy="60" r="10" fill="#0a66c2" opacity="0.5"/>
+  <circle cx="300" cy="50" r="10" fill="#0a66c2" opacity="0.7"/>
+  <circle cx="340" cy="60" r="10" fill="#0a66c2" opacity="0.5"/>
+  <circle cx="260" cy="90" r="10" fill="#0a66c2" opacity="0.4"/>
+  <circle cx="300" cy="100" r="10" fill="#0a66c2" opacity="0.6"/>
+  <circle cx="340" cy="90" r="10" fill="#0a66c2" opacity="0.4"/>
+  <line x1="260" y1="60" x2="300" y2="50" stroke="#7eb3f5" stroke-width="1"/>
+  <line x1="300" y1="50" x2="340" y2="60" stroke="#7eb3f5" stroke-width="1"/>
+  <line x1="260" y1="60" x2="260" y2="90" stroke="#7eb3f5" stroke-width="1"/>
+  <line x1="340" y1="60" x2="340" y2="90" stroke="#7eb3f5" stroke-width="1"/>
+  <line x1="260" y1="90" x2="300" y2="100" stroke="#7eb3f5" stroke-width="1"/>
+  <line x1="300" y1="100" x2="340" y2="90" stroke="#7eb3f5" stroke-width="1"/>
+  <rect x="60" y="55" width="80" height="30" rx="4" fill="#0d2040" stroke="#00c9a7" stroke-width="1.5"/>
+  <text x="100" y="68" text-anchor="middle" font-family="monospace" font-size="7" fill="#00c9a7">✓ CODE REVIEW</text>
+  <text x="100" y="80" text-anchor="middle" font-family="monospace" font-size="7" fill="#00c9a7">✓ DOCS</text>
+  <rect x="460" y="55" width="80" height="30" rx="4" fill="#0d2040" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="500" y="68" text-anchor="middle" font-family="monospace" font-size="7" fill="#ef4444">✗ SAFETY</text>
+  <text x="500" y="80" text-anchor="middle" font-family="monospace" font-size="7" fill="#ef4444">✗ CRITICAL</text>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">WHERE AI HELPS · WHERE IT DOESN'T YET</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">AI &amp; Embedded</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">Where AI Actually Helps in Embedded Systems Development (and Where It Doesn't Yet)</div>
+        <div class="blog-desc">Honest take — AI is useful in the supporting layer. It has no place yet in the safety-critical decision path.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">AI</span><span class="btag">Edge Computing</span><span class="btag">TinyML</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/managing-projects-safety-critical-hardware-where-sandeep-singh-r-pmp--6jkrc" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <rect x="50" y="30" width="200" height="90" rx="6" fill="#0d2040" stroke="#0a66c2" stroke-width="1.5"/>
+  <text x="150" y="52" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5">AGILE SPRINTS</text>
+  <rect x="60" y="60" width="80" height="18" rx="3" fill="#0a66c2" opacity="0.6"/>
+  <text x="100" y="73" text-anchor="middle" font-family="monospace" font-size="7" fill="#fff">Sprint 1</text>
+  <rect x="60" y="84" width="80" height="18" rx="3" fill="#0a66c2" opacity="0.4"/>
+  <text x="100" y="97" text-anchor="middle" font-family="monospace" font-size="7" fill="#fff">Sprint 2</text>
+  <rect x="150" y="60" width="80" height="18" rx="3" fill="#0a66c2" opacity="0.3"/>
+  <text x="190" y="73" text-anchor="middle" font-family="monospace" font-size="7" fill="#fff">Sprint 3</text>
+  <rect x="350" y="30" width="200" height="90" rx="6" fill="#0d2040" stroke="#f0a500" stroke-width="1.5"/>
+  <text x="450" y="52" text-anchor="middle" font-family="monospace" font-size="9" fill="#f0a500">COMPLIANCE GATES</text>
+  <line x1="450" y1="58" x2="450" y2="112" stroke="#f0a500" stroke-width="1.5"/>
+  <circle cx="450" cy="68" r="5" fill="#f0a500"/>
+  <circle cx="450" cy="85" r="5" fill="#f0a500"/>
+  <circle cx="450" cy="102" r="5" fill="#f0a500"/>
+  <text x="462" y="71" font-family="monospace" font-size="7" fill="#f0a500">DO-178C</text>
+  <text x="462" y="88" font-family="monospace" font-size="7" fill="#f0a500">SIL Review</text>
+  <text x="462" y="105" font-family="monospace" font-size="7" fill="#f0a500">Cert Gate</text>
+  <line x1="252" y1="75" x2="348" y2="75" stroke="#00c9a7" stroke-width="2" stroke-dasharray="5 3"/>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">AGILE + COMPLIANCE · SAFETY-CRITICAL PM</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">Risk Management</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">Managing Projects in Safety-Critical Hardware: Where Agile Meets Compliance</div>
+        <div class="blog-desc">Agile works for execution; it breaks at compliance. The fix — sprints for engineering, fixed gates for certification, run in parallel.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">Agile</span><span class="btag">Compliance</span><span class="btag">PMP</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/safe-load-indicator-cranes-standards-guidelines-sandeep-singh-r-pmp--akdvf" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <circle cx="300" cy="80" r="60" fill="#0d2040" stroke="#0a66c2" stroke-width="2"/>
+  <path d="M300 80 L300 30" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <path d="M300 80 L340 95" stroke="#7eb3f5" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="300" cy="80" r="6" fill="#f0a500"/>
+  <path d="M250 80 A50 50 0 0 1 350 80" fill="none" stroke="#00c9a7" stroke-width="3" stroke-linecap="round"/>
+  <path d="M350 80 A50 50 0 0 1 300 30" fill="none" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <text x="300" y="58" text-anchor="middle" font-family="monospace" font-size="8" fill="#ef4444">OVERLOAD</text>
+  <text x="265" y="96" font-family="monospace" font-size="8" fill="#00c9a7">SAFE</text>
+  <rect x="430" y="50" width="110" height="50" rx="4" fill="#0d2040" stroke="#f0a500" stroke-width="1.5"/>
+  <text x="485" y="70" text-anchor="middle" font-family="monospace" font-size="8" fill="#f0a500">IEC 61508</text>
+  <text x="485" y="84" text-anchor="middle" font-family="monospace" font-size="8" fill="#7eb3f5">SIL 2</text>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">SLI · LMI · RCI · IS 4573 · IEC 61508</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">Safety Systems</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">Safe Load Indicator for Cranes: Standards, Guidelines &amp; Engineering Approach</div>
+        <div class="blog-desc">IS 4573, IEC 61508 SIL 2 architecture, sensor design, load chart implementation — the full engineering story behind SLI/LMI/RCI.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">SLI</span><span class="btag">IEC 61508</span><span class="btag">Cranes</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/understanding-spectrometers-silent-guardians-metal-singh-r-pmp--ol38f" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <rect x="40" y="50" width="120" height="60" rx="6" fill="#0d2040" stroke="#7eb3f5" stroke-width="1.5"/>
+  <text x="100" y="84" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5">X-RAY SOURCE</text>
+  <line x1="160" y1="80" x2="220" y2="80" stroke="#f0a500" stroke-width="2"/>
+  <polygon points="218,76 228,80 218,84" fill="#f0a500"/>
+  <rect x="228" y="60" width="30" height="40" rx="3" fill="#0a66c2" opacity="0.8"/>
+  <text x="243" y="84" text-anchor="middle" font-family="monospace" font-size="7" fill="#fff">Fe</text>
+  <line x1="258" y1="65" x2="310" y2="40" stroke="#ef4444" stroke-width="1.5"/>
+  <line x1="258" y1="70" x2="320" y2="60" stroke="#f0a500" stroke-width="1.5"/>
+  <line x1="258" y1="75" x2="320" y2="80" stroke="#00c9a7" stroke-width="1.5"/>
+  <line x1="258" y1="80" x2="320" y2="100" stroke="#a78bfa" stroke-width="1.5"/>
+  <line x1="258" y1="85" x2="310" y2="115" stroke="#7eb3f5" stroke-width="1.5"/>
+  <rect x="330" y="25" width="10" height="8" rx="1" fill="#ef4444" opacity="0.8"/>
+  <rect x="330" y="55" width="10" height="8" rx="1" fill="#f0a500" opacity="0.8"/>
+  <rect x="330" y="75" width="10" height="8" rx="1" fill="#00c9a7" opacity="0.8"/>
+  <rect x="330" y="95" width="10" height="8" rx="1" fill="#a78bfa" opacity="0.8"/>
+  <rect x="330" y="112" width="10" height="8" rx="1" fill="#7eb3f5" opacity="0.8"/>
+  <rect x="360" y="35" width="160" height="80" rx="6" fill="#0d2040" stroke="#00c9a7" stroke-width="1.5"/>
+  <text x="440" y="58" text-anchor="middle" font-family="monospace" font-size="8" fill="#00c9a7">SPECTRUM ANALYSIS</text>
+  <polyline points="375,100 395,70 415,90 435,55 455,80 475,65 495,85 510,75" fill="none" stroke="#00c9a7" stroke-width="1.5"/>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">XRF · EDXRF · METAL QUALITY ANALYSIS</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">Instrumentation</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">Understanding Spectrometers: The Silent Guardians of Metal Quality</div>
+        <div class="blog-desc">How spectrometers detect material composition — XRF, EDXRF, and real-world metal testing applications.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">Spectrometer</span><span class="btag">XRF</span><span class="btag">Metal Testing</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/automated-flight-control-system-testing-lru-level-singh-r-pmp--f4rnf" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <polygon points="120,75 220,45 350,55 380,75 350,95 220,105" fill="#0d2040" stroke="#0a66c2" stroke-width="1.5"/>
+  <polygon points="220,45 200,15 240,45" fill="#0d2040" stroke="#0a66c2" stroke-width="1"/>
+  <polygon points="220,105 200,135 240,105" fill="#0d2040" stroke="#0a66c2" stroke-width="1"/>
+  <circle cx="280" cy="75" r="15" fill="#0a1628" stroke="#f0a500" stroke-width="1.5"/>
+  <rect x="420" y="30" width="140" height="90" rx="6" fill="#0d2040" stroke="#00c9a7" stroke-width="1.5"/>
+  <text x="490" y="52" text-anchor="middle" font-family="monospace" font-size="7" fill="#00c9a7">LRU TESTING</text>
+  <rect x="432" y="58" width="50" height="12" rx="2" fill="#0a66c2" opacity="0.6"/>
+  <text x="457" y="68" text-anchor="middle" font-family="monospace" font-size="6" fill="#fff">DO-178C</text>
+  <rect x="432" y="74" width="50" height="12" rx="2" fill="#00c9a7" opacity="0.4"/>
+  <text x="457" y="84" text-anchor="middle" font-family="monospace" font-size="6" fill="#fff">ARINC 429</text>
+  <rect x="432" y="90" width="50" height="12" rx="2" fill="#f0a500" opacity="0.4"/>
+  <text x="457" y="100" text-anchor="middle" font-family="monospace" font-size="6" fill="#fff">HIL SIM</text>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">AFCS · LRU · DO-178C · ARINC 429 · MIL-STD-1553</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">Avionics</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">Automated Flight Control System Testing: LRU-Level Verification Approach</div>
+        <div class="blog-desc">DO-178C compliance, AFCS testing strategies, HIL simulation, ARINC 429, MIL-STD-1553, and certification frameworks.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">AFCS</span><span class="btag">DO-178C</span><span class="btag">Avionics</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/bridging-strategy-execution-how-jira-transforms-sandeep-singh-r-pmp--oujef" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <rect x="30" y="30" width="130" height="90" rx="6" fill="#0d2040" stroke="#7eb3f5" stroke-width="1"/>
+  <text x="95" y="50" text-anchor="middle" font-family="monospace" font-size="8" fill="#7eb3f5">BACKLOG</text>
+  <rect x="40" y="58" width="110" height="14" rx="2" fill="#0a66c2" opacity="0.5"/>
+  <rect x="40" y="76" width="110" height="14" rx="2" fill="#0a66c2" opacity="0.4"/>
+  <rect x="40" y="94" width="110" height="14" rx="2" fill="#0a66c2" opacity="0.3"/>
+  <rect x="235" y="30" width="130" height="90" rx="6" fill="#0d2040" stroke="#f0a500" stroke-width="1"/>
+  <text x="300" y="50" text-anchor="middle" font-family="monospace" font-size="8" fill="#f0a500">IN PROGRESS</text>
+  <rect x="245" y="58" width="110" height="14" rx="2" fill="#f0a500" opacity="0.5"/>
+  <rect x="245" y="76" width="110" height="14" rx="2" fill="#f0a500" opacity="0.3"/>
+  <rect x="440" y="30" width="130" height="90" rx="6" fill="#0d2040" stroke="#00c9a7" stroke-width="1"/>
+  <text x="505" y="50" text-anchor="middle" font-family="monospace" font-size="8" fill="#00c9a7">DONE</text>
+  <rect x="450" y="58" width="110" height="14" rx="2" fill="#00c9a7" opacity="0.5"/>
+  <rect x="450" y="76" width="110" height="14" rx="2" fill="#00c9a7" opacity="0.4"/>
+  <rect x="450" y="94" width="110" height="14" rx="2" fill="#00c9a7" opacity="0.3"/>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">JIRA · AGILE · STRATEGY → EXECUTION</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">Project Management</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">Bridging Strategy and Execution: How JIRA Transforms Modern Project Management</div>
+        <div class="blog-desc">Closing the gap between roadmap planning and sprint execution — agile practices and JIRA for cross-functional teams.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">JIRA</span><span class="btag">Agile</span><span class="btag">PM</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/misra-c-sandeep-singh-r" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <rect x="80" y="20" width="440" height="110" rx="6" fill="#0d1a0d" stroke="#00c9a7" stroke-width="1.5"/>
+  <text x="100" y="42" font-family="monospace" font-size="10" fill="#7eb3f5">// MISRA C Rule 14.4</text>
+  <text x="100" y="60" font-family="monospace" font-size="10" fill="#ef4444">if (sensor_val = read()) {</text>
+  <text x="120" y="78" font-family="monospace" font-size="10" fill="#fca5a5">  process(val);  // ✗ assign</text>
+  <text x="100" y="96" font-family="monospace" font-size="10" fill="#00c9a7">if (sensor_val == read()) {</text>
+  <text x="120" y="114" font-family="monospace" font-size="10" fill="#86efac">  process(val);  // ✓ safe</text>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">MISRA C · SAFE CODING · FIRMWARE STANDARDS</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">Embedded Systems</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">MISRA C — Safe Coding Standards for Embedded Firmware</div>
+        <div class="blog-desc">Seven steps to MISRA compliance — mandatory rules, memory safety, and how to apply them in safety-critical firmware development.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">MISRA C</span><span class="btag">Firmware</span><span class="btag">Safety</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/gpio-understanding-sandeep-singh-r" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <rect x="220" y="30" width="160" height="90" rx="6" fill="#0d2040" stroke="#f0a500" stroke-width="2"/>
+  <text x="300" y="80" text-anchor="middle" font-family="monospace" font-size="11" fill="#f0a500">MCU</text>
+  <text x="300" y="95" text-anchor="middle" font-family="monospace" font-size="7" fill="#7eb3f5">GPIO</text>
+  <line x1="60" y1="45" x2="220" y2="45" stroke="#00c9a7" stroke-width="2"/>
+  <line x1="60" y1="65" x2="220" y2="65" stroke="#00c9a7" stroke-width="2"/>
+  <line x1="60" y1="85" x2="220" y2="85" stroke="#7eb3f5" stroke-width="2"/>
+  <line x1="60" y1="105" x2="220" y2="105" stroke="#7eb3f5" stroke-width="2"/>
+  <line x1="380" y1="45" x2="540" y2="45" stroke="#f0a500" stroke-width="2"/>
+  <line x1="380" y1="65" x2="540" y2="65" stroke="#f0a500" stroke-width="2"/>
+  <line x1="380" y1="85" x2="540" y2="85" stroke="#0a66c2" stroke-width="2"/>
+  <line x1="380" y1="105" x2="540" y2="105" stroke="#0a66c2" stroke-width="2"/>
+  <text x="80" y="42" font-family="monospace" font-size="7" fill="#00c9a7">INPUT</text>
+  <text x="80" y="62" font-family="monospace" font-size="7" fill="#00c9a7">INPUT</text>
+  <text x="80" y="82" font-family="monospace" font-size="7" fill="#7eb3f5">SDA</text>
+  <text x="80" y="102" font-family="monospace" font-size="7" fill="#7eb3f5">SCL</text>
+  <text x="450" y="42" font-family="monospace" font-size="7" fill="#f0a500">OUTPUT</text>
+  <text x="450" y="62" font-family="monospace" font-size="7" fill="#f0a500">PWM</text>
+  <text x="450" y="82" font-family="monospace" font-size="7" fill="#0a66c2">TX</text>
+  <text x="450" y="102" font-family="monospace" font-size="7" fill="#0a66c2">RX</text>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">GPIO · DIGITAL I/O · MICROCONTROLLER PINS</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">Embedded Fundamentals</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">GPIO Understanding</div>
+        <div class="blog-desc">General Purpose Input/Output — the foundational building block of every embedded system, explained clearly.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">GPIO</span><span class="btag">Microcontrollers</span><span class="btag">Firmware</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/difference-between-uart-usart-sandeep-singh-r" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <rect x="40" y="40" width="110" height="70" rx="6" fill="#0d2040" stroke="#0a66c2" stroke-width="1.5"/>
+  <text x="95" y="62" text-anchor="middle" font-family="monospace" font-size="8" fill="#7eb3f5">UART</text>
+  <text x="95" y="78" text-anchor="middle" font-family="monospace" font-size="7" fill="#7eb3f5">ASYNC</text>
+  <text x="95" y="94" text-anchor="middle" font-family="monospace" font-size="7" fill="#00c9a7">TX / RX</text>
+  <rect x="450" y="40" width="110" height="70" rx="6" fill="#0d2040" stroke="#f0a500" stroke-width="1.5"/>
+  <text x="505" y="62" text-anchor="middle" font-family="monospace" font-size="8" fill="#f0a500">USART</text>
+  <text x="505" y="78" text-anchor="middle" font-family="monospace" font-size="7" fill="#f0a500">SYNC+ASYNC</text>
+  <text x="505" y="94" text-anchor="middle" font-family="monospace" font-size="7" fill="#00c9a7">TX/RX/CLK</text>
+  <polyline points="170,65 220,65 230,55 250,85 270,55 290,85 310,65 360,65" fill="none" stroke="#00c9a7" stroke-width="2"/>
+  <line x1="175" y1="90" x2="445" y2="90" stroke="#7eb3f5" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">UART · USART · SERIAL COMMUNICATION</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">Protocols</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">Difference Between UART &amp; USART</div>
+        <div class="blog-desc">UART vs USART — hardware differences, synchronous vs asynchronous modes, and when to choose which in real projects.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">UART</span><span class="btag">USART</span><span class="btag">Serial</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/introduction-matlab-sandeep-singh-r" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <rect x="40" y="25" width="520" height="100" rx="6" fill="#0d1a0d" stroke="#00c9a7" stroke-width="1.5"/>
+  <line x1="60" y1="110" x2="540" y2="110" stroke="#1a3a2a" stroke-width="1"/>
+  <line x1="60" y1="110" x2="60" y2="35" stroke="#1a3a2a" stroke-width="1"/>
+  <polyline points="80,100 130,85 180,60 230,45 280,50 330,40 380,55 430,70 480,50 520,35" fill="none" stroke="#00c9a7" stroke-width="2.5"/>
+  <polyline points="80,105 130,95 180,90 230,80 280,85 330,75 380,85 430,90 480,80 520,70" fill="none" stroke="#f0a500" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="100" y="42" font-family="monospace" font-size="8" fill="#7eb3f5">y = sin(2*pi*f*t)</text>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">MATLAB · SIGNAL PROCESSING · MATRIX OPS</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">MATLAB</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">Introduction to MATLAB</div>
+        <div class="blog-desc">MATLAB fundamentals — from matrix operations to signal processing and control systems, from first principles.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">MATLAB</span><span class="btag">Signal Processing</span><span class="btag">Engineering</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/pulse/embedded-system-outline-sandeep-singh-r" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-banner lin"><svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="150" fill="#0a1628"/>
+  <rect x="200" y="25" width="200" height="100" rx="6" fill="#0d2040" stroke="#f0a500" stroke-width="2"/>
+  <rect x="212" y="35" width="176" height="80" rx="3" fill="#0a1020"/>
+  <circle cx="265" cy="55" r="15" fill="#0a66c2" opacity="0.6"/>
+  <circle cx="300" cy="75" r="8" fill="#f0a500" opacity="0.8"/>
+  <circle cx="335" cy="55" r="10" fill="#00c9a7" opacity="0.5"/>
+  <rect x="215" y="100" width="20" height="8" rx="1" fill="#f0a500" opacity="0.7"/>
+  <rect x="240" y="100" width="20" height="8" rx="1" fill="#0a66c2" opacity="0.7"/>
+  <rect x="265" y="100" width="20" height="8" rx="1" fill="#00c9a7" opacity="0.7"/>
+  <line x1="50" y1="45" x2="198" y2="65" stroke="#0a66c2" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+  <line x1="50" y1="75" x2="198" y2="75" stroke="#0a66c2" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+  <line x1="50" y1="105" x2="198" y2="90" stroke="#0a66c2" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+  <text x="55" y="43" font-family="monospace" font-size="7" fill="#7eb3f5">CPU</text>
+  <text x="55" y="73" font-family="monospace" font-size="7" fill="#7eb3f5">RAM</text>
+  <text x="55" y="103" font-family="monospace" font-size="7" fill="#7eb3f5">I/O</text>
+  <line x1="402" y1="55" x2="550" y2="45" stroke="#f0a500" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+  <line x1="402" y1="75" x2="550" y2="75" stroke="#f0a500" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+  <line x1="402" y1="95" x2="550" y2="105" stroke="#f0a500" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+  <text x="455" y="43" font-family="monospace" font-size="7" fill="#f0a500">RTOS</text>
+  <text x="455" y="73" font-family="monospace" font-size="7" fill="#f0a500">FLASH</text>
+  <text x="455" y="103" font-family="monospace" font-size="7" fill="#f0a500">FIRMWARE</text>
+  <text x="300" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#7eb3f5" opacity="0.7">EMBEDDED SYSTEMS · MCU · RTOS · FIRMWARE</text>
+</svg></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat lin">Embedded Fundamentals</span><span class="btime">⏱ LinkedIn Article</span></div>
+        <div class="blog-title">Embedded System: Outline</div>
+        <div class="blog-desc">Core concepts in embedded systems — microcontrollers, firmware architecture, memory types, RTOS, and the development lifecycle.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">Embedded</span><span class="btag">RTOS</span><span class="btag">Firmware</span></div><span class="blog-link">Read on LinkedIn →</span></div>
+      </div>
+    </a>
+
+  </div>
+</div></section>
+
+<section style="background:var(--navy)"><div class="section-inner">
+  <div class="section-tag">Articles</div><div class="divider"></div>
+  <h2 class="section-title">Blog Posts</h2>
+  <div class="blogs-grid fade-in">
+    <a href="blogs/embedded_basics.html" class="blog-card">
+      <div class="blog-banner emb">🔌</div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat emb">Embedded Systems</span><span class="btime">⏱ 8 min read</span></div>
+        <div class="blog-title">Embedded Systems Basics — A Practical Introduction for Engineers</div>
+        <div class="blog-desc">Microcontrollers, memory, firmware, RTOS, and the full development process — written from real field experience.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">STM32</span><span class="btag">Firmware</span><span class="btag">RTOS</span></div><span class="blog-link">Read More →</span></div>
+      </div>
+    </a>
+    <a href="blogs/communicationprotocol.html" class="blog-card">
+      <div class="blog-banner pro">📡</div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat pro">Protocols</span><span class="btime">⏱ 12 min read</span></div>
+        <div class="blog-title">Communication Protocols — UART, I2C, SPI, LIN, RS485 &amp; MODBUS Explained</div>
+        <div class="blog-desc">When to use each, trade-offs, pin configs, and real code examples from industrial and automotive projects.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">I2C</span><span class="btag">SPI</span><span class="btag">RS485</span></div><span class="blog-link">Read More →</span></div>
+      </div>
+    </a>
+    <a href="blogs/IOT.html" class="blog-card">
+      <div class="blog-banner iot">🌐</div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat iot">IoT</span><span class="btime">⏱ 8 min read</span></div>
+        <div class="blog-title">Understanding the Internet of Things — Architecture, Protocols &amp; Applications</div>
+        <div class="blog-desc">IoT from first principles — sensor nodes, connectivity, cloud backends, and real deployment lessons with ESP32.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">ESP32</span><span class="btag">MQTT</span><span class="btag">Edge</span></div><span class="blog-link">Read More →</span></div>
+      </div>
+    </a>
+    <a href="blogs/matlab_coding.html" class="blog-card">
+      <div class="blog-banner mat">📊</div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat mat">MATLAB</span><span class="btime">⏱ Video Course</span></div>
+        <div class="blog-title">MATLAB for Engineers — Complete 7-Chapter Video Course</div>
+        <div class="blog-desc">All 7 chapters embedded — from MATLAB basics to GUI development. My Udemy course, freely accessible here.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">MATLAB GUI</span><span class="btag">Signal Processing</span></div><span class="blog-link">Watch Now →</span></div>
+      </div>
+    </a>
+	 <a href="blogs/article-afcs-lru.html" class="blog-card">
+      <div class="blog-banner mat">📊</div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat mat">About LRU</span><span class="btime">⏱ Article</span></div>
+        <div class="blog-title">AFCS LRU Testing — Civil Avionics</div>
+        <div class="blog-desc">Technical article on AFCS LRU-level testing — DO-178C, DO-160G, HIL simulation, ARINC 429, MIL-STD-1553, and BITE verification.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">AFCS</span><span class="btag">LRU</span></div><span class="blog-link">read Now →</span></div>
+      </div>
+    </a>
+	   <a href="blogs/article-andon-callbutton.html" class="blog-card">
+      <div class="blog-banner mat">📊</div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat mat">About Andon-Systems</span><span class="btime">⏱ Article</span></div>
+        <div class="blog-title">Wireless Microcontroller Andon System</div>
+        <div class="blog-desc">Technical article on Industrial Automation, Replacement of Wired PLC with Wireless Andon.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">ANDON</span><span class="btag">NRF</span></div><span class="blog-link">read Now →</span></div>
+      </div>
+    </a>
+	 <a href="blogs/article-sli-cranes.html" class="blog-card">
+      <div class="blog-banner mat">📊</div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="bcat mat">SLI Systems</span><span class="btime">⏱ Article</span></div>
+        <div class="blog-title">Safe Load Indicators for Cranes:<br>The Engineering Behind Every Safe Lift</div>
+        <div class="blog-desc">A comprehensive technical article on SLI/LMI systems — from IS 4573 and IEC 61508 SIL 2 architecture to sensor design, load chart implementation.</div>
+        <div class="blog-footer"><div class="btags"><span class="btag">SLI</span><span class="btag">Cranes</span></div><span class="blog-link">read Now →</span></div>
+      </div>
+    </a>
+  </div>
+</div></section>
+
+<section style="background:var(--navy2)"><div class="section-inner">
+  <div class="section-tag">Coverage</div><div class="divider"></div>
+  <h2 class="section-title">Topics I Write About</h2>
+  <div class="topics-grid fade-in">
+    <div class="topic-item"><div class="topic-icon">🔌</div><div class="topic-name">Embedded Systems</div></div>
+    <div class="topic-item"><div class="topic-icon">📡</div><div class="topic-name">Comm Protocols</div></div>
+    <div class="topic-item"><div class="topic-icon">🌐</div><div class="topic-name">IoT &amp; Edge</div></div>
+    <div class="topic-item"><div class="topic-icon">📊</div><div class="topic-name">MATLAB</div></div>
+    <div class="topic-item"><div class="topic-icon">📐</div><div class="topic-name">Project Management</div></div>
+    <div class="topic-item"><div class="topic-icon">✅</div><div class="topic-name">DO-178B</div></div>
+    <div class="topic-item"><div class="topic-icon">🗺️</div><div class="topic-name">Product Roadmaps</div></div>
+    <div class="topic-item"><div class="topic-icon">🛠️</div><div class="topic-name">PCB Design</div></div>
+    <div class="topic-item"><div class="topic-icon">🛠️</div><div class="topic-name">Wireless Communication</div></div> 
+  </div>
+</div></section>
+
+<section style="background:var(--navy)"><div class="section-inner fade-in">
+  <div class="blog-cta">
+    <h3>Have a Topic Suggestion?</h3>
+    <p>If there's an embedded systems, IoT, or PM topic you'd like me to cover — I write from real engineering experience, not textbooks.</p>
+    <div class="cta-btns">
+      <a href="contact.html" class="btn-primary">💬 Suggest a Topic</a>
+      <a href="papers.html" class="btn-secondary">📑 View Research Papers</a>
+    </div>
+  </div>
+</div></section>
+<footer>
+  <p>© 2025 <a href="index.html">Sandeep Singh R</a> · PMP® · Bengaluru, India</p>
+</footer>
+<a href="#" class="scroll-top" id="st">↑</a>
+<script>
+  window.addEventListener('scroll',()=>{
+    document.getElementById('navbar').classList.toggle('scrolled',scrollY>50);
+    document.getElementById('st').classList.toggle('visible',scrollY>400);
+  });
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.1});
+  document.querySelectorAll('.fade-in,.lt-item').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
